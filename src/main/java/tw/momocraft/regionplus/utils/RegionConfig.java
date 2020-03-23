@@ -12,6 +12,7 @@ public class RegionConfig {
     private boolean resBlockDoor;
     private boolean resBlockEnderman;
     private String resPointsMode;
+    private boolean resPointsIgnoreXYZ;
     private long resPointsDefault;
 
     public RegionConfig() {
@@ -24,7 +25,8 @@ public class RegionConfig {
         resBlockArmorStand = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Armor-Stand-Destroy");
         resBlockDoor = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Block.Zombie-Door-Destruction");
         resBlockEnderman = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Block.Enderman-Pick-Block");
-        resPointsMode = ConfigHandler.getConfig("config.yml").getString("Residence.Points.Mode");
+        resPointsMode = ConfigHandler.getConfig("config.yml").getString("Residence.Points.Check.Mode");
+        resPointsIgnoreXYZ = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.Ignore-XYZ");
         resPointsDefault = ConfigHandler.getConfig("config.yml").getLong("Residence.Points.Default-Limit");
     }
 
@@ -46,6 +48,10 @@ public class RegionConfig {
 
     public String getResPointsMode() {
         return resPointsMode;
+    }
+
+    public boolean isResPointsIgnoreXYZ() {
+        return resPointsIgnoreXYZ;
     }
 
     public long getResPointsDefault() {

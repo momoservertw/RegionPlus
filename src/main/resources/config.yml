@@ -18,10 +18,14 @@ Residence:
   # Using the block size to limit players' residence size just like GriefPrevention.
   Points:
     Enable: false
-    # Support: XYZ, XZ
-    Mode: "XZ"
+    Check:
+      # The checking mode of points. Support: XYZ, XZ
+      Mode: "XZ"
+      # If the residence is not infinite height, it will not be counted in limit points.
+      # It is useful for changing residence setting "IgnoreY = false" to "IgnoreY = true".
+      Ignore-XYZ: true
     # The default points limit if a player doesn't have any custom permission.
-    # More points limit permission: regionplus.residence.points.limit.AMOUNT
+    # More points limit permission: regionplus.points.limit.AMOUNT
     Default-Limit: 10000
 
 Message:

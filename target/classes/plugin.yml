@@ -3,7 +3,7 @@ main: tw.momocraft.regionplus.RegionPlus
 author: Momocraft
 api-version: 1.13
 version: 1.0.0
-description: Adding features for residence.
+description: Adding more features for residence.
 softdepend: [Vault, Residence, PlaceHolderAPI]
 
 commands:

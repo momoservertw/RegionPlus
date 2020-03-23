@@ -1,10 +1,7 @@
 package tw.momocraft.regionplus.listeners;
 
-import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ResidencePermissions;
-import com.wimbli.WorldBorder.WBListener;
-import org.bukkit.Location;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import org.bukkit.entity.EntityType;
