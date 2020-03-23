@@ -1,0 +1,52 @@
+# --{ =-=-=-=-=-=-=-=-=-= RegionPlus's Configuration Settings, by Momocraft =-=-=-=-=-=-=-=-=-= }--
+Config-Version: 1
+Debugging: false
+Check-Updates: true
+
+Residence:
+  Block:
+    # Prevent mobs destroy painting in the residence which set build flag false.
+    Painting-Destroy: true
+    # Prevent mobs destroy item_frame in the residence which set build flag false.
+    Item-Frame-Destroy: true
+    # Prevent mobs destroy armor_stand in the residence which set build flag false.
+    Armor-Stand-Destroy: true
+    # Prevent zombies destroy door in the residence which set build flag false.
+    Zombie-Door-Destruction: true
+    # Prevent enderman pickup block in the residence which set build flag false.
+    Enderman-Pickup-Block: true
+  # Using the block size to limit players' residence size just like GriefPrevention.
+  Points:
+    Enable: false
+    # Support: XYZ, XZ
+    Mode: "XZ"
+    # The default points limit if a player doesn't have any custom permission.
+    # More points limit permission: regionplus.residence.points.limit.AMOUNT
+    Default-Limit: 10000
+
+Message:
+  prefix: "&7[&dRegionPlus&7]&r "
+  noPermission: "&cYou do not have permission to use that command!"
+  configReload: "&aConfiguration(s) Reloaded!"
+  unknownCommand: "&cUnknown command, See &e/regionplus help &cfor a list of commands."
+  targetNotOnline: '&cPlayer &e%targetplayer% &cdoesn''t online!'
+  RegionPlus:
+    Commands:
+      title: "&8▩▩▩▩▩▩▩▩▩▩▩▩▩ &d&lRegionPlus &8▩▩▩▩▩▩▩▩▩▩▩▩▩"
+      help: "&a/rp help &8- &7This help menu."
+      reload: "&a/rp reload &8- &7Reload config file."
+      version: '&f/rp version &8- &7Checks the plugin version and updates.'
+      pointsLimit: "&a/rp points limit &8- &7Check your residence points limit."
+      pointsLimitOther: "&a/rp points limit <player> &8- &7Check the player's residence points limit."
+      pointsUsed: "&a/rp points used &8- &7Check how many points you have used."
+      pointsUsedOther: "&a/rp points used <player> &8- &7Check how many points the player has used."
+      pointsLook: "&a/rp points look &8- &7Check your remaining residence points."
+      pointsLookOther: "&a/rp points look <player> &8- &7Check the player's remaining residence points."
+    pointsLimit: "&eYour residence points limit &8- &f%points_limit%"
+    targetPointsLimit: "&eYour residence points limit &8- &f%points_limit%"
+    pointsUsed: "&eYour used points &8- &f%points_used%"
+    targetPointsUsed: "&e%targetplayer% used points &8- &f%points_used%"
+    pointsRemainder: "&eYour remaining residence points &8- &f%points_remainder%"
+    targetPointsRemainder: "&e%targetplayer% remaining residence points &8- &f%points_remainder%"
+    notEnoughPoints: "&cYou dont have enough residence points &8- &8(&e%points_need%&f/&6%points_limit%&8)"
+    targetNotEnoughPoints: "&c%targetplayer% doesn't have enough residence points."

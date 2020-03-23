@@ -1,0 +1,61 @@
+name: RegionPlus
+main: tw.momocraft.regionplus.RegionPlus
+author: Momocraft
+api-version: 1.13
+version: 1.0.0
+description: Adding features for residence.
+softdepend: [Vault, Residence, PlaceHolderAPI]
+
+commands:
+  regionplus:
+    description: Displays main command menu.
+    permission: regionplus.use
+    aliases: [rp]
+    usage: |
+      /regionplus
+
+permissions:
+  regionplus.*:
+    description: Allows use of all commands and feature.
+    default: op
+  regionplus.all:
+    description: Allows use of all commands and feature.
+    default: op
+    children:
+      regionplus.use: true
+      regionplus.command.*: true
+      regionplus.bypass.*: true
+  regionplus.use:
+    description: Allows use of basic commands.
+    default: true
+  regionplus.command.*:
+    description: Allows use all commands.
+    default: op
+    children:
+      regionplus.command.reload: true
+      regionplus.command.version: true
+      regionplus.command.points: true
+      regionplus.command.points.other: true
+  regionplus.command.reload:
+    description: Allows use of command /regionplus reload.
+    default: op
+  regionplus.command.version:
+    description: Allows use of command /regionplus version.
+    default: op
+  regionplus.command.points:
+    description: Allows use of command /regionplus points
+    default: op
+  regionplus.command.points.other:
+    description: Allows use of command /regionplus points <action> <player>.
+    default: op
+  regionplus.bypass.*:
+    description: Allows player to bypass all features.
+    default: op
+    children:
+      regionplus.bypass.points.limit: true
+  regionplus.bypass.points.limit:
+    description: Allows player to bypass points limit.
+    default: op
+  regionplus.points.limit.10000:
+    description: Sets player's points limit to 10000.
+    default: op
