@@ -4,6 +4,11 @@ Debugging: false
 Check-Updates: true
 
 Residence:
+  Custom-Flags:
+    # Allow potion damages entities. Default: true
+    potiondamage: false
+    #
+    damage
   Block:
     # Prevent mobs destroy painting in the residence which set build flag false.
     Painting-Destroy: true
@@ -21,12 +26,17 @@ Residence:
     Check:
       # The checking mode of points. Support: XYZ, XZ
       Mode: "XZ"
-      # If the residence is not infinite height, it will not be counted in limit points.
+      # It will not count the residence points if it is not infinite height.
       # It is useful for changing residence setting "IgnoreY = false" to "IgnoreY = true".
       Ignore-XYZ: true
     # The default points limit if a player doesn't have any custom permission.
     # More points limit permission: regionplus.points.limit.AMOUNT
     Default-Limit: 10000
+  Flag-Editor:
+    # Reset the flags that players don't have permissions. It is useful for prevent bugs if you changed the default flag settings in Residence group.yml.
+    Reset-No-Perms-Flags: true
+    Control:
+      chorustp: "remove "
 
 Message:
   prefix: "&7[&dRegionPlus&7]&r "
