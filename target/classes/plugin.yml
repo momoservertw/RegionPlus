@@ -4,7 +4,7 @@ author: Momocraft
 api-version: 1.13
 version: 1.0.0
 description: Adding more features for residence.
-softdepend: [Vault, Residence, PlaceHolderAPI]
+softdepend: [Vault, Residence, PlaceHolderAPI, WorldBorder]
 
 commands:
   regionplus:
@@ -34,6 +34,7 @@ permissions:
     children:
       regionplus.command.reload: true
       regionplus.command.version: true
+      regionplus.command.flagedit: true
       regionplus.command.points: true
       regionplus.command.points.other: true
   regionplus.command.reload:
@@ -41,6 +42,9 @@ permissions:
     default: op
   regionplus.command.version:
     description: Allows use of command /regionplus version.
+    default: op
+  regionplus.command.flagedit:
+    description: Allows use of command /regionplus flagedit.
     default: op
   regionplus.command.points:
     description: Allows use of command /regionplus points

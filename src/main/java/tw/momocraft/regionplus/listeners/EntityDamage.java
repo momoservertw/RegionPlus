@@ -18,15 +18,18 @@ import java.util.List;
 public class EntityDamage implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onEntityDamage(PotionE e) {
+    public void onEntityDamage(EntityDamageEvent e) {
         String damageCause = e.getCause().name();
         Entity en = e.getEntity();
         if (!(en instanceof Player)) {
             return;
         }
 
-        if(e.getCause().equals(EntityDamageEvent.DamageCause.POISON))
+        if(e.getCause().equals(EntityDamageEvent.DamageCause.POISON)) {
+        }
+    }
 
+            /*
         double damage = e.getCause();
 
         // Damage-Skip-Duration
@@ -137,11 +140,15 @@ public class EntityDamage implements Listener {
         }
     }
 
-    /**
+             */
+
+    /*
+            /**
      * @param cause the damage cause.
      * @param path  the path of spawn reason in config.yml.
      * @return if the entity spawn reason match the config setting.
      */
+    /*
     private boolean getReason(String cause, String path) {
         String reason = ConfigHandler.getConfig("config.yml").getString(path);
         if (reason != null) {
@@ -149,5 +156,7 @@ public class EntityDamage implements Listener {
         }
         return true;
     }
+    */
+
 }
 

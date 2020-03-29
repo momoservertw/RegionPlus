@@ -7,8 +7,6 @@ Residence:
   Custom-Flags:
     # Allow potion damages entities. Default: true
     potiondamage: false
-    #
-    damage
   Block:
     # Prevent mobs destroy painting in the residence which set build flag false.
     Painting-Destroy: true
@@ -32,11 +30,36 @@ Residence:
     # The default points limit if a player doesn't have any custom permission.
     # More points limit permission: regionplus.points.limit.AMOUNT
     Default-Limit: 10000
+  # Edit the residence's flags.
+  # Bypass permission: regionplus.bypass.flagedit
   Flag-Editor:
-    # Reset the flags that players don't have permissions. It is useful for prevent bugs if you changed the default flag settings in Residence group.yml.
-    Reset-No-Perms-Flags: true
-    Control:
-      chorustp: "remove "
+    Enable: false
+    # Automatic check the flags when the server is starting.
+    Auto-Check:
+      Enable: false
+      Delay: 20
+    Default:
+      # Add the flag that the default setting does exist but the residence does not exist.
+      Update: true
+      # Remove the flag that the default setting does not exist and the owner does not have permission to change it.
+      Remove-No-Perms: true
+    Permission:
+      # Remove the flag that the owner does not have permission to change it.
+      Remove-No-Perms: true
+
+# Prevent general players build or kill entities outside the border.
+Visitor:
+  Enable: false
+  Border:
+    World:
+      Range:
+  Create-Residence: false
+  Prevent:
+    Interact-Block: true
+    Interact-Entity: true
+  Has-Residence-Permissions:
+    Interact-Block: true
+    Interact-Entity: true
 
 Message:
   prefix: "&7[&dRegionPlus&7]&r "
@@ -50,6 +73,7 @@ Message:
       help: "&a/rp help &8- &7This help menu."
       reload: "&a/rp reload &8- &7Reload config file."
       version: '&f/rp version &8- &7Checks the plugin version and updates.'
+      flagedit: '&f/rp flagedit &8- &7Checks the flags of residences and edits it'
       pointsLimit: "&a/rp points limit &8- &7Check your residence points limit."
       pointsLimitOther: "&a/rp points limit <player> &8- &7Check the player's residence points limit."
       pointsUsed: "&a/rp points used &8- &7Check how many points you have used."

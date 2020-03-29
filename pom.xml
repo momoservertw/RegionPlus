@@ -65,7 +65,7 @@
             <groupId>me.Residence</groupId>
             <artifactId>Residnec</artifactId>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/Residence4.8.7.4.jar</systemPath>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/Residence4.9.0.5.jar</systemPath>
             <version>LATEST</version>
         </dependency>
         <!--PlaceholderAPI API-->
@@ -74,6 +74,14 @@
             <artifactId>placeholderapi</artifactId>
             <version>LATEST</version>
             <scope>provided</scope>
+        </dependency>
+        <!--WorldBorder API-->
+        <dependency>
+            <groupId>me.WorldBorder</groupId>
+            <artifactId>WorldBorder</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/WorldBorder.jar</systemPath>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
 

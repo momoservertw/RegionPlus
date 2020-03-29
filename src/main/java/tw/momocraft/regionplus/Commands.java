@@ -7,12 +7,15 @@ import org.bukkit.entity.Player;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.handlers.PermissionsHandler;
 import tw.momocraft.regionplus.handlers.PlayerHandler;
+import tw.momocraft.regionplus.handlers.ServerHandler;
 import tw.momocraft.regionplus.utils.Language;
+import tw.momocraft.regionplus.utils.RegionUtils;
 import tw.momocraft.regionplus.utils.ResidencePoints;
 
 public class Commands implements CommandExecutor {
 
     public boolean onCommand(final CommandSender sender, Command c, String l, String[] args) {
+        RegionUtils.resetNoPermsFlags();
         if (args.length == 0) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.use")) {
                 Language.dispatchMessage(sender, "&d&lRegionPlus &e&lv" + RegionPlus.getInstance().getDescription().getVersion() + "&8 - &fby Momocraft");
@@ -32,6 +35,9 @@ public class Commands implements CommandExecutor {
                 Language.sendLangMessage("Message.RegionPlus.Commands.help", sender, false);
                 if (PermissionsHandler.hasPermission(sender, "regionplus.command.reload")) {
                     Language.sendLangMessage("Message.RegionPlus.Commands.reload", sender, false);
+                }
+                if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagedit")) {
+                    Language.sendLangMessage("Message.RegionPlus.Commands.flagedit", sender, false);
                 }
                 if (PermissionsHandler.hasPermission(sender, "regionplus.command.points.limit")) {
                     Language.sendLangMessage("Message.RegionPlus.Commands.pointsLimit", sender, false);
@@ -68,6 +74,14 @@ public class Commands implements CommandExecutor {
             if (PermissionsHandler.hasPermission(sender, "rgionplus.command.version")) {
                 Language.dispatchMessage(sender, "&d&lRegionPlus &e&lv" + RegionPlus.getInstance().getDescription().getVersion() + "&8 - &fby Momocraft");
                 ConfigHandler.getUpdater().checkUpdates(sender);
+            } else {
+                Language.sendLangMessage("Message.noPermission", sender);
+            }
+            return true;
+        } else if (args.length == 1 && args[0].equalsIgnoreCase("flagedit")) {
+            if (PermissionsHandler.hasPermission(sender, "rgionplus.command.flagedit")) {
+                ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
+                RegionUtils.resetNoPermsFlags();
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);
             }

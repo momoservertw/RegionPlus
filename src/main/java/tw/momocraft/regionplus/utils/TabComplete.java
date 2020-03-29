@@ -58,8 +58,8 @@ public class TabComplete implements TabCompleter {
             if (PermissionsHandler.hasPermission(sender, "playerdataplus.command.version")) {
                 commands.add("version");
             }
-            if (PermissionsHandler.hasPermission(sender, "playerdataplus.command.clean")) {
-                commands.add("clean");
+            if (PermissionsHandler.hasPermission(sender, "playerdataplus.command.flagedit")) {
+                commands.add("flagedit");
             }
             if (PermissionsHandler.hasPermission(sender, "playerdataplus.command.points")) {
                 commands.add("points");

@@ -5,11 +5,13 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
 import tw.momocraft.regionplus.Commands;
 import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.listeners.*;
 import tw.momocraft.regionplus.utils.DependAPI;
 import tw.momocraft.regionplus.utils.RegionConfig;
+import tw.momocraft.regionplus.utils.RegionUtils;
 import tw.momocraft.regionplus.utils.TabComplete;
 
 import java.io.File;
@@ -30,6 +32,17 @@ public class ConfigHandler {
         sendUtilityDepends();
         setRegionConfig(new RegionConfig());
         //setUpdater(new UpdateHandler());
+
+        if (!reload && getRegionConfig().isResFlagAutoCheck()) {
+            long delay = getRegionConfig().getResFlagAutoCheckDelay();
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
+                    RegionUtils.resetNoPermsFlags();
+                }
+            }.runTaskLater(RegionPlus.getInstance(), delay);
+        }
     }
 
     public static void registerEvents() {
@@ -40,9 +53,16 @@ public class ConfigHandler {
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityBreakDoor(), RegionPlus.getInstance());
 
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceFlagCheck(), RegionPlus.getInstance());
+                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
+                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
+            if (getRegionConfig().isResFlagEdit()) {
+                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceFlagCheck(), RegionPlus.getInstance());
+            }
+        }
+        if (ConfigHandler.getDepends().WorldBorderEnabled()) {
+            if (getRegionConfig().isWbVistorEnable()) {
+                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new WorldBorlderCheck(), RegionPlus.getInstance());
+            }
         }
     }
 
@@ -109,7 +129,8 @@ public class ConfigHandler {
         ServerHandler.sendConsoleMessage("&fHooked [ &e"
                 + (getDepends().getVault().vaultEnabled() ? "Vault, " : "")
                 + (getDepends().ResidenceEnabled() ? "Residence, " : "")
-                + (getDepends().PlaceHolderAPIEnabled() ? "PlaceHolderAPI" : "")
+                + (getDepends().PlaceHolderAPIEnabled() ? "PlaceHolderAPI," : "")
+                + (getDepends().ResidenceEnabled() ? "WorldBorder, " : "")
                 + " &f]");
     }
 
