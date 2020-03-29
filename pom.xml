@@ -58,7 +58,7 @@
             <artifactId>Vault</artifactId>
             <scope>system</scope>
             <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/VaultAPI.jar</systemPath>
-            <version>LATEST</version>
+            <version>LEGACY</version>
         </dependency>
         <!--Residence API-->
         <dependency>
@@ -66,7 +66,7 @@
             <artifactId>Residnec</artifactId>
             <scope>system</scope>
             <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/Residence4.9.0.5.jar</systemPath>
-            <version>LATEST</version>
+            <version>LEGACY</version>
         </dependency>
         <!--PlaceholderAPI API-->
         <dependency>
@@ -81,7 +81,22 @@
             <artifactId>WorldBorder</artifactId>
             <scope>system</scope>
             <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/WorldBorder.jar</systemPath>
-            <version>LATEST</version>
+            <version>LEGACY</version>
+        </dependency>
+        <!--ItemJoin API-->
+        <dependency>
+            <groupId>me.ItemJoin</groupId>
+            <artifactId>ItemJoin</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/ItemJoin.jar</systemPath>
+            <version>LEGACY</version>
+        </dependency>
+        <!--Citizens API-->
+        <dependency>
+            <groupId>net.citizensnpcs</groupId>
+            <artifactId>citizensapi</artifactId>
+            <version>2.0.25-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

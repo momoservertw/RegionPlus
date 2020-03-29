@@ -20,9 +20,9 @@ public class RegionConfig {
     private boolean resFlagDefaultUpdate;
     private boolean resFlagDefaultRemove;
     private boolean resFlagPermissionRemove;
-    private boolean wbVistorEnable;
-    private boolean wbVistorPreventBlock;
-    private boolean wbVistorPreventEntity;
+    private boolean vistorEnable;
+    private boolean vistorInteractBlock;
+    private boolean vistorInteractEntity;
 
     public RegionConfig() {
         setUp();
@@ -43,11 +43,9 @@ public class RegionConfig {
         resFlagDefaultUpdate = ConfigHandler.getConfig("config.yml").getBoolean("ResidenceFlag-Editor.Default.Update");
         resFlagDefaultRemove = ConfigHandler.getConfig("config.yml").getBoolean("ResidenceFlag-Editor.Default.Remove-No-Perms");
         resFlagPermissionRemove = ConfigHandler.getConfig("config.yml").getBoolean("ResidenceFlag-Editor.Permission.Remove-No-Perms");
-        wbVistorEnable = ConfigHandler.getConfig("config.yml").getBoolean("WorldBorder.Visitor.Enable");
-        wbVistorPreventBlock = ConfigHandler.getConfig("config.yml").getBoolean("WorldBorder.Visitor.Prevent.Interact-Block");
-        wbVistorPreventEntity = ConfigHandler.getConfig("config.yml").getBoolean("WorldBorder.Visitor.Prevent.Interact-Entity");
-
-
+        vistorEnable = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
+        vistorInteractBlock = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Block.Enable");
+        vistorInteractEntity = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entity.Enable");
     }
 
     public boolean isResBlockItemFrame() {
@@ -106,15 +104,15 @@ public class RegionConfig {
         return resFlagPermissionRemove;
     }
 
-    public boolean isWbVistorEnable() {
-        return wbVistorEnable;
+    public boolean isVistorEnable() {
+        return vistorEnable;
     }
 
-    public boolean isWbVistorPreventBlock() {
-        return wbVistorPreventBlock;
+    public boolean isVistorInteractBlock() {
+        return vistorInteractBlock;
     }
 
-    public boolean isWbVistorPreventEntity() {
-        return wbVistorPreventEntity;
+    public boolean isVistorInteractEntity() {
+        return vistorInteractEntity;
     }
 }

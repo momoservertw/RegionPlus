@@ -53,16 +53,16 @@ public class ConfigHandler {
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityBreakDoor(), RegionPlus.getInstance());
 
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
+            if (getRegionConfig().isVistorEnable()) {
                 RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
                 RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
-            if (getRegionConfig().isResFlagEdit()) {
-                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceFlagCheck(), RegionPlus.getInstance());
+                if (getRegionConfig().isResFlagEdit()) {
+                    RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceFlagCheck(), RegionPlus.getInstance());
+                }
             }
         }
-        if (ConfigHandler.getDepends().WorldBorderEnabled()) {
-            if (getRegionConfig().isWbVistorEnable()) {
-                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new WorldBorlderCheck(), RegionPlus.getInstance());
-            }
+        if (getRegionConfig().isVistorEnable()) {
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new VistorCheck(), RegionPlus.getInstance());
         }
     }
 

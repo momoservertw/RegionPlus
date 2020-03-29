@@ -1,12 +1,14 @@
 tw\momocraft\regionplus\utils\TabComplete.class
 tw\momocraft\regionplus\handlers\PermissionsHandler.class
 tw\momocraft\regionplus\utils\RegionConfig.class
+tw\momocraft\regionplus\listeners\VistorCheck.class
 tw\momocraft\regionplus\utils\RegionUtils.class
 tw\momocraft\regionplus\utils\BungeeCord.class
 tw\momocraft\regionplus\RegionPlus.class
 tw\momocraft\regionplus\utils\ResidencePoints.class
 tw\momocraft\regionplus\utils\VaultAPI.class
 tw\momocraft\regionplus\listeners\EntityDamage.class
+tw\momocraft\regionplus\utils\LocationAPI.class
 tw\momocraft\regionplus\handlers\UpdateHandler.class
 tw\momocraft\regionplus\listeners\ResidenceFlagCheck.class
 tw\momocraft\regionplus\listeners\EntityBreakDoor.class
@@ -17,7 +19,6 @@ tw\momocraft\regionplus\handlers\ConfigHandler$1.class
 tw\momocraft\regionplus\listeners\ResidenceCreation.class
 tw\momocraft\regionplus\utils\Language.class
 tw\momocraft\regionplus\handlers\PlayerHandler.class
-tw\momocraft\regionplus\listeners\WorldBorlderCheck.class
 tw\momocraft\regionplus\Commands.class
 tw\momocraft\regionplus\utils\Language$Lang.class
 tw\momocraft\regionplus\handlers\ServerHandler.class

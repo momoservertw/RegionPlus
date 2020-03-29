@@ -1,20 +1,19 @@
 package tw.momocraft.regionplus.listeners;
 
-import com.wimbli.WorldBorder.BorderData;
-import com.wimbli.WorldBorder.Config;
+import me.RockinChaos.itemjoin.api.ItemJoinAPI;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.player.*;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.handlers.PermissionsHandler;
+import tw.momocraft.regionplus.handlers.ServerHandler;
+import tw.momocraft.regionplus.utils.LocationAPI;
 
-public class WorldBorlderCheck implements Listener {
+public class VistorCheck implements Listener {
 
 /*
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -44,9 +43,8 @@ public class WorldBorlderCheck implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (ConfigHandler.getRegionConfig().isWbVistorPreventBlock())
+        if (ConfigHandler.getRegionConfig().isVistorInteractBlock())
             e.setCancelled(true);
-        return;
     }
 
     /*
@@ -59,19 +57,92 @@ public class WorldBorlderCheck implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
-        if (ConfigHandler.getRegionConfig().isWbVistorPreventBlock())
+        if (e.getRightClicked().hasMetadata("NPC")) {
+            ServerHandler.sendConsoleMessage(e.getEventName() + " NPC bypass");
+            return;
+        }
+        ServerHandler.sendConsoleMessage(e.getEventName());
+        e.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+        if (e.getDamager() instanceof Player) {
+            if (e.getEntity() instanceof Player) {
+                ServerHandler.sendConsoleMessage(e.getEventName() + " Player bypass");
+                return;
+            }
+            ServerHandler.sendConsoleMessage(e.getEventName());
             e.setCancelled(true);
-        return;
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerDropItem(PlayerDropItemEvent e) {
+        ServerHandler.sendConsoleMessage(e.getEventName());
+        e.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityPickupItem(EntityPickupItemEvent e) {
+        if (e.getEntity() instanceof Player) {
+            ServerHandler.sendConsoleMessage(e.getEventName());
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerFish(PlayerFishEvent e) {
+        ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
+        if (itemJoinAPI.isCustom(e.getPlayer().getInventory().getItemInMainHand())) {
+            ServerHandler.sendConsoleMessage(e.getEventName() + " ItemJoin bypass");
+            return;
+        }
+        ServerHandler.sendConsoleMessage(e.getEventName());
+        e.setCancelled(true);
+    }
+
+    // This Event will cause error while starting server.
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerBucket(PlayerBucketFillEvent e) {
+        ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
+        if (itemJoinAPI.isCustom(e.getItemStack())) {
+            ServerHandler.sendConsoleMessage(e.getEventName() + " ItemJoin bypass");
+            return;
+        }
+        ServerHandler.sendConsoleMessage(e.getEventName());
+        e.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerItemConsume(PlayerItemConsumeEvent e) {
+        ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
+        if (itemJoinAPI.isCustom(e.getItem())) {
+            ServerHandler.sendConsoleMessage(e.getEventName() + " ItemJoin bypass");
+            return;
+        }
+        ServerHandler.sendConsoleMessage(e.getEventName());
+        e.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onProjectileLaunch(ProjectileLaunchEvent e) {
+        if (e.getEntity().getShooter() instanceof Player) {
+            Player player = (Player) e.getEntity().getShooter();
+            ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
+            if (itemJoinAPI.isCustom((player.getInventory().getItemInMainHand()))) {
+                ServerHandler.sendConsoleMessage(e.getEventName() + " ItemJoin bypass");
+                return;
+            }
+            ServerHandler.sendConsoleMessage(e.getEventName());
+            e.setCancelled(true);
+        }
     }
 
     private boolean preventEvent(Player player, Location location) {
-        String worldName = location.getBlock().getWorld().getName();
-        BorderData border = Config.Border(worldName);
-        if (border != null) {
-            if (border.insideBorder(location.getBlock().getLocation())) {
-                return PermissionsHandler.hasPermission(player, "regionplus.bypass.worldborder.*") &&
-                        PermissionsHandler.hasPermission(player, "regionplus.bypass.worldborder." + worldName);
-            }
+        if (LocationAPI.getLocation(location, "Visitor.Border." + location.getWorld())) {
+            return PermissionsHandler.hasPermission(player, "regionplus.bypass.worldborder.*") &&
+                    PermissionsHandler.hasPermission(player, "regionplus.bypass.worldborder." + location.getBlock().getWorld().getName());
         }
         return true;
     }

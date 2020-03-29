@@ -47,18 +47,68 @@ Residence:
       # Remove the flag that the owner does not have permission to change it.
       Remove-No-Perms: true
 
-WorldBorder:
-  # Prevent general players build or kill entities outside the world border.
-  # Need plugin: WorldBorlder
-  Visitor:
-    Enable: false
-    Create-Residence: false
-    Prevent:
-      Interact-Block: true
-      Interact-Entity: true
-    Has-Residence-Permissions:
-      Interact-Block: true
-      Interact-Entity: true
+# Prevent general players build or kill entities outside the border.
+# Bypass permission: regionplus.bypass.visitor.WORLD
+Visitor:
+  Enable: false
+  # The visitor border of the world.
+  Border:
+    world:
+      Range:
+        R: 10000
+  Prevent:
+    Ignore:
+      # Visitors can only build or damage entities in the residence which they has permissions.
+      Has-Residence-Permissions: true
+    List:
+      # Prevent visitors to create residences.
+      # Need plugin: Residence
+      Create-Residence:
+        Enable: true
+        # Send message when cancel the event.
+        Message: true
+      # Prevent visitors to use items.
+      Use-Items:
+        Enable: false
+        Message: true
+        # Allows eat foods or drink potion.
+        Allow-Consume: true
+        # Allows bucket water or lava.
+        Allow-Bucket: false
+        # Allows shoot arrows or throw potions.
+        Allow-Projectile: false
+        # Allows using fishing rod.
+        Allow-Fishing: false
+        # Need plugin: ItemJoin
+        Allow-ItemJoin: true
+      # Prevent visitors to click a block.
+      Interact-Block:
+        Enable: true
+        Message: true
+        # Allow visitors to use interact some blocks like doors.
+        Allow-Use: false
+        # Allow visitors to open containers like chest.
+        Allow-Container: false
+      # Prevent visitors to right click entities.
+      Interact-Entity:
+        Enable: true
+        Message: true
+        # Allow visitors to right click npc.
+        Allow-NPC: true
+      # Prevent visitors to damage entities.
+      Damage-Entity:
+        Enable: true
+        Message: true
+        # Allow visitors to damage other players.
+        Allow-Player: true
+      # Prevent visitors to drop items.
+      Drop-Item:
+        Enable: true
+        Message: true
+      # Prevent visitors to pickup items.
+      Pickup-Item:
+        Enable: true
+        Message: true
 
 Message:
   prefix: "&7[&dRegionPlus&7]&r "
