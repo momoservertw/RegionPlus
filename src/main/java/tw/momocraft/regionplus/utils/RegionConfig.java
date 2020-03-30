@@ -20,9 +20,11 @@ public class RegionConfig {
     private boolean resFlagDefaultUpdate;
     private boolean resFlagDefaultRemove;
     private boolean resFlagPermissionRemove;
-    private boolean vistorEnable;
-    private boolean vistorInteractBlock;
-    private boolean vistorInteractEntity;
+    private boolean visitorEnable;
+    private boolean visitorInteractBlock;
+    private boolean visitorInteractBlockUse;
+    private boolean visitorInteractBlockContainer;
+    private boolean visitorInteractEntity;
 
     public RegionConfig() {
         setUp();
@@ -43,9 +45,12 @@ public class RegionConfig {
         resFlagDefaultUpdate = ConfigHandler.getConfig("config.yml").getBoolean("ResidenceFlag-Editor.Default.Update");
         resFlagDefaultRemove = ConfigHandler.getConfig("config.yml").getBoolean("ResidenceFlag-Editor.Default.Remove-No-Perms");
         resFlagPermissionRemove = ConfigHandler.getConfig("config.yml").getBoolean("ResidenceFlag-Editor.Permission.Remove-No-Perms");
-        vistorEnable = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
-        vistorInteractBlock = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Block.Enable");
-        vistorInteractEntity = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entity.Enable");
+        visitorEnable = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
+        visitorInteractBlock = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Enable");
+        visitorInteractBlockUse = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Allow-Use");
+        visitorInteractBlockContainer = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Allow-Container");
+        visitorInteractEntity = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entities.Enable");
+        visitorInteractEntity = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entities.Enable");
     }
 
     public boolean isResBlockItemFrame() {
@@ -104,15 +109,23 @@ public class RegionConfig {
         return resFlagPermissionRemove;
     }
 
-    public boolean isVistorEnable() {
-        return vistorEnable;
+    public boolean isVisitorEnable() {
+        return visitorEnable;
     }
 
-    public boolean isVistorInteractBlock() {
-        return vistorInteractBlock;
+    public boolean isVisitorInteractBlock() {
+        return visitorInteractBlock;
     }
 
-    public boolean isVistorInteractEntity() {
-        return vistorInteractEntity;
+    public boolean isVisitorInteractEntity() {
+        return visitorInteractEntity;
+    }
+
+    public boolean isVisitorInteractBlockContainer() {
+        return visitorInteractBlockContainer;
+    }
+
+    public boolean isVisitorInteractBlockUse() {
+        return visitorInteractBlockUse;
     }
 }

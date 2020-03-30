@@ -53,7 +53,7 @@ public class ConfigHandler {
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityBreakDoor(), RegionPlus.getInstance());
 
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
-            if (getRegionConfig().isVistorEnable()) {
+            if (getRegionConfig().isVisitorEnable()) {
                 RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
                 RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
                 if (getRegionConfig().isResFlagEdit()) {
@@ -61,7 +61,7 @@ public class ConfigHandler {
                 }
             }
         }
-        if (getRegionConfig().isVistorEnable()) {
+        if (getRegionConfig().isVisitorEnable()) {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new VistorCheck(), RegionPlus.getInstance());
         }
     }

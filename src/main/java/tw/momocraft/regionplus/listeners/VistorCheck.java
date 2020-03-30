@@ -2,12 +2,15 @@ package tw.momocraft.regionplus.listeners;
 
 import me.RockinChaos.itemjoin.api.ItemJoinAPI;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
+import sun.security.krb5.Config;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.handlers.PermissionsHandler;
 import tw.momocraft.regionplus.handlers.ServerHandler;
@@ -15,46 +18,59 @@ import tw.momocraft.regionplus.utils.LocationAPI;
 
 public class VistorCheck implements Listener {
 
-/*
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockPlace(BlockPlaceEvent e) {
-        if (!preventEvent(e.getPlayer(), e.getBlock().getLocation())) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent e) {
-        if (!preventEvent(e.getPlayer(), e.getBlock().getLocation())) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onEntityDamageByEntity(PlayerInteractEntityEvent e) {
-            e.setCancelled(true);
-        return;
-        Player player = e.getPlayer();
-        if (!preventEvent(player, player.getLocation())) {
-            e.setCancelled(true);
-        }
-    }
-         */
-
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (ConfigHandler.getRegionConfig().isVistorInteractBlock())
-            e.setCancelled(true);
+        if (ConfigHandler.getRegionConfig().isVisitorInteractBlock()) {
+            if (ConfigHandler.getRegionConfig().isVisitorInteractBlockUse()) {
+                if (e.getAction().equals(Action.PHYSICAL)) {
+                    String blockType = e.getMaterial().name();
+                    switch (blockType) {
+                        case "TRIPWIRE":
+                        case "ACACIA_PRESSURE_PLATE":
+                        case "BIRCH_PRESSURE_PLATE":
+                        case "DARK_OAK_PRESSURE_PLATE":
+                            Player player = e.getPlayer();
+                            if (!preventEvent(player, player.getLocation())) {
+                                e.setCancelled(true);
+                            }
+                            return;
+                        default:
+                            return;
+                    }
+                } else {
+                    Block block = e.getClickedBlock();
+                    if (block != null) {
+                        String blockType = block.getType().name();
+                        if (isCanUseEntity(blockType)) {
+                            Player player = e.getPlayer();
+                            if (!preventEvent(player, player.getLocation())) {
+                                e.setCancelled(true);
+                            }
+                            return;
+                        }
+                    }
+                }
+            }
+            if (ConfigHandler.getRegionConfig().isVisitorInteractBlockContainer()) {
+                Block block = e.getClickedBlock();
+                if (block != null) {
+                    String blockType = block.getType().name();
+                    if (isContainer(blockType)) {
+                        Player player = e.getPlayer();
+                        if (!preventEvent(player, player.getLocation())) {
+                            e.setCancelled(true);
+                        }
+                        return;
+                    }
+                }
+            }
+            Player player = e.getPlayer();
+            if (!preventEvent(player, player.getLocation())) {
+                e.setCancelled(true);
+            }
+        }
     }
 
-    /*
-    Player player = e.getPlayer();
-    if (!preventEvent(player, player.getLocation())) {
-        e.setCancelled(true);
-    }
-    }
-
-     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
         if (e.getRightClicked().hasMetadata("NPC")) {
@@ -145,31 +161,6 @@ public class VistorCheck implements Listener {
                     PermissionsHandler.hasPermission(player, "regionplus.bypass.worldborder." + location.getBlock().getWorld().getName());
         }
         return true;
-    }
-
-    /*
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerInteract(PlayerInteractEvent e) {
-        String blockType;
-        if (e.getAction().equals(Action.PHYSICAL)) {
-            blockType = e.getMaterial().name();
-            switch (blockType) {
-                case "TRIPWIRE":
-                case "ACACIA_PRESSURE_PLATE":
-                case "BIRCH_PRESSURE_PLATE":
-                case "DARK_OAK_PRESSURE_PLATE":
-            }
-        }
-
-        Block block = e.getClickedBlock();
-        if (block != null) {
-            blockType = block.getType().name();
-            if (isCanUseEntity(blockType) || isContainer(blockType)) {
-                if (!preventEvent(e.getPlayer(), block.getLocation())) {
-                    e.setCancelled(true);
-                }
-            }
-        }
     }
 
     private boolean isCanUseEntity(String blockType) {
@@ -273,5 +264,4 @@ public class VistorCheck implements Listener {
                 return false;
         }
     }
-     */
 }
