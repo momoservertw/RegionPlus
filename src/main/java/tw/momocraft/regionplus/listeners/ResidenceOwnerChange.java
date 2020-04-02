@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.handlers.PermissionsHandler;
+import tw.momocraft.regionplus.handlers.ServerHandler;
 import tw.momocraft.regionplus.utils.Language;
 import tw.momocraft.regionplus.utils.ResidencePoints;
 
@@ -30,16 +31,18 @@ public class ResidenceOwnerChange implements Listener {
             } else {
                 size = X * Z;
             }
-            long pointsRemainer = ResidencePoints.getPointsRemainder(newOwner);
-            if (size > pointsRemainer && (!PermissionsHandler.hasPermission(newOwner, "regionplus.bypass.points.limit"))) {
+            long pointsRemainder = ResidencePoints.getPointsRemainder(newOwner);
+            if (size > pointsRemainder && (!PermissionsHandler.hasPermission(newOwner, "regionplus.bypass.points.limit"))) {
                 String[] placeHolders = Language.newString();
                 placeHolders[2] = String.valueOf(newOwnerName);
                 Language.sendLangMessage("Message.RegionPlus.targetNotEnoughPoints", owner, placeHolders);
                 placeHolders[8] = String.valueOf(ResidencePoints.getPointsLimit(newOwner));
                 placeHolders[9] = String.valueOf(ResidencePoints.getPointsUsed(newOwner));
-                placeHolders[10] = String.valueOf(pointsRemainer);
+
+                placeHolders[10] = String.valueOf(pointsRemainder);
                 placeHolders[11] = String.valueOf(size);
                 Language.sendLangMessage("Message.RegionPlus.notEnoughPoints", newOwner, placeHolders);
+                ServerHandler.debugMessage("Residence", newOwnerName, "Points", "cancel", "notEnoughPoints");
                 e.setCancelled(true);
             }
             return;
@@ -47,5 +50,6 @@ public class ResidenceOwnerChange implements Listener {
         String[] placeHolders = Language.newString();
         placeHolders[2] = String.valueOf(newOwnerName);
         Language.sendLangMessage("Message.targetNotOnline", owner, placeHolders);
+        ServerHandler.debugMessage("Residence", newOwnerName, "Points", "cancel", "targetNotOnline");
     }
 }

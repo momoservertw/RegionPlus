@@ -49,20 +49,19 @@ public class ConfigHandler {
         RegionPlus.getInstance().getCommand("regionplus").setExecutor(new Commands());
         RegionPlus.getInstance().getCommand("regionplus").setTabCompleter(new TabComplete());
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityDamage(), RegionPlus.getInstance());
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityDamageByEntity(), RegionPlus.getInstance());
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityChangeBlock(), RegionPlus.getInstance());
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityBreakDoor(), RegionPlus.getInstance());
+        //RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleFlight(), RegionPlus.getInstance());
 
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
-            if (getRegionConfig().isVisitorEnable()) {
-                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
+            if (getRegionConfig().isResPointsEnable()) {
                 RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
-                if (getRegionConfig().isResFlagEdit()) {
-                    RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceFlagCheck(), RegionPlus.getInstance());
-                }
             }
         }
         if (getRegionConfig().isVisitorEnable()) {
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new VistorCheck(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new VisitorCheck(), RegionPlus.getInstance());
         }
     }
 
@@ -130,8 +129,10 @@ public class ConfigHandler {
                 + (getDepends().getVault().vaultEnabled() ? "Vault, " : "")
                 + (getDepends().ResidenceEnabled() ? "Residence, " : "")
                 + (getDepends().PlaceHolderAPIEnabled() ? "PlaceHolderAPI," : "")
-                + (getDepends().ResidenceEnabled() ? "WorldBorder, " : "")
-                + " &f]");
+                + (getDepends().ItemJoinEnabled() ? "ItemJoin, " : "")
+                + (getDepends().PvPManagerEnabled() ? "PvPManager, " : "")
+                + (getDepends().MultiverseCoreEnabled() ? "Multiverse-Core, " : "")
+                + "&f]");
     }
 
     public static DependAPI getDepends() {

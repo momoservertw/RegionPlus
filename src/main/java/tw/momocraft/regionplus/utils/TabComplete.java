@@ -22,14 +22,14 @@ public class TabComplete implements TabCompleter {
         final List<String> commands = new ArrayList<>();
         Collection<?> playersOnlineNew = null;
         Player[] playersOnlineOld;
-        if (args.length == 2 && args[0].equalsIgnoreCase("help") && PermissionsHandler.hasPermission(sender, "playerdataplus.use")) {
+        if (args.length == 2 && args[0].equalsIgnoreCase("help") && PermissionsHandler.hasPermission(sender, "regionplus.use")) {
             commands.add("2");
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("points") && PermissionsHandler.hasPermission(sender, "playerdataplus.command.points")) {
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("points") && PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
             commands.add("limit");
             commands.add("used");
             commands.add("look");
         } else if ((args.length == 3) && (args[0].equalsIgnoreCase("points"))) {
-            if (PermissionsHandler.hasPermission(sender, "playerdataplus.command.points.other")) {
+            if (PermissionsHandler.hasPermission(sender, "regionplus.command.points.other")) {
                 try {
                     if (Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).getReturnType() == Collection.class) {
                         if (Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).getReturnType() == Collection.class) {
@@ -49,19 +49,19 @@ public class TabComplete implements TabCompleter {
                 }
             }
         } else if (args.length == 1) {
-            if (PermissionsHandler.hasPermission(sender, "playerdataplus.use")) {
+            if (PermissionsHandler.hasPermission(sender, "regionplus.use")) {
                 commands.add("help");
             }
-            if (PermissionsHandler.hasPermission(sender, "playerdataplus.command.reload")) {
+            if (PermissionsHandler.hasPermission(sender, "regionplus.command.reload")) {
                 commands.add("reload");
             }
-            if (PermissionsHandler.hasPermission(sender, "playerdataplus.command.version")) {
+            if (PermissionsHandler.hasPermission(sender, "regionplus.command.version")) {
                 commands.add("version");
             }
-            if (PermissionsHandler.hasPermission(sender, "playerdataplus.command.flagedit")) {
+            if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagedit")) {
                 commands.add("flagedit");
             }
-            if (PermissionsHandler.hasPermission(sender, "playerdataplus.command.points")) {
+            if (PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
                 commands.add("points");
             }
         }

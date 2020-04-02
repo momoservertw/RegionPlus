@@ -6,7 +6,7 @@
 
     <groupId>momocraft.tw</groupId>
     <artifactId>RegionPlus</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-snapshot</version>
     <build>
         <plugins>
             <plugin>
@@ -75,20 +75,28 @@
             <version>LATEST</version>
             <scope>provided</scope>
         </dependency>
-        <!--WorldBorder API-->
-        <dependency>
-            <groupId>me.WorldBorder</groupId>
-            <artifactId>WorldBorder</artifactId>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/WorldBorder.jar</systemPath>
-            <version>LEGACY</version>
-        </dependency>
         <!--ItemJoin API-->
         <dependency>
             <groupId>me.ItemJoin</groupId>
             <artifactId>ItemJoin</artifactId>
             <scope>system</scope>
             <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/ItemJoin.jar</systemPath>
+            <version>LEGACY</version>
+        </dependency>
+        <!--PvPManager API-->
+        <dependency>
+            <groupId>me.PvPManager</groupId>
+            <artifactId>PvPManager</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/PvPManager.jar</systemPath>
+            <version>LEGACY</version>
+        </dependency>
+        <!--Multiverse-Core API-->
+        <dependency>
+            <groupId>me.MultiverseCore</groupId>
+            <artifactId>MultiverseCore</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/Multiverse-Core-4.0.0.jar</systemPath>
             <version>LEGACY</version>
         </dependency>
     </dependencies>

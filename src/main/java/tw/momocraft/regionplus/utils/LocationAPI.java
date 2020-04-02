@@ -147,6 +147,7 @@ public class LocationAPI {
             }
             return false;
         }
+
         // Location settings.
         ConfigurationSection locationConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection(path);
         if (locationConfig != null) {
@@ -172,9 +173,8 @@ public class LocationAPI {
                 }
                 return true;
             }
-            return false;
         }
-        return true;
+        return false;
     }
 
     /**

@@ -2,9 +2,9 @@ name: RegionPlus
 main: tw.momocraft.regionplus.RegionPlus
 author: Momocraft
 api-version: 1.13
-version: 1.0.0
-description: Adding more features for residence.
-softdepend: [Vault, Residence, PlaceHolderAPI, ItemJoin]
+version: 1.0.0-snapshot
+description: Adding more features and improvements for residence.
+softdepend: [Vault, Residence, PlaceHolderAPI, ItemJoin, PvPManager]
 
 commands:
   regionplus:
@@ -25,6 +25,7 @@ permissions:
       regionplus.use: true
       regionplus.command.*: true
       regionplus.bypass.*: true
+      regionplus.points.limit.10000: true
   regionplus.use:
     description: Allows use of basic commands.
     default: true

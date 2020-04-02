@@ -7,8 +7,12 @@ import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
+import tw.momocraft.regionplus.handlers.PermissionsHandler;
 import tw.momocraft.regionplus.handlers.ServerHandler;
 
 import java.util.*;
@@ -38,11 +42,23 @@ Momocraft§f[§4container §4ignite §2mobkilling §4shear §4build §2use §4ve
 
 public class RegionUtils {
 
+    public static boolean bypassBorder(Player player, Location location) {
+        World world = location.getWorld();
+        if (world != null) {
+            String worldName = world.getName();
+            if (!LocationAPI.getLocation(location, "Visitor.Border")) {
+                return PermissionsHandler.hasPermission(player, "regionplus.bypass.visitor.*") &&
+                        PermissionsHandler.hasPermission(player, "regionplus.bypass.visitor." + worldName);
+            }
+        }
+        return true;
+    }
+
+
     public static void resetNoPermsFlags() {
         if (ConfigHandler.getRegionConfig().isResFlagEdit()) {
             String playerName;
             ResidencePermissions perms;
-            String owner;
             PermissionGroup ownerGroup;
             String[] listSplit;
             String[] listSplit2;
@@ -60,11 +76,10 @@ public class RegionUtils {
                 if (playerName != null) {
                     for (ClaimedResidence claimedResidence : ResidenceApi.getPlayerManager().getResidencePlayer(playerName).getResList()) {
                         perms = claimedResidence.getPermissions();
-                        owner = claimedResidence.getOwner();
-                        ownerGroup = ResidenceApi.getPlayerManager().getGroup(owner);
+                        ownerGroup = ResidenceApi.getPlayerManager().getGroup(claimedResidence.getOwner());
                         flagEntrySet = claimedResidence.getPermissions().getFlags().entrySet();
                         groupFlagEntrySet = ownerGroup.getDefaultResidenceFlags();
-                        if (ConfigHandler.getRegionConfig().isResFlagDefaultRemove()) {
+                        if (ConfigHandler.getRegionConfig().isResFlagEditRemove()) {
                             for (Map.Entry<String, Boolean> resFlagEntry : flagEntrySet) {
                                 if (!groupFlagEntrySet.contains(resFlagEntry)) {
                                     removeFlagList.add(resFlagEntry.getKey());
@@ -75,7 +90,7 @@ public class RegionUtils {
                                 ServerHandler.sendDebugMessage("&cRemove default flag: &e" + claimedResidence.getName() + "&8 - &f" + removeFlag);
                             }
                         }
-                        if (ConfigHandler.getRegionConfig().isResFlagDefaultUpdate()) {
+                        if (ConfigHandler.getRegionConfig().isResFlagEditUpdate()) {
                             for (Map.Entry<String, Boolean> resFlagEntry : groupFlagEntrySet) {
                                 if (!flagEntrySet.contains(resFlagEntry)) {
                                     addFlagMap.put(resFlagEntry.getKey(), resFlagEntry.getValue().toString());
@@ -87,7 +102,7 @@ public class RegionUtils {
                                 ServerHandler.sendDebugMessage("&6Add default flag: &e" + claimedResidence.getName() + "&8 - &f" + addFlagKey + "=" + addFlag);
                             }
                         }
-                        if (ConfigHandler.getRegionConfig().isResFlagPermissionRemove()) {
+                        if (ConfigHandler.getRegionConfig().isResFlagEditRemovePerm()) {
                             listSplit = perms.listPlayersFlags().split("§f\\[");
                             permsPlayerList.add(listSplit[0]);
                             for (String flagsSplit : listSplit) {

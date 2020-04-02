@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 
 public class ResidenceFlagCheck implements Listener {
 
+    // Fly
     @EventHandler(priority = EventPriority.HIGH)
     public void onResidenceFlagCheck(ResidenceFlagCheckEvent e) {
         /*
@@ -19,7 +20,6 @@ public class ResidenceFlagCheck implements Listener {
                 }
             }
         }
-
          */
     }
 }
