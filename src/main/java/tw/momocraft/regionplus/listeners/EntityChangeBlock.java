@@ -13,14 +13,14 @@ import tw.momocraft.regionplus.utils.ResidenceUtils;
 public class EntityChangeBlock implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
-    private void onEntityChangeBlock(EntityChangeBlockEvent e) {
+    private void onResPreventEndermanPickup(EntityChangeBlockEvent e) {
         if (ConfigHandler.getRegionConfig().isResPreventEnable()) {
             if (ConfigHandler.getRegionConfig().isResPreventEndermanPickup()) {
+                if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+                    return;
+                }
                 Entity entity = e.getEntity();
                 if (entity instanceof Enderman) {
-                    if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-                        return;
-                    }
                     if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false)) {
                         ServerHandler.debugMessage("Residence", "Enderman", "isResPreventEndermanPickup", "cancel", "destroy=false");
                         e.setCancelled(true);

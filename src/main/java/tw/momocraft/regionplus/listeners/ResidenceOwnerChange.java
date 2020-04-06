@@ -13,6 +13,7 @@ import tw.momocraft.regionplus.utils.Language;
 import tw.momocraft.regionplus.utils.ResidenceUtils;
 
 public class ResidenceOwnerChange implements Listener {
+
     @EventHandler(priority = EventPriority.HIGH)
     private void onResidenceOwnerChange(ResidenceOwnerChangeEvent e) {
         if (!ConfigHandler.getRegionConfig().isResPointsEnable()) {

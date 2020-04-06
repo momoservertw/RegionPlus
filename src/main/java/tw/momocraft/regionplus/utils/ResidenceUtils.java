@@ -23,12 +23,6 @@ import java.util.*;
 
 public class ResidenceUtils {
 
-    private void getSelete(Player player) {
-        SelectionManager smanager = Residence.getInstance().getSelectionManager();
-        smanager.getSelection(player).getBaseLoc1();
-        smanager.getSelection(player).getBaseLoc2();
-    }
-
     public static boolean getBuildPerms(ResidencePermissions perms, String flag, boolean def, Player player) {
         if (player != null) {
             if (perms.playerHas(player, Flags.build, false)) {
@@ -130,10 +124,8 @@ public class ResidenceUtils {
         boolean ignoreXYZ = ConfigHandler.getRegionConfig().isResPointsIgnoreXYZ();
         boolean allAreas = ConfigHandler.getRegionConfig().isResPointsAllAreas();
         boolean ignoreWithin = ConfigHandler.getRegionConfig().isResPointsIgnoreWithin();
-
-        List<ClaimedResidence> resList = ResidenceApi.getPlayerManager().getResidencePlayer(player.getName()).getResList();
         CuboidArea mainArea;
-        for (ClaimedResidence res : resList) {
+        for (ClaimedResidence res : ResidenceApi.getPlayerManager().getResidencePlayer(player.getName()).getResList()) {
             mainArea = res.getMainArea();
             if (allAreas) {
                 for (CuboidArea area : res.getAreaArray()) {

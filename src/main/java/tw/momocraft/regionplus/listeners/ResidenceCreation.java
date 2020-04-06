@@ -15,24 +15,12 @@ import tw.momocraft.regionplus.utils.ResidenceUtils;
 public class ResidenceCreation implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
-    private void onResidenceCreation(ResidenceCreationEvent e) {
-        Player player = e.getPlayer();
-        String playerName = player.getName();
-        if (ConfigHandler.getRegionConfig().isVisitorEnable()) {
-            if (ConfigHandler.getRegionConfig().isVisitorCreateRes()) {
-                if (!RegionUtils.bypassBorder(player, player.getLocation())) {
-                    // Cancel
-                    if (ConfigHandler.getRegionConfig().isVisitorCreateResMsg()) {
-                        Language.sendLangMessage("Message.RegionPlus.visitorCreateResidence", player);
-                    }
-                    ServerHandler.debugMessage("Visitor", playerName, "Create-Residence", "cancel", "border");
-                    e.setCancelled(true);
-                    return;
-                }
-            }
-        }
+    private void onResPointsEnable(ResidenceCreationEvent e) {
         if (ConfigHandler.getRegionConfig().isResPointsEnable()) {
+            Player player = e.getPlayer();
+            String playerName = player.getName();
             if (PermissionsHandler.hasPermission(player, "regionplus.bypass.points.limit")) {
+                ServerHandler.debugMessage("Residence", playerName, "Points", "return", "bypass permission");
                 return;
             }
             long size = ResidenceUtils.getSize(e.getResidence());
@@ -51,6 +39,25 @@ public class ResidenceCreation implements Listener {
                 return;
             }
             Language.sendLangMessage("Message.RegionPlus.points", player, placeHolders);
+            ServerHandler.debugMessage("Residence", playerName, "Points", "return", "final");
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    private void onVisitorCreateRes(ResidenceCreationEvent e) {
+        if (ConfigHandler.getRegionConfig().isVisitorEnable()) {
+            if (ConfigHandler.getRegionConfig().isVisitorCreateRes()) {
+                Player player = e.getPlayer();
+                String playerName = player.getName();
+                if (!RegionUtils.bypassBorder(player, player.getLocation())) {
+                    // Cancel
+                    if (ConfigHandler.getRegionConfig().isVisitorCreateResMsg()) {
+                        Language.sendLangMessage("Message.RegionPlus.visitorCreateResidence", player);
+                    }
+                    ServerHandler.debugMessage("Visitor", playerName, "Create-Residence", "cancel", "border");
+                    e.setCancelled(true);
+                }
+            }
         }
     }
 }

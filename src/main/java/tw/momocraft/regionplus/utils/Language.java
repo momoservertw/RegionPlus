@@ -143,7 +143,9 @@ public class Language {
                 .replace("%points_limit%", langHolder[8])
                 .replace("%points_used%", langHolder[9])
                 .replace("%points_remainder%", langHolder[10])
-                .replace("%points_need%", langHolder[11]);
+                .replace("%points_need%", langHolder[11])
+                .replace("%res_cost%", langHolder[12])
+                ;
     }
 
     public static String[] newString() {

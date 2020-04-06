@@ -1,2 +1,12 @@
+tw\momocraft\regionplus\listeners\PlayerDropItem.class
+tw\momocraft\regionplus\listeners\PlayerFish.class
 tw\momocraft\regionplus\utils\LocationAPI.class
+tw\momocraft\regionplus\listeners\PlayerPickupItem.class
 tw\momocraft\regionplus\listeners\EntityBreakDoor.class
+tw\momocraft\regionplus\listeners\PlayerItemConsume.class
+tw\momocraft\regionplus\listeners\ProjectileLaunch.class
+tw\momocraft\regionplus\listeners\ResidenceDelete.class
+tw\momocraft\regionplus\listeners\PlayerInteract.class
+tw\momocraft\regionplus\utils\ResidenceUtils$1.class
+tw\momocraft\regionplus\listeners\PlayerBucketFill.class
+tw\momocraft\regionplus\listeners\PlayerInteractEntity.class

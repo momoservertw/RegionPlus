@@ -1,6 +1,8 @@
 package tw.momocraft.regionplus.utils;
 
 
+import com.bekvon.bukkit.residence.Residence;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 
@@ -21,6 +23,8 @@ public class RegionConfig {
     private boolean resPreventEndermanPickup;
 
     private boolean resPointsEnable;
+    private boolean resPointsSelectInfo;
+    private Material resPointsSelectTool;
     private String resPointsMode;
     private boolean resPointsIgnoreXYZ;
     private boolean resPointsReturnXYZ;
@@ -83,6 +87,8 @@ public class RegionConfig {
         resPreventEndermanPickup = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Enderman-Pickup-Block");
 
         resPointsEnable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Enable");
+        resPointsSelectInfo = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Select-Info");
+        resPointsSelectTool = Residence.getInstance().getWorldEditTool().getMaterial();
         resPointsMode = ConfigHandler.getConfig("config.yml").getString("Residence.Points.Check.Mode");
         resPointsIgnoreXYZ = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.Ignore-XYZ");
         resPointsReturnXYZ = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.Return-XYZ");
@@ -90,6 +96,10 @@ public class RegionConfig {
         resPointsIgnoreWithin = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.All-Areas.Ignore-Within-Area");
         resPointsDefault = ConfigHandler.getConfig("config.yml").getLong("Residence.Points.Groups.Default.Limit");
         resPointsGroupsConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Points.Groups");
+        for (String title : resPointsGroupsConfig.getKeys(false)) {
+            resPointsLimitMap.put(title, ConfigHandler.getConfig("config.yml").getLong("Residence.Points.Groups." + title + ".Limit"));
+            resPointsDisplayMap.put(title, ConfigHandler.getConfig("config.yml").getString("Residence.Points.Groups." + title + ".Display"));
+        }
 
         resFlagEdit = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Enable");
         resFlagEditMax = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Max-Edit-Players");
@@ -125,10 +135,6 @@ public class RegionConfig {
         visitorItemsFishing = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Fishing");
         visitorItemJoin = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-ItemJoin");
 
-        for (String title : resPointsGroupsConfig.getKeys(false)) {
-            resPointsLimitMap.put(title, ConfigHandler.getConfig("config.yml").getLong("Residence.Points.Groups." + title + ".Limit"));
-            resPointsDisplayMap.put(title, ConfigHandler.getConfig("config.yml").getString("Residence.Points.Groups." + title + ".Display"));
-        }
     }
 
     public boolean isPlayerPreventFly() {
@@ -176,6 +182,14 @@ public class RegionConfig {
         return resPointsEnable;
     }
 
+    public boolean isResPointsSelectInfo() {
+        return resPointsSelectInfo;
+    }
+
+    public Material getResPointsSelectTool() {
+        return resPointsSelectTool;
+    }
+
     public String getResPointsMode() {
         return resPointsMode;
     }
@@ -207,6 +221,7 @@ public class RegionConfig {
     public HashMap<String, String> getResPointsDisplayMap() {
         return resPointsDisplayMap;
     }
+
 
     public boolean isResFlagEdit() {
         return resFlagEdit;
@@ -340,4 +355,6 @@ public class RegionConfig {
     public void setResPointsLimitMap(HashMap<String, Long> resPointsLimitMap) {
         this.resPointsLimitMap = resPointsLimitMap;
     }
+
+
 }

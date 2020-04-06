@@ -23,6 +23,8 @@ Residence:
   # Using the blocks size to limit players' residence size just like GriefPrevention.
   Points:
     Enable: false
+    # Send points message when using residence select tool.
+    Select-Info: true
     Check:
       # The calculate mode of points. Support: XYZ, XZ
       Mode: 'XZ'
@@ -162,9 +164,10 @@ Message:
       pointsLookOther: '&f/rp points look <player> &8- &7Check the player''s remaining points.'
     points: '&e&lPoints: &f%points_remainder% &8- &7【%points_group%&7】 &6%points_used%&7/&c%points_limit%'
     targetPoints: '&e&l%targetplayer%''s Points: &f%points_remainder% &8- &7【%points_group%&7】 &6%points_used%&7/&c%points_limit%'
-    pointsSelete: '&eSelection total size: &6%res_size& &eLand cost: &6%res_size& /n &e&lNeed points: &f%points_need% &8- &6%points_remainder% &8➸ &c%points_newremainder%'
+    pointsSelect: '&eSelection total size: &6%points_need%& &eLand cost: &6%res_cost%& /n &e&lNeed points: &f%points_need% &8- &6%points_remainder% &8➸ &c%points_newremainder%'
     notEnoughPoints: '&cYou dont have enough points &8- &8(&e%points_need%&f/&6%points_remainder%&8)'
     targetNotEnoughPoints: '&c%targetplayer% doesn''t have enough points.'
+    returnXYZMoney: '&6Get the difference of $%amount% on removed a old residence.'
     visitorCreateResidence: '&cVisitor can''t create residence here!'
     visitorUseItems: '&cVisitor can''t use this item here!'
     visitorInteractBlocks: '&cVisitor can''t interact blocks here!'

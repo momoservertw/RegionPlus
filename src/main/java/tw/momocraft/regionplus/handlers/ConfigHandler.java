@@ -32,36 +32,42 @@ public class ConfigHandler {
         setRegionConfig(new RegionConfig());
         setUpdater(new UpdateHandler());
 
-        if (!reload && getRegionConfig().isResFlagAutoCheck()) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
-                    ResidenceUtils flagsEdit = new ResidenceUtils();
-                    flagsEdit.resetNoPermsFlags();
-                }
-            }.runTaskLater(RegionPlus.getInstance(), getRegionConfig().getResFlagAutoCheckDelay());
+        if (ConfigHandler.getDepends().ResidenceEnabled()) {
+            if (!reload && getRegionConfig().isResFlagAutoCheck()) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
+                        ResidenceUtils flagsEdit = new ResidenceUtils();
+                        flagsEdit.resetNoPermsFlags();
+                    }
+                }.runTaskLater(RegionPlus.getInstance(), getRegionConfig().getResFlagAutoCheckDelay());
+            }
         }
     }
 
     public static void registerEvents() {
         RegionPlus.getInstance().getCommand("regionplus").setExecutor(new Commands());
         RegionPlus.getInstance().getCommand("regionplus").setTabCompleter(new TabComplete());
+
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityBreakDoor(), RegionPlus.getInstance());
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityChangeBlock(), RegionPlus.getInstance());
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityDamage(), RegionPlus.getInstance());
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityDamageByEntity(), RegionPlus.getInstance());
-        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityChangeBlock(), RegionPlus.getInstance());
-        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityBreakDoor(), RegionPlus.getInstance());
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerBucketFill(), RegionPlus.getInstance());
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerDropItem(), RegionPlus.getInstance());
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerFish(), RegionPlus.getInstance());
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerInteract(), RegionPlus.getInstance());
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerInteractEntity(), RegionPlus.getInstance());
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerItemConsume(), RegionPlus.getInstance());
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerPickupItem(), RegionPlus.getInstance());
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ProjectileLaunch(), RegionPlus.getInstance());
         //RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleFlight(), RegionPlus.getInstance());
 
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
-            if (getRegionConfig().isResPointsEnable()) {
-                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceDelete(), RegionPlus.getInstance());
-                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
-            }
-        }
-        if (getRegionConfig().isVisitorEnable()) {
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new VisitorCheck(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceDelete(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
         }
     }
 
