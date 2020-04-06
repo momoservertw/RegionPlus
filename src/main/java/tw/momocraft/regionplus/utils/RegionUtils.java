@@ -1,22 +1,9 @@
 package tw.momocraft.regionplus.utils;
 
-import com.bekvon.bukkit.residence.api.ResidenceApi;
-import com.bekvon.bukkit.residence.containers.Flags;
-import com.bekvon.bukkit.residence.permissions.PermissionGroup;
-import com.bekvon.bukkit.residence.protection.ClaimedResidence;
-import com.bekvon.bukkit.residence.protection.FlagPermissions;
-import com.bekvon.bukkit.residence.protection.ResidencePermissions;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.handlers.PermissionsHandler;
-import tw.momocraft.regionplus.handlers.ServerHandler;
-
-import java.util.*;
-
 
 /*
 clainmedResidence.getName() => simon04
@@ -52,85 +39,5 @@ public class RegionUtils {
             }
         }
         return true;
-    }
-
-
-    public static void resetNoPermsFlags() {
-        if (ConfigHandler.getRegionConfig().isResFlagEdit()) {
-            String playerName;
-            ResidencePermissions perms;
-            PermissionGroup ownerGroup;
-            String[] listSplit;
-            String[] listSplit2;
-            List<String> permsPlayerList = new ArrayList<>();
-            Set<Map.Entry<String, Boolean>> flagEntrySet;
-            Set<Map.Entry<String, Boolean>> groupFlagEntrySet;
-            List<String> removeFlagList = new ArrayList<>();
-            List<String> removeFlagPlayerList = new ArrayList<>();
-            Map<String, String> addFlagMap = new HashMap<>();
-            String addFlag;
-            Map<String, Boolean> permsPlayerFlags;
-
-            for (OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-                playerName = offlinePlayer.getName();
-                if (playerName != null) {
-                    for (ClaimedResidence claimedResidence : ResidenceApi.getPlayerManager().getResidencePlayer(playerName).getResList()) {
-                        perms = claimedResidence.getPermissions();
-                        ownerGroup = ResidenceApi.getPlayerManager().getGroup(claimedResidence.getOwner());
-                        flagEntrySet = claimedResidence.getPermissions().getFlags().entrySet();
-                        groupFlagEntrySet = ownerGroup.getDefaultResidenceFlags();
-                        if (ConfigHandler.getRegionConfig().isResFlagEditRemove()) {
-                            for (Map.Entry<String, Boolean> resFlagEntry : flagEntrySet) {
-                                if (!groupFlagEntrySet.contains(resFlagEntry)) {
-                                    removeFlagList.add(resFlagEntry.getKey());
-                                }
-                            }
-                            for (String removeFlag : removeFlagList) {
-                                perms.setFlag(removeFlag, FlagPermissions.FlagState.NEITHER);
-                                ServerHandler.sendDebugMessage("&cRemove default flag: &e" + claimedResidence.getName() + "&8 - &f" + removeFlag);
-                            }
-                        }
-                        if (ConfigHandler.getRegionConfig().isResFlagEditUpdate()) {
-                            for (Map.Entry<String, Boolean> resFlagEntry : groupFlagEntrySet) {
-                                if (!flagEntrySet.contains(resFlagEntry)) {
-                                    addFlagMap.put(resFlagEntry.getKey(), resFlagEntry.getValue().toString());
-                                }
-                            }
-                            for (String addFlagKey : addFlagMap.keySet()) {
-                                addFlag = addFlagMap.get(addFlagKey);
-                                perms.setFlag(addFlagKey, FlagPermissions.FlagState.valueOf(addFlagMap.get(addFlagKey).toUpperCase()));
-                                ServerHandler.sendDebugMessage("&6Add default flag: &e" + claimedResidence.getName() + "&8 - &f" + addFlagKey + "=" + addFlag);
-                            }
-                        }
-                        if (ConfigHandler.getRegionConfig().isResFlagEditRemovePerm()) {
-                            listSplit = perms.listPlayersFlags().split("§f\\[");
-                            permsPlayerList.add(listSplit[0]);
-                            for (String flagsSplit : listSplit) {
-                                listSplit2 = flagsSplit.split("§f] ");
-                                for (int j = 0; j < listSplit2.length; j++) {
-                                    if (j % 2 == 1) {
-                                        permsPlayerList.add(listSplit2[j]);
-                                    }
-                                }
-                            }
-                            for (String permsPlayer : permsPlayerList) {
-                                permsPlayerFlags = perms.getPlayerFlags(permsPlayer);
-                                if (permsPlayerFlags != null) {
-                                    for (String flag : permsPlayerFlags.keySet()) {
-                                        if (!ownerGroup.hasFlagAccess(Flags.getFlag(flag))) {
-                                            removeFlagPlayerList.add(flag);
-                                        }
-                                    }
-                                    for (String removePlayerFlag : removeFlagPlayerList) {
-                                        perms.setPlayerFlag(permsPlayer, removePlayerFlag, FlagPermissions.FlagState.NEITHER);
-                                        ServerHandler.sendDebugMessage("&eRemove player flag: &e" + claimedResidence.getName() + "&8 - &6" + permsPlayer + "&8 - &f" + removePlayerFlag);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }

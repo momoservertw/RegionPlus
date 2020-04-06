@@ -8,6 +8,7 @@ public class DependAPI {
 	private boolean ItemJoin = false;
 	private boolean PvPManager = false;
 	private boolean MultiverseCore = false;
+	private boolean LuckPerms = false;
 	private VaultAPI vault;
 
 	
@@ -17,6 +18,7 @@ public class DependAPI {
 		this.setItemJoinStatus(Bukkit.getServer().getPluginManager().getPlugin("ItemJoin") != null);
 		this.setPvPManagerStatus(Bukkit.getServer().getPluginManager().getPlugin("PvPManager") != null);
 		this.setMultiverseCoreStatus(Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core") != null);
+		this.setMultiverseCoreStatus(Bukkit.getServer().getPluginManager().getPlugin("LuckPerms") != null);
 		this.setVault();
 	}
 
@@ -35,6 +37,9 @@ public class DependAPI {
 	public boolean MultiverseCoreEnabled() {
 		return this.MultiverseCore;
 	}
+	public boolean LuckPermsEnabled() {
+		return this.LuckPerms;
+	}
 
 	public void setResidenceStatus(boolean bool) {
 		this.Residence = bool;
@@ -50,6 +55,9 @@ public class DependAPI {
 	}
 	public void setMultiverseCoreStatus(boolean bool) {
 		this.MultiverseCore = bool;
+	}
+	public void setLuckPermsStatus(boolean bool) {
+		this.LuckPerms = bool;
 	}
 
 	public VaultAPI getVault() {

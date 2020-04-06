@@ -1,5 +1,5 @@
 # --{ =-=-=-=-=-=-=-=-=-= RegionPlus's Configuration Settings, by Momocraft =-=-=-=-=-=-=-=-=-= }--
-Config-Version: 1
+Config-Version: 2
 Debugging: false
 Check-Updates: true
 
@@ -29,13 +29,45 @@ Residence:
       # It will not count the points if the residence are not infinite height.
       # It is useful for changing residence "IgnoreY" setting 'false' to 'true'.
       Ignore-XYZ: true
-    # The default points limit if the player doesn't have any custom permission.
-    # More points permission: regionplus.points.limit.AMOUNT
-    Default-Limit: 10000
-  # Edit the residence old flags.
-  # Bypass permission: regionplus.bypass.flagedit
-  Flag-Editor:
+      # Fixed the return cost if you changed IgnoreY 'false' to 'true'.
+      Return-XYZ: true
+      # It will check every areas in one residence.
+      # Because of two area may in the same location, I'm not recommend using multiple areas.
+      # You can set the "MaxAreasPerResidence: 0" in residence groups.yml  to prevent players creating multiple areas.
+      # And only use subzone to allow players to set different residence permissions.
+      All-Areas:
+        Enable: false
+        # Ignore the area which is in another area.
+        Ignore-Within-Area: false
+    # The default points for difference groups.
+    # You can add your own groups.
+    # Permission: regionplus.points.group.GROUP
+    Groups:
+      # The default group. You shouldn't remove it.
+      Default:
+        # The placeholder of "%points_group%" in message.
+        Display: "&a&lDefault"
+        # The number of block limit.
+        Limit: 10000
+      MB:
+        Display: "&a&lMB"
+        Limit: 14400
+      VIP:
+        Display: "&b&lVIP"
+        Limit: 25000
+      MVP:
+        Display: "&d&lMVP"
+        Limit: 115200
+      GOD:
+        Display: "&e&lGOD"
+        Limit: 270,000
+
+  # Changing all old residence flag to new one.
+  # Bypass permission: regionplus.bypass.flagsedit
+  Flags-Editor:
     Enable: false
+    # It will delay 3 seconds and restart editing flags to prevent the server restart while editing flags. Set "0" to disable this feature.
+    Max-Edit-Players: 100
     # Automatic check the flags when the server is starting.
     Auto-Check:
       Enable: false
@@ -121,22 +153,19 @@ Message:
   RegionPlus:
     Commands:
       title: '&8▩▩▩▩▩▩▩▩▩▩▩▩▩ &d&lRegionPlus &8▩▩▩▩▩▩▩▩▩▩▩▩▩'
-      help: '&a/rp help &8- &7This help menu.'
-      reload: '&a/rp reload &8- &7Reload config file.'
+      help: '&f/rp help &8- &7This help menu.'
+      reload: '&f/rp reload &8- &7Reload config file.'
       version: '&f/rp version &8- &7Checks the plugin version and updates.'
-      flagedit: '&f/rp flagedit &8- &7Checks the flags of residences and edits it'
-      pointsLimit: '&a/rp points limit &8- &7Check your points limit.'
-      pointsLimitOther: '&a/rp points limit <player> &8- &7Check the player''s points limit.'
-      pointsUsed: '&a/rp points used &8- &7Check how many points you have used.'
-      pointsUsedOther: '&a/rp points used <player> &8- &7Check how many points the player has used.'
-      pointsLook: '&a/rp points look &8- &7Check your remaining points.'
-      pointsLookOther: '&a/rp points look <player> &8- &7Check the player''s remaining points.'
-    pointsLimit: '&eYour points limit &8- &f%points_limit%'
-    targetPointsLimit: '&eYour points limit &8- &f%points_limit%'
-    pointsUsed: '&eYour used points &8- &f%points_used%'
-    targetPointsUsed: '&e%targetplayer% used points &8- &f%points_used%'
-    pointsRemainder: '&eYour remaining points &8- &f%points_remainder%'
-    targetPointsRemainder: '&e%targetplayer% remaining points &8- &f%points_remainder%'
+      flagsedit: '&f/rp flagsedit &8- &7Checks the flags of residences and edits it'
+      pointsLimit: '&f/rp points limit &8- &7Check your points limit.'
+      pointsLimitOther: '&f/rp points limit <player> &8- &7Check the player''s points limit.'
+      pointsUsed: '&f/rp points used &8- &7Check how many points you have used.'
+      pointsUsedOther: '&f/rp points used <player> &8- &7Check how many points the player has used.'
+      pointsLook: '&f/rp points look &8- &7Check your remaining points.'
+      pointsLookOther: '&f/rp points look <player> &8- &7Check the player''s remaining points.'
+    points: '&e&lPoints: &f%points_remainder% &8- &7【%points_group%&7】 &6%points_used%&7/&c%points_limit%'
+    targetPoints: '&e&l%targetplayer%''s Points: &f%points_remainder% &8- &7【%points_group%&7】 &6%points_used%&7/&c%points_limit%'
+    pointsSelete: '&eSelection total size: &6%res_size& &eLand cost: &6%res_size& /n &e&lNeed points: &f%points_need% &8- &6%points_remainder% &8➸ &c%points_newremainder%'
     notEnoughPoints: '&cYou dont have enough points &8- &8(&e%points_need%&f/&6%points_remainder%&8)'
     targetNotEnoughPoints: '&c%targetplayer% doesn''t have enough points.'
     visitorCreateResidence: '&cVisitor can''t create residence here!'

@@ -24,10 +24,8 @@ public class TabComplete implements TabCompleter {
         Player[] playersOnlineOld;
         if (args.length == 2 && args[0].equalsIgnoreCase("help") && PermissionsHandler.hasPermission(sender, "regionplus.use")) {
             commands.add("2");
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("points") && PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
-            commands.add("limit");
-            commands.add("used");
-            commands.add("look");
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("flagsedit") && PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
+            commands.add("stop");
         } else if ((args.length == 3) && (args[0].equalsIgnoreCase("points"))) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.points.other")) {
                 try {
@@ -58,8 +56,8 @@ public class TabComplete implements TabCompleter {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.version")) {
                 commands.add("version");
             }
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagedit")) {
-                commands.add("flagedit");
+            if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
+                commands.add("flagsedit");
             }
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
                 commands.add("points");

@@ -10,46 +10,44 @@ import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.handlers.PermissionsHandler;
 import tw.momocraft.regionplus.handlers.ServerHandler;
 import tw.momocraft.regionplus.utils.Language;
-import tw.momocraft.regionplus.utils.ResidencePoints;
-
+import tw.momocraft.regionplus.utils.ResidenceUtils;
 
 public class ResidenceOwnerChange implements Listener {
-
     @EventHandler(priority = EventPriority.HIGH)
     private void onResidenceOwnerChange(ResidenceOwnerChangeEvent e) {
-        Player owner = Bukkit.getPlayer(e.getResidence().getOwnerUUID());
-        Player newOwner = Bukkit.getPlayer(e.getNewOwnerUuid());
-        String newOwnerName = e.getNewOwner();
-        if (newOwner != null) {
-            long size;
-            long X = e.getResidence().getMainArea().getXSize();
-            long Z = e.getResidence().getMainArea().getZSize();
-            String mode = ConfigHandler.getRegionConfig().getResPointsMode();
-            if (mode != null && mode.equals("XYZ")) {
-                long Y = e.getResidence().getMainArea().getYSize();
-                size = X * Z * Y;
-            } else {
-                size = X * Z;
-            }
-            long pointsRemainder = ResidencePoints.getPointsRemainder(newOwner);
-            if (size > pointsRemainder && (!PermissionsHandler.hasPermission(newOwner, "regionplus.bypass.points.limit"))) {
-                String[] placeHolders = Language.newString();
-                placeHolders[2] = String.valueOf(newOwnerName);
-                Language.sendLangMessage("Message.RegionPlus.targetNotEnoughPoints", owner, placeHolders);
-                placeHolders[8] = String.valueOf(ResidencePoints.getPointsLimit(newOwner));
-                placeHolders[9] = String.valueOf(ResidencePoints.getPointsUsed(newOwner));
-
-                placeHolders[10] = String.valueOf(pointsRemainder);
-                placeHolders[11] = String.valueOf(size);
-                Language.sendLangMessage("Message.RegionPlus.notEnoughPoints", newOwner, placeHolders);
-                ServerHandler.debugMessage("Residence", newOwnerName, "Points", "cancel", "notEnoughPoints");
-                e.setCancelled(true);
-            }
+        if (!ConfigHandler.getRegionConfig().isResPointsEnable()) {
             return;
         }
+        Player owner = Bukkit.getPlayer(e.getResidence().getOwnerUUID());
+        String ownerName = Bukkit.getPlayer(e.getResidence().getOwnerUUID()).getName();
+        Player newOwner = Bukkit.getPlayer(e.getNewOwnerUuid());
+        String newOwnerName = e.getNewOwner();
+        if (newOwner == null) {
+            String[] placeHolders = Language.newString();
+            placeHolders[2] = String.valueOf(newOwnerName);
+            Language.sendLangMessage("Message.targetNotOnline", owner, placeHolders);
+            ServerHandler.debugMessage("Residence", newOwnerName, "Points", "cancel", "targetNotOnline");
+            return;
+        }
+        if (PermissionsHandler.hasPermission(newOwner, "regionplus.bypass.points.limit")) {
+            return;
+        }
+        long size = ResidenceUtils.getSize(e.getResidence());
+        long pointsLimit = ResidenceUtils.getLimit(newOwner);
+        long pointsUsed = ResidenceUtils.getUsed(newOwner);
+        long pointsRemainder = pointsLimit - pointsUsed;
         String[] placeHolders = Language.newString();
-        placeHolders[2] = String.valueOf(newOwnerName);
-        Language.sendLangMessage("Message.targetNotOnline", owner, placeHolders);
-        ServerHandler.debugMessage("Residence", newOwnerName, "Points", "cancel", "targetNotOnline");
+        placeHolders[8] = String.valueOf(pointsLimit);
+        placeHolders[9] = String.valueOf(pointsUsed);
+        placeHolders[10] = String.valueOf(pointsRemainder);
+        if (size > pointsRemainder) {
+            placeHolders[2] = newOwnerName;
+            placeHolders[11] = String.valueOf(size);
+            Language.sendLangMessage("Message.RegionPlus.targetNotEnoughPoints", owner, placeHolders);
+            ServerHandler.debugMessage("Residence", ownerName, "Points", "cancel", "targetNotEnoughPoints");
+            e.setCancelled(true);
+            return;
+        }
+        Language.sendLangMessage("Message.RegionPlus.points", newOwner, placeHolders);
     }
 }

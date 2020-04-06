@@ -2,9 +2,9 @@ name: RegionPlus
 main: tw.momocraft.regionplus.RegionPlus
 author: Momocraft
 api-version: 1.13
-version: 1.0.0-snapshot
-description: Adding more features and improvements for residence.
-softdepend: [Vault, Residence, PlaceHolderAPI, ItemJoin, PvPManager]
+version: 1.0.0
+description: Visitor system and adding more features for Residence.
+softdepend: [Vault, Residence, PlaceHolderAPI, ItemJoin, PvPManager, LuckPerms]
 
 commands:
   regionplus:
@@ -35,7 +35,7 @@ permissions:
     children:
       regionplus.command.reload: true
       regionplus.command.version: true
-      regionplus.command.flagedit: true
+      regionplus.command.flagsedit: true
       regionplus.command.points: true
       regionplus.command.points.other: true
   regionplus.command.reload:
@@ -44,8 +44,8 @@ permissions:
   regionplus.command.version:
     description: Allows use of command /regionplus version.
     default: op
-  regionplus.command.flagedit:
-    description: Allows use of command /regionplus flagedit.
+  regionplus.command.flagsedit:
+    description: Allows use of command /regionplus flagsedit.
     default: op
   regionplus.command.points:
     description: Allows use of command /regionplus points
@@ -58,8 +58,25 @@ permissions:
     default: op
     children:
       regionplus.bypass.points.limit: true
+      regionplus.bypass.visitor.*: true
   regionplus.bypass.points.limit:
     description: Allows player to bypass points limit.
+    default: op
+  regionplus.bypass.visitor.*:
+    description: Allows player to bypass all worlds of visitor limits.
+    default: op
+    children:
+      regionplus.bypass.visitor.world: true
+      regionplus.bypass.visitor.world_nether: true
+      regionplus.bypass.visitor.world_the_end: true
+  regionplus.bypass.visitor.world:
+    description: Allows player to bypass the world of visitor limits.
+    default: op
+  regionplus.bypass.visitor.world_nether:
+    description: Allows player to bypass the world of visitor limits.
+    default: op
+  regionplus.bypass.visitor.world_the_end:
+    description: Allows player to bypass the world of visitor limits.
     default: op
   regionplus.points.limit.10000:
     description: Sets player's points limit to 10000.

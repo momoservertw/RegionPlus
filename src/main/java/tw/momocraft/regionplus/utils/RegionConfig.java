@@ -1,9 +1,13 @@
 package tw.momocraft.regionplus.utils;
 
 
+import org.bukkit.configuration.ConfigurationSection;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 
+import java.util.HashMap;
+
 public class RegionConfig {
+
     private boolean playerPreventFly;
     private String playerPreventFlyPerm;
 
@@ -19,11 +23,19 @@ public class RegionConfig {
     private boolean resPointsEnable;
     private String resPointsMode;
     private boolean resPointsIgnoreXYZ;
+    private boolean resPointsReturnXYZ;
+    private boolean resPointsAllAreas;
+    private boolean resPointsIgnoreWithin;
     private long resPointsDefault;
+    private ConfigurationSection resPointsGroupsConfig;
+    private HashMap<String, Long> resPointsLimitMap;
+    private HashMap<String, String> resPointsDisplayMap;
 
+    private boolean resFlagEdit;
+    private int resFlagEditMax;
+    private boolean resFlagTimeOut;
     private boolean resFlagAutoCheck;
     private long resFlagAutoCheckDelay;
-    private boolean resFlagEdit;
     private boolean resFlagEditUpdate;
     private boolean resFlagEditRemove;
     private boolean resFlagEditRemovePerm;
@@ -73,14 +85,20 @@ public class RegionConfig {
         resPointsEnable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Enable");
         resPointsMode = ConfigHandler.getConfig("config.yml").getString("Residence.Points.Check.Mode");
         resPointsIgnoreXYZ = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.Ignore-XYZ");
-        resPointsDefault = ConfigHandler.getConfig("config.yml").getLong("Residence.Points.Default-Limit");
+        resPointsReturnXYZ = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.Return-XYZ");
+        resPointsAllAreas = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.All-Areas.Enable");
+        resPointsIgnoreWithin = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.All-Areas.Ignore-Within-Area");
+        resPointsDefault = ConfigHandler.getConfig("config.yml").getLong("Residence.Points.Groups.Default.Limit");
+        resPointsGroupsConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Points.Groups");
 
-        resFlagAutoCheck = ConfigHandler.getConfig("config.yml").getBoolean("ResidenceFlag-Editor.Auto-Check.Enable");
-        resFlagAutoCheckDelay = ConfigHandler.getConfig("config.yml").getLong("ResidenceFlag-Editor.Auto-Check.Delay") * 20;
-        resFlagEdit = ConfigHandler.getConfig("config.yml").getBoolean("ResidenceFlag-Editor.Enable");
-        resFlagEditUpdate = ConfigHandler.getConfig("config.yml").getBoolean("ResidenceFlag-Editor.Default.Update");
-        resFlagEditRemove = ConfigHandler.getConfig("config.yml").getBoolean("ResidenceFlag-Editor.Default.Remove-No-Perms");
-        resFlagEditRemovePerm = ConfigHandler.getConfig("config.yml").getBoolean("ResidenceFlag-Editor.Permissions.Remove-No-Perms");
+        resFlagEdit = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Enable");
+        resFlagEditMax = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Max-Edit-Players");
+        resFlagTimeOut = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Timeout-Warning");
+        resFlagEditUpdate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Update");
+        resFlagAutoCheck = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Auto-Check.Enable");
+        resFlagAutoCheckDelay = ConfigHandler.getConfig("config.yml").getLong("Residence.Flags-Editor.Auto-Check.Delay") * 20;
+        resFlagEditRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Remove-No-Perms");
+        resFlagEditRemovePerm = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Permissions.Remove-No-Perms");
 
         visitorEnable = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
         visitorCreateRes = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Create-Residence.Enable");
@@ -106,6 +124,11 @@ public class RegionConfig {
         visitorItemsProjectile = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Projectile");
         visitorItemsFishing = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Fishing");
         visitorItemJoin = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-ItemJoin");
+
+        for (String title : resPointsGroupsConfig.getKeys(false)) {
+            resPointsLimitMap.put(title, ConfigHandler.getConfig("config.yml").getLong("Residence.Points.Groups." + title + ".Limit"));
+            resPointsDisplayMap.put(title, ConfigHandler.getConfig("config.yml").getString("Residence.Points.Groups." + title + ".Display"));
+        }
     }
 
     public boolean isPlayerPreventFly() {
@@ -144,6 +167,11 @@ public class RegionConfig {
         return resPreventZombieDoor;
     }
 
+    public boolean isResPreventEndermanPickup() {
+        return resPreventEndermanPickup;
+    }
+
+
     public boolean isResPointsEnable() {
         return resPointsEnable;
     }
@@ -156,12 +184,40 @@ public class RegionConfig {
         return resPointsIgnoreXYZ;
     }
 
+    public boolean isResPointsReturnXYZ() {
+        return resPointsReturnXYZ;
+    }
+
+    public boolean isResPointsAllAreas() {
+        return resPointsAllAreas;
+    }
+
+    public boolean isResPointsIgnoreWithin() {
+        return resPointsIgnoreWithin;
+    }
+
     public long getResPointsDefault() {
         return resPointsDefault;
     }
 
-    public boolean isResPreventEndermanPickup() {
-        return resPreventEndermanPickup;
+    public HashMap<String, Long> getResPointsLimitMap() {
+        return resPointsLimitMap;
+    }
+
+    public HashMap<String, String> getResPointsDisplayMap() {
+        return resPointsDisplayMap;
+    }
+
+    public boolean isResFlagEdit() {
+        return resFlagEdit;
+    }
+
+    public int getResFlagEditMax() {
+        return resFlagEditMax;
+    }
+
+    public boolean isResFlagTimeOut() {
+        return resFlagTimeOut;
     }
 
     public boolean isResFlagAutoCheck() {
@@ -170,10 +226,6 @@ public class RegionConfig {
 
     public long getResFlagAutoCheckDelay() {
         return resFlagAutoCheckDelay;
-    }
-
-    public boolean isResFlagEdit() {
-        return resFlagEdit;
     }
 
     public boolean isResFlagEditUpdate() {
@@ -187,6 +239,7 @@ public class RegionConfig {
     public boolean isResFlagEditRemovePerm() {
         return resFlagEditRemovePerm;
     }
+
 
     public boolean isVisitorEnable() {
         return visitorEnable;
@@ -282,5 +335,9 @@ public class RegionConfig {
 
     public boolean isVisitorUseItemsMsg() {
         return visitorUseItemsMsg;
+    }
+
+    public void setResPointsLimitMap(HashMap<String, Long> resPointsLimitMap) {
+        this.resPointsLimitMap = resPointsLimitMap;
     }
 }

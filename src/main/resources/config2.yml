@@ -46,8 +46,8 @@ Residence:
     # More points limit permission: regionplus.points.limit.AMOUNT
     Default-Limit: 10000
   # Edit the residence's flags.
-  # Bypass permission: regionplus.bypass.flagedit
-  Flag-Editor:
+  # Bypass permission: regionplus.bypass.flagsedit
+  Flags-Editor:
     Enable: false
     # Automatic check the flags when the server is starting.
     Auto-Check:
@@ -137,7 +137,7 @@ Message:
       help: '&a/rp help &8- &7This help menu.'
       reload: '&a/rp reload &8- &7Reload config file.'
       version: '&f/rp version &8- &7Checks the plugin version and updates.'
-      flagedit: '&f/rp flagedit &8- &7Checks the flags of residences and edits it'
+      flagsedit: '&f/rp flagsedit &8- &7Checks the flags of residences and edits it'
       pointsLimit: '&a/rp points limit &8- &7Check your residence points limit.'
       pointsLimitOther: '&a/rp points limit <player> &8- &7Check the player''s residence points limit.'
       pointsUsed: '&a/rp points used &8- &7Check how many points you have used.'

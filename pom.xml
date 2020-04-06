@@ -6,7 +6,7 @@
 
     <groupId>momocraft.tw</groupId>
     <artifactId>RegionPlus</artifactId>
-    <version>1.0.0-snapshot</version>
+    <version>1.0.0</version>
     <build>
         <plugins>
             <plugin>
@@ -96,8 +96,16 @@
             <groupId>me.MultiverseCore</groupId>
             <artifactId>MultiverseCore</artifactId>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/Multiverse-Core-4.0.0.jar</systemPath>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/Multiverse-Core-4.0.0.jar
+            </systemPath>
             <version>LEGACY</version>
+        </dependency>
+        <!--LuckPerms API-->
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

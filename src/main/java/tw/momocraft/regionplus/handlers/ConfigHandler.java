@@ -9,10 +9,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import tw.momocraft.regionplus.Commands;
 import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.listeners.*;
-import tw.momocraft.regionplus.utils.DependAPI;
-import tw.momocraft.regionplus.utils.RegionConfig;
-import tw.momocraft.regionplus.utils.RegionUtils;
-import tw.momocraft.regionplus.utils.TabComplete;
+import tw.momocraft.regionplus.listeners.ResidenceDelete;
+import tw.momocraft.regionplus.utils.*;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -21,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 public class ConfigHandler {
 
     private static YamlConfiguration configYAML;
+    private static YamlConfiguration spigotYAML;
     private static DependAPI depends;
     private static UpdateHandler updater;
     private static RegionConfig region;
@@ -31,17 +30,17 @@ public class ConfigHandler {
         setDepends(new DependAPI());
         sendUtilityDepends();
         setRegionConfig(new RegionConfig());
-        //setUpdater(new UpdateHandler());
+        setUpdater(new UpdateHandler());
 
         if (!reload && getRegionConfig().isResFlagAutoCheck()) {
-            long delay = getRegionConfig().getResFlagAutoCheckDelay();
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
-                    RegionUtils.resetNoPermsFlags();
+                    ResidenceUtils flagsEdit = new ResidenceUtils();
+                    flagsEdit.resetNoPermsFlags();
                 }
-            }.runTaskLater(RegionPlus.getInstance(), delay);
+            }.runTaskLater(RegionPlus.getInstance(), getRegionConfig().getResFlagAutoCheckDelay());
         }
     }
 
@@ -57,6 +56,7 @@ public class ConfigHandler {
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
             if (getRegionConfig().isResPointsEnable()) {
+                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceDelete(), RegionPlus.getInstance());
                 RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
             }
         }
@@ -99,7 +99,7 @@ public class ConfigHandler {
     private static void configFile() {
         getConfigData("config.yml");
         File File = new File(RegionPlus.getInstance().getDataFolder(), "config.yml");
-        if (File.exists() && getConfig("config.yml").getInt("Config-Version") != 1) {
+        if (File.exists() && getConfig("config.yml").getInt("Config-Version") != 2) {
             if (RegionPlus.getInstance().getResource("config.yml") != null) {
                 LocalDateTime currentDate = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
@@ -124,15 +124,39 @@ public class ConfigHandler {
         getConfig("config.yml").options().copyDefaults(false);
     }
 
+    public static FileConfiguration getServerConfig(String path) {
+        File file = new File(Bukkit.getWorldContainer(), path);
+        if (spigotYAML == null) {
+            getServerConfigData(path);
+        }
+        return getServerPath(path, file, false);
+    }
+
+    private static FileConfiguration getServerConfigData(String path) {
+        File file = new File(Bukkit.getWorldContainer(), path);
+        return getServerPath(path, file, true);
+    }
+
+    private static YamlConfiguration getServerPath(String path, File file, boolean saveData) {
+        if (path.contains("spigot.yml")) {
+            if (saveData) {
+                spigotYAML = YamlConfiguration.loadConfiguration(file);
+            }
+            return spigotYAML;
+        }
+        return null;
+    }
+
     private static void sendUtilityDepends() {
-        ServerHandler.sendConsoleMessage("&fHooked [ &e"
+        ServerHandler.sendConsoleMessage("&fHooked: "
                 + (getDepends().getVault().vaultEnabled() ? "Vault, " : "")
                 + (getDepends().ResidenceEnabled() ? "Residence, " : "")
                 + (getDepends().PlaceHolderAPIEnabled() ? "PlaceHolderAPI," : "")
                 + (getDepends().ItemJoinEnabled() ? "ItemJoin, " : "")
                 + (getDepends().PvPManagerEnabled() ? "PvPManager, " : "")
                 + (getDepends().MultiverseCoreEnabled() ? "Multiverse-Core, " : "")
-                + "&f]");
+                + (getDepends().LuckPermsEnabled() ? "LuckPerms, " : "")
+        );
     }
 
     public static DependAPI getDepends() {

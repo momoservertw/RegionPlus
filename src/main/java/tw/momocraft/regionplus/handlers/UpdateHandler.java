@@ -11,7 +11,7 @@ import java.util.Collection;
 public class UpdateHandler {
 
 	private boolean updatesAllowed = ConfigHandler.getConfig("config.yml").getBoolean("Check-Updates");
-	private final int PROJECTID = 75169;
+	private final int PROJECTID = 76878;
 	private final String HOST = "https://api.spigotmc.org/legacy/update.php?resource=" + PROJECTID;
 	private String versionExact = RegionPlus.getInstance().getDescription().getVersion();
 	private boolean betaVersion = versionExact.contains("-SNAPSHOT") || versionExact.contains("-BETA") || versionExact.contains("-ALPHA");
@@ -27,7 +27,7 @@ public class UpdateHandler {
 	public void checkUpdates(CommandSender sender) {
 		if (this.updateNeeded(sender) && this.updatesAllowed) {
 			ServerHandler.sendMessage(sender, "&aNew version is available &8- &6v" + this.localeVersionRaw + " &f-> &ev" + this.latestVersionRaw);
-			ServerHandler.sendMessage(sender, "&ehttps://www.spigotmc.org/resources/regionplus.75169/history");
+			ServerHandler.sendMessage(sender, "&ehttps://www.spigotmc.org/resources/regionplus.76878/history");
 			this.sendNotifications();
 		} else if (this.updatesAllowed) {
 			ServerHandler.sendMessage(sender, "&fYou are up to date!");

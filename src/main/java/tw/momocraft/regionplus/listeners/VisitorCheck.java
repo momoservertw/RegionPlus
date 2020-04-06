@@ -161,8 +161,8 @@ public class VisitorCheck implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityPickupItem(EntityPickupItemEvent e) {
-        if (e.getEntity() instanceof Player) {
-            if (ConfigHandler.getRegionConfig().isVisitorPickupItems()) {
+        if (ConfigHandler.getRegionConfig().isVisitorPickupItems()) {
+            if (e.getEntity() instanceof Player) {
                 Player player = (Player) e.getEntity();
                 String itemType = e.getItem().getName();
                 if (RegionUtils.bypassBorder(player, player.getLocation())) {

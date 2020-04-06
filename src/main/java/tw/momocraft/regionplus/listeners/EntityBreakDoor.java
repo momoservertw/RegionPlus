@@ -15,14 +15,16 @@ public class EntityBreakDoor implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     private void onEntityBreakDoor(EntityBreakDoorEvent e) {
         if (ConfigHandler.getRegionConfig().isResPreventEnable()) {
-            Entity entity = e.getEntity();
-            if (entity instanceof Zombie) {
-                if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-                    return;
-                }
-                if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false)) {
-                    ServerHandler.debugMessage("Residence", "Zombie", "isResPreventZombieDoor", "cancel", "destroy=false");
-                    e.setCancelled(true);
+            if (ConfigHandler.getRegionConfig().isResPreventZombieDoor()) {
+                Entity entity = e.getEntity();
+                if (entity instanceof Zombie) {
+                    if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+                        return;
+                    }
+                    if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false)) {
+                        ServerHandler.debugMessage("Residence", "Zombie", "isResPreventZombieDoor", "cancel", "destroy=false");
+                        e.setCancelled(true);
+                    }
                 }
             }
         }
