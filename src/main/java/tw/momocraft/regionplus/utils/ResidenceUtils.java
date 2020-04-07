@@ -236,6 +236,7 @@ public class ResidenceUtils {
         long maxInterval = ConfigHandler.getRegionConfig().getRFMaxInterval() * 20;
         boolean restartMsg = ConfigHandler.getRegionConfig().isRFMessage();
         List<OfflinePlayer> playerList = new ArrayList<>(Arrays.asList(Bukkit.getOfflinePlayers()));
+        int playerSize = playerList.size();
         restart = maxLimit > 0 && playerList.size() > maxLimit;
         int startAt = 0;
         List<OfflinePlayer> editList;
@@ -310,13 +311,13 @@ public class ResidenceUtils {
                 }
             }
             if (restart) {
-                last = playerList.size() - startAt;
-                editList = playerList.subList(startAt, last > maxLimit ? startAt += maxLimit : last);
-                if (editList.isEmpty()) {
-                    break;
+                last = playerSize - startAt;
+                editList = playerList.subList(startAt, last >= maxLimit ? startAt += maxLimit : startAt + last);
+                if (editList.size() < maxLimit) {
+                    restart = false;
                 }
                 if (restartMsg) {
-                    ServerHandler.sendConsoleMessage("&eFlags-Edit process has not finished yet! &8- &6Last: " + last);
+                    ServerHandler.sendConsoleMessage("&eFlags-Edit process has not finished yet! &8- &6Last: " + last + "/" + playerSize);
                     ServerHandler.sendConsoleMessage("&fIt will restart after few seconds. &8(Stop process: /rp flagsedit stop)");
                     ServerHandler.sendConsoleMessage("");
                 }
