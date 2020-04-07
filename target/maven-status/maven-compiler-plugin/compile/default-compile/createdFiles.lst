@@ -38,5 +38,6 @@ tw\momocraft\regionplus\listeners\ResidenceCreation$1.class
 tw\momocraft\regionplus\utils\DependAPI.class
 tw\momocraft\regionplus\utils\Utils.class
 tw\momocraft\regionplus\listeners\ResidenceOwnerChange$1.class
+tw\momocraft\regionplus\utils\ResidenceUtils$1.class
 tw\momocraft\regionplus\listeners\PlayerBucketFill.class
 tw\momocraft\regionplus\listeners\PlayerInteractEntity.class

@@ -69,6 +69,8 @@ Residence:
       Limit: 100
       # The delay seconds of restart editing flags.
       Interval: 3
+      # The restart editing messages.
+      Message: true
     # Automatic check the flags when the server is starting.
     Auto-Check:
       Enable: false

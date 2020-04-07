@@ -3,14 +3,21 @@ package tw.momocraft.regionplus.utils;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.containers.Flags;
+import com.bekvon.bukkit.residence.permissions.PermissionGroup;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.CuboidArea;
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.bekvon.bukkit.residence.protection.ResidencePermissions;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 import org.bukkit.permissions.PermissionAttachmentInfo;
+import org.bukkit.scheduler.BukkitRunnable;
+import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
+import tw.momocraft.regionplus.handlers.ServerHandler;
 
 import java.util.*;
 
@@ -210,25 +217,24 @@ public class ResidenceUtils {
     }
 
     public void resetNoPermsFlags() {
-        /*
         flagsEditRun = true;
         String playerName;
+        String resName;
         ResidencePermissions perms;
-        PermissionGroup ownerGroup;
+        PermissionGroup group;
         String[] listSplit;
         String[] listSplit2;
         List<String> permsPlayerList = new ArrayList<>();
-        Set<Map.Entry<String, Boolean>> flagEntrySet;
-        Set<Map.Entry<String, Boolean>> groupFlagEntrySet;
-        List<String> removeFlagList = new ArrayList<>();
-        List<String> removeFlagPlayerList = new ArrayList<>();
-        Map<String, String> addFlagMap = new HashMap<>();
-        String addFlag;
+        Set<Map.Entry<String, Boolean>> flagSet;
+        Set<Map.Entry<String, Boolean>> defaultFlagSet;
+        String flagKey;
+        String flagValue;
         Map<String, Boolean> permsPlayerFlags;
         boolean restart;
         int last;
         int maxLimit = ConfigHandler.getRegionConfig().getRFMaxLimit();
         long maxInterval = ConfigHandler.getRegionConfig().getRFMaxInterval() * 20;
+        boolean restartMsg = ConfigHandler.getRegionConfig().isRFMessage();
         List<OfflinePlayer> playerList = new ArrayList<>(Arrays.asList(Bukkit.getOfflinePlayers()));
         restart = maxLimit > 0 && playerList.size() > maxLimit;
         int startAt = 0;
@@ -245,35 +251,38 @@ public class ResidenceUtils {
             for (OfflinePlayer offlinePlayer : editList) {
                 playerName = offlinePlayer.getName();
                 if (playerName != null) {
-                    for (ClaimedResidence claimedResidence : ResidenceApi.getPlayerManager().getResidencePlayer(playerName).getResList()) {
-                        perms = claimedResidence.getPermissions();
-                        ownerGroup = ResidenceApi.getPlayerManager().getGroup(claimedResidence.getOwner());
-                        flagEntrySet = claimedResidence.getPermissions().getFlags().entrySet();
-                        groupFlagEntrySet = ownerGroup.getDefaultResidenceFlags();
+                    for (ClaimedResidence res : ResidenceApi.getPlayerManager().getResidencePlayer(playerName).getResList()) {
+                        resName = res.getName();
+                        perms = res.getPermissions();
+                        group = ResidenceApi.getPlayerManager().getGroup(res.getOwner());
+                        // The default flags of that group.
+                        defaultFlagSet = group.getDefaultResidenceFlags();
+                        // The default flags of that residence.
+                        flagSet = perms.getFlags().entrySet();
+                        // Default - Remove
                         if (ConfigHandler.getRegionConfig().isRFRemove()) {
-                            for (Map.Entry<String, Boolean> resFlagEntry : flagEntrySet) {
-                                if (!groupFlagEntrySet.contains(resFlagEntry)) {
-                                    removeFlagList.add(resFlagEntry.getKey());
+                            for (Map.Entry<String, Boolean> flag : flagSet) {
+                                if (!defaultFlagSet.contains(flag)) {
+                                    flagKey = flag.getKey();
+                                    perms.setFlag(flagKey, FlagPermissions.FlagState.NEITHER);
+                                    ServerHandler.sendDebugMessage("&4Remove default flag: &e" + resName + "&8 - &f" + flagKey);
                                 }
                             }
-                            for (String removeFlag : removeFlagList) {
-                                perms.setFlag(removeFlag, FlagPermissions.FlagState.NEITHER);
-                                ServerHandler.sendDebugMessage("&4Remove default flag: &e" + claimedResidence.getName() + "&8 - &f" + removeFlag);
-                            }
                         }
+                        // Default - Update
                         if (ConfigHandler.getRegionConfig().isRFUpdate()) {
-                            for (Map.Entry<String, Boolean> resFlagEntry : groupFlagEntrySet) {
-                                if (!flagEntrySet.contains(resFlagEntry)) {
-                                    addFlagMap.put(resFlagEntry.getKey(), resFlagEntry.getValue().toString());
+                            for (Map.Entry<String, Boolean> defaultFlag : defaultFlagSet) {
+                                if (!flagSet.contains(defaultFlag)) {
+                                    flagKey = defaultFlag.getKey();
+                                    flagValue = defaultFlag.getValue().toString();
+                                    perms.setFlag(defaultFlag.getKey(), FlagPermissions.FlagState.valueOf(flagValue.toUpperCase()));
+                                    ServerHandler.sendDebugMessage("&6Add default flag: &e" + resName + "&8 - &f" + flagKey + "=" + flagValue);
                                 }
                             }
-                            for (String addFlagKey : addFlagMap.keySet()) {
-                                addFlag = addFlagMap.get(addFlagKey);
-                                perms.setFlag(addFlagKey, FlagPermissions.FlagState.valueOf(addFlagMap.get(addFlagKey).toUpperCase()));
-                                ServerHandler.sendDebugMessage("&6Add default flag: &e" + claimedResidence.getName() + "&8 - &f" + addFlagKey + "=" + addFlag);
-                            }
                         }
+                        // Permission (player) - Remove
                         if (ConfigHandler.getRegionConfig().isRFRemovePerm()) {
+                            // Get player permission list in residence.
                             listSplit = perms.listPlayersFlags().split("§f\\[");
                             permsPlayerList.add(listSplit[0]);
                             for (String flagsSplit : listSplit) {
@@ -284,17 +293,15 @@ public class ResidenceUtils {
                                     }
                                 }
                             }
+                            // Check every player's permissions.
                             for (String permsPlayer : permsPlayerList) {
                                 permsPlayerFlags = perms.getPlayerFlags(permsPlayer);
                                 if (permsPlayerFlags != null) {
                                     for (String flag : permsPlayerFlags.keySet()) {
-                                        if (!ownerGroup.hasFlagAccess(Flags.getFlag(flag))) {
-                                            removeFlagPlayerList.add(flag);
+                                        if (!group.hasFlagAccess(Flags.valueOf(flag))) {
+                                            perms.setPlayerFlag(permsPlayer, flag, FlagPermissions.FlagState.NEITHER);
+                                            ServerHandler.sendDebugMessage("&cRemove player flag: &e" + resName + "&8 - &6" + permsPlayer + "&8 - &f" + flag);
                                         }
-                                    }
-                                    for (String removePlayerFlag : removeFlagPlayerList) {
-                                        perms.setPlayerFlag(permsPlayer, removePlayerFlag, FlagPermissions.FlagState.NEITHER);
-                                        ServerHandler.sendDebugMessage("&cRemove player flag: &e" + claimedResidence.getName() + "&8 - &6" + permsPlayer + "&8 - &f" + removePlayerFlag);
                                     }
                                 }
                             }
@@ -308,13 +315,17 @@ public class ResidenceUtils {
                 if (editList.isEmpty()) {
                     break;
                 }
-                ServerHandler.sendConsoleMessage("&eFlags-Edit process has not finished yet! &8- &6Last: " + last);
-                ServerHandler.sendConsoleMessage("&fIt will restart after 3 seconds. &8(Stop process: /rp flagsedit stop)");
-                ServerHandler.sendConsoleMessage("");
+                if (restartMsg) {
+                    ServerHandler.sendConsoleMessage("&eFlags-Edit process has not finished yet! &8- &6Last: " + last);
+                    ServerHandler.sendConsoleMessage("&fIt will restart after few seconds. &8(Stop process: /rp flagsedit stop)");
+                    ServerHandler.sendConsoleMessage("");
+                }
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
+                        if (restartMsg) {
+                            ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
+                        }
                     }
                 }.runTaskLater(RegionPlus.getInstance(), maxInterval);
             } else {
@@ -323,21 +334,20 @@ public class ResidenceUtils {
         }
         ServerHandler.sendConsoleMessage("&6Flags-Edit process has ended.");
         flagsEditRun = false;
-         */
     }
 
     public static String[] pointsPH(Player player) {
         Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
         Map<String, String> groupDisplayMap = ConfigHandler.getRegionConfig().getPointsDisplayMap();
         Map<String, Long> groupMap = ConfigHandler.getRegionConfig().getPointsMap();
-        ArrayList<String> groupList = new ArrayList<>(groupMap.keySet());
+        List<String> groupList = new ArrayList<>(groupMap.keySet());
 
         String group = userGroupMap.keySet().iterator().next();
         long limit = userGroupMap.get(group);
         String nextGroup;
         long nextLimit;
-        if (groupList.size() < (groupList.indexOf(group) + 1)) {
-            nextGroup = groupList.get(groupList.indexOf(group) + 1);
+        if (groupList.indexOf(group) > 0) {
+            nextGroup = groupList.get(groupList.indexOf(group) - 1);
             nextLimit = groupMap.get(nextGroup);
         } else {
             nextGroup = group;
@@ -369,13 +379,13 @@ public class ResidenceUtils {
         Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
         Map<String, Long> groupMap = ConfigHandler.getRegionConfig().getPointsMap();
         Map<String, String> groupDisplayMap = ConfigHandler.getRegionConfig().getPointsDisplayMap();
-        ArrayList<String> groupList = new ArrayList<>(groupMap.keySet());
+        List<String> groupList = new ArrayList<>(groupMap.keySet());
         String group = userGroupMap.keySet().iterator().next();
         String nextGroup;
         long limit = userGroupMap.get(group);
         long nextLimit;
-        if (groupList.size() < (groupList.indexOf(group) + 1)) {
-            nextGroup = groupList.get(groupList.indexOf(group) + 1);
+        if (groupList.indexOf(group) > 0) {
+            nextGroup = groupList.get(groupList.indexOf(group) - 1);
             nextLimit = groupMap.get(nextGroup);
         } else {
             nextGroup = group;
@@ -409,11 +419,18 @@ public class ResidenceUtils {
         Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
         Map<String, Long> groupMap = ConfigHandler.getRegionConfig().getPointsMap();
         Map<String, String> groupDisplayMap = ConfigHandler.getRegionConfig().getPointsDisplayMap();
-        ArrayList<String> groupList = new ArrayList<>(groupMap.keySet());
+        List<String> groupList = new ArrayList<>(groupMap.keySet());
         String group = userGroupMap.keySet().iterator().next();
-        String nextGroup = groupList.get(groupList.indexOf(group) + 1);
+        String nextGroup;
         long limit = userGroupMap.get(group);
-        long nextLimit = groupMap.get(nextGroup);
+        long nextLimit;
+        if (groupList.indexOf(group) > 0) {
+            nextGroup = groupList.get(groupList.indexOf(group) - 1);
+            nextLimit = groupMap.get(nextGroup);
+        } else {
+            nextGroup = group;
+            nextLimit = limit;
+        }
         long used = ResidenceUtils.getUsed(player);
         long last = limit - used;
         String[] placeHolders = Language.newString();

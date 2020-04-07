@@ -1,49 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/ResidenceUtils.java" line="92" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/ResidenceUtils.java" line="99" />
     <bookmark url="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceOwnerChange.java" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9288fb7a-9dc1-4727-bcd1-e94720dcc316" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceSizeChange.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/Commands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/Commands.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/handlers/ConfigHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/handlers/ConfigHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/handlers/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/handlers/ServerHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityBreakDoor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityBreakDoor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityChangeBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityChangeBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityDamage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityDamage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityDamageByEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityDamageByEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerBucketFill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerBucketFill.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerDropItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerDropItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerFish.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerFish.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerInteract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerInteract.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerInteractEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerInteractEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerItemConsume.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerItemConsume.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerPickupItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerPickupItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerToggleFlight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerToggleFlight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ProjectileLaunch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ProjectileLaunch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceCreation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceDelete.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceDelete.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceFlagCheck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceFlagCheck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceOwnerChange.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceOwnerChange.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/Language.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/Language.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/RegionConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/RegionConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/RegionUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/RegionUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/ResidenceUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/ResidenceUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/VaultAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/VaultAPI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/config2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/config2.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/RegionPlus-1.0.0-snapshot.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/RegionPlus-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/RegionPlus-1.0.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/config2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/config2.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="SHOW_DIALOG" value="false" />
@@ -63,16 +31,16 @@
         <entry file="file://$PROJECT_DIR$/src/main/resources/config.yml">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="452">
-              <caret line="93" column="8" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="8" />
+              <caret line="72" column="19" lean-forward="true" selection-start-line="72" selection-start-column="19" selection-end-line="72" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceCreation.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/handlers/ConfigHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="59" column="63" selection-start-line="59" selection-start-column="63" selection-end-line="59" selection-end-column="63" />
+            <state relative-caret-position="254">
+              <caret line="67" column="25" lean-forward="true" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -83,8 +51,24 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/ResidenceUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-71">
-              <caret line="185" column="27" lean-forward="true" selection-start-line="185" selection-start-column="27" selection-end-line="185" selection-end-column="27" />
+            <state relative-caret-position="139">
+              <caret line="208" column="32" selection-start-line="208" selection-start-column="32" selection-end-line="208" selection-end-column="32" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#7984#7985#0" expanded="true" />
+                <element signature="e#8032#8033#0" expanded="true" />
+                <element signature="e#8072#8073#0" expanded="true" />
+                <element signature="e#8112#8113#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/Commands.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="89" column="40" lean-forward="true" selection-start-line="89" selection-start-column="40" selection-end-line="89" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -95,7 +79,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/RegionUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="263">
+            <state relative-caret-position="-241">
               <caret line="35" column="16" selection-start-line="35" selection-start-column="16" selection-end-line="35" selection-end-column="16" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -121,26 +105,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceFlagCheck.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+            <state>
+              <caret column="27" lean-forward="true" selection-start-column="27" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceOwnerChange.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="86">
-              <caret line="56" column="20" lean-forward="true" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="20" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2878#3259#0" expanded="true" />
-                <element signature="e#3258#3259#0" expanded="true" />
-                <element signature="e#3552#3788#0" expanded="true" />
-                <element signature="e#3787#3788#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -159,26 +127,27 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/LocationAPI.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/Utils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1237">
-              <caret line="186" column="31" lean-forward="true" selection-start-line="186" selection-start-column="31" selection-end-line="186" selection-end-column="31" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="351">
+              <caret line="176" column="60" lean-forward="true" selection-start-line="176" selection-start-column="60" selection-end-line="176" selection-end-column="60" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/RegionConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="104" column="13" lean-forward="true" selection-start-line="104" selection-start-column="13" selection-end-line="104" selection-end-column="13" />
+            <state relative-caret-position="191">
+              <caret line="243" column="19" selection-start-line="243" selection-start-column="19" selection-end-line="243" selection-end-column="19" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#10332#10333#0" expanded="true" />
                 <element signature="e#10368#10369#0" expanded="true" />
+                <element signature="e#10415#10416#0" expanded="true" />
+                <element signature="e#10447#10448#0" expanded="true" />
+                <element signature="e#10924#10925#0" expanded="true" />
+                <element signature="e#10956#10957#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -254,7 +223,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/Utils.java" />
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityDamage.java" />
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityChangeBlock.java" />
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityBreakDoor.java" />
@@ -266,9 +234,7 @@
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceCreation.java" />
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceSizeChange.java" />
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceOwnerChange.java" />
-        <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/handlers/ConfigHandler.java" />
         <option value="$PROJECT_DIR$/src/main/resources/plugin.yml" />
-        <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/Commands.java" />
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/EntityDamageByEntity.java" />
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerBucketFill.java" />
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerDropItem.java" />
@@ -282,9 +248,12 @@
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/PlayerToggleFlight.java" />
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceFlagCheck.java" />
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/RegionUtils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/Utils.java" />
         <option value="$PROJECT_DIR$/src/main/resources/config.yml" />
-        <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/ResidenceUtils.java" />
         <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/RegionConfig.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/Commands.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/handlers/ConfigHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/ResidenceUtils.java" />
       </list>
     </option>
   </component>
@@ -454,6 +423,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1721" height="935" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21467228" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -464,7 +434,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32876712" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.22166874" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.22166874" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -479,7 +449,7 @@
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info active="true" anchor="right" id="Maven" order="6" visible="true" weight="0.08117859" />
+      <window_info anchor="right" id="Maven" order="6" visible="true" weight="0.08117859" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
     <layout-to-restore>
@@ -591,37 +561,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/handlers/ConfigHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="160" column="75" selection-start-line="160" selection-start-column="75" selection-end-line="160" selection-end-column="75" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/plugin.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-97">
           <caret line="53" column="67" lean-forward="true" selection-start-line="53" selection-start-column="67" selection-end-line="53" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/Commands.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="111" column="57" lean-forward="true" selection-start-line="111" selection-start-column="57" selection-end-line="111" selection-end-column="57" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1161">
-          <caret line="101" column="74" lean-forward="true" selection-start-line="101" selection-start-column="74" selection-end-line="106" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -793,19 +736,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/config.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="452">
-          <caret line="93" column="8" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceCreation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="218">
           <caret line="59" column="63" selection-start-line="59" selection-start-column="63" selection-end-line="59" selection-end-column="63" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceSizeChange.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="365">
+          <caret line="42" column="65" selection-start-line="42" selection-start-column="65" selection-end-line="42" selection-end-column="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/Utils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="351">
+          <caret line="176" column="60" lean-forward="true" selection-start-line="176" selection-start-column="60" selection-end-line="176" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="452">
+          <caret line="72" column="19" lean-forward="true" selection-start-line="72" selection-start-column="19" selection-end-line="72" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/RegionConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="243" column="19" selection-start-line="243" selection-start-column="19" selection-end-line="243" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#10332#10333#0" expanded="true" />
+            <element signature="e#10368#10369#0" expanded="true" />
+            <element signature="e#10415#10416#0" expanded="true" />
+            <element signature="e#10447#10448#0" expanded="true" />
+            <element signature="e#10924#10925#0" expanded="true" />
+            <element signature="e#10956#10957#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -822,20 +798,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceSizeChange.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="42" column="65" selection-start-line="42" selection-start-column="65" selection-end-line="42" selection-end-column="65" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/listeners/ResidenceFlagCheck.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="18" column="25" selection-start-line="18" selection-start-column="25" selection-end-line="18" selection-end-column="25" />
+        <state>
+          <caret column="27" lean-forward="true" selection-start-column="27" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -844,8 +810,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/RegionUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
+        <state relative-caret-position="-241">
           <caret line="35" column="16" selection-start-line="35" selection-start-column="16" selection-end-line="35" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/Commands.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="89" column="40" lean-forward="true" selection-start-line="89" selection-start-column="40" selection-end-line="89" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -854,22 +830,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/ResidenceUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-71">
-          <caret line="185" column="27" lean-forward="true" selection-start-line="185" selection-start-column="27" selection-end-line="185" selection-end-column="27" />
+        <state relative-caret-position="139">
+          <caret line="208" column="32" selection-start-line="208" selection-start-column="32" selection-end-line="208" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#7984#7985#0" expanded="true" />
+            <element signature="e#8032#8033#0" expanded="true" />
+            <element signature="e#8072#8073#0" expanded="true" />
+            <element signature="e#8112#8113#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/utils/RegionConfig.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/tw/momocraft/regionplus/handlers/ConfigHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="104" column="13" lean-forward="true" selection-start-line="104" selection-start-column="13" selection-end-line="104" selection-end-column="13" />
+        <state relative-caret-position="254">
+          <caret line="67" column="25" lean-forward="true" selection-start-line="67" selection-start-column="25" selection-end-line="67" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#10332#10333#0" expanded="true" />
-            <element signature="e#10368#10369#0" expanded="true" />
           </folding>
         </state>
       </provider>

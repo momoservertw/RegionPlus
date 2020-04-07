@@ -37,6 +37,7 @@ public class RegionConfig {
     private boolean RFEnable;
     private int RFMaxLimit;
     private int RFMaxInterval;
+    private boolean RFMessage;
     private boolean RFAutoCheck;
     private long RFAutoCheckDelay;
     private boolean RFUpdate;
@@ -109,6 +110,7 @@ public class RegionConfig {
         RFEnable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Enable");
         RFMaxLimit = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Max-Edit-Players.Limit");
         RFMaxInterval = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Max-Edit-Players.Interval");
+        RFMessage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Max-Edit-Players.Message");
         RFUpdate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Update");
         RFAutoCheck = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Auto-Check.Enable");
         RFAutoCheckDelay = ConfigHandler.getConfig("config.yml").getLong("Residence.Flags-Editor.Auto-Check.Delay") * 20;
@@ -237,6 +239,10 @@ public class RegionConfig {
 
     public int getRFMaxInterval() {
         return RFMaxInterval;
+    }
+
+    public boolean isRFMessage() {
+        return RFMessage;
     }
 
     public boolean isRFAutoCheck() {

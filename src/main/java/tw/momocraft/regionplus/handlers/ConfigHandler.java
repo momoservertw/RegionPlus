@@ -63,7 +63,6 @@ public class ConfigHandler {
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerPickupItem(), RegionPlus.getInstance());
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ProjectileLaunch(), RegionPlus.getInstance());
         //RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleFlight(), RegionPlus.getInstance());
-
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceSizeChange(), RegionPlus.getInstance());

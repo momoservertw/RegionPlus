@@ -71,7 +71,7 @@ public class Commands implements CommandExecutor {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
                 if (ConfigHandler.getRegionConfig().isRFEnable()) {
                     ResidenceUtils flagsEdit = new ResidenceUtils();
-                    if (!flagsEdit.getFlagsEditRun()) {
+                    if (flagsEdit.getFlagsEditRun()) {
                         ServerHandler.sendConsoleMessage("&cThe process of Flags-Edit is still running! &8(Stop process: /rp flagsedit stop)");
                         return true;
                     }
