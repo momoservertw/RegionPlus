@@ -15,14 +15,17 @@ import tw.momocraft.regionplus.handlers.ServerHandler;
 
 public class PlayerToggleFlight implements Listener {
 
+    /**
+     * @param e PlayerToggleFlightEvent
+     */
     @EventHandler(priority = EventPriority.HIGH)
     private void onPlayerToggleFlight(PlayerToggleFlightEvent e) {
-        if (ConfigHandler.getRegionConfig().isResPreventEnable()) {
+        if (ConfigHandler.getRegionConfig().isRPEnable()) {
             if (!ConfigHandler.getDepends().ResidenceEnabled()) {
                 return;
             }
             if (!e.isFlying() && !e.getPlayer().isSneaking()) {
-                if (ConfigHandler.getRegionConfig().isResPreventFlyDisable()) {
+                if (ConfigHandler.getRegionConfig().isRPFlyDisable()) {
                     Player player = e.getPlayer();
                     ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(e.getPlayer().getLocation());
                     if (res != null) {

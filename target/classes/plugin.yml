@@ -25,7 +25,7 @@ permissions:
       regionplus.use: true
       regionplus.command.*: true
       regionplus.bypass.*: true
-      regionplus.points.limit.10000: true
+      regionplus.points.group.*: true
   regionplus.use:
     description: Allows use of basic commands.
     default: true
@@ -48,10 +48,10 @@ permissions:
     description: Allows use of command /regionplus flagsedit.
     default: op
   regionplus.command.points:
-    description: Allows use of command /regionplus points
+    description: Allows use of command /regionplus points.
     default: op
   regionplus.command.points.other:
-    description: Allows use of command /regionplus points <action> <player>.
+    description: Allows use of command /regionplus points <player>.
     default: op
   regionplus.bypass.*:
     description: Allows player to bypass all features.
@@ -78,6 +78,21 @@ permissions:
   regionplus.bypass.visitor.world_the_end:
     description: Allows player to bypass the world of visitor limits.
     default: op
-  regionplus.points.limit.10000:
-    description: Sets player's points limit to 10000.
+  regionplus.points.group.default:
+    description: Sets player's points group to default.
+    default: op
+  regionplus.points.group.*:
+    description: Sets player's points group to mb.
+    default: op
+  regionplus.points.group.mb:
+    description: Sets player's points group to mb.
+    default: op
+  regionplus.points.group.vip:
+    description: Sets player's points group to vip.
+    default: op
+  regionplus.points.group.mvp:
+    description: Sets player's points group to mvp.
+    default: op
+  regionplus.points.group.god:
+    description: Sets player's points group to god.
     default: op

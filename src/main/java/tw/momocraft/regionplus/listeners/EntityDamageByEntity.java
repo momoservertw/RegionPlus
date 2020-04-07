@@ -14,9 +14,14 @@ import tw.momocraft.regionplus.utils.ResidenceUtils;
 
 public class EntityDamageByEntity implements Listener {
 
+    /**
+     * Residence-Prevent
+     *
+     * @param e EntityDamageByEntityEvent
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onResPreventEnable(EntityDamageByEntityEvent e) {
-        if (ConfigHandler.getRegionConfig().isResPreventEnable()) {
+        if (ConfigHandler.getRegionConfig().isRPEnable()) {
             if (!ConfigHandler.getDepends().ResidenceEnabled()) {
                 return;
             }
@@ -28,68 +33,75 @@ public class EntityDamageByEntity implements Listener {
             String entityType = entity.getType().name();
             switch (entityType) {
                 case "PAINTING":
-                    if (ConfigHandler.getRegionConfig().isResPreventPainting()) {
+                    if (ConfigHandler.getRegionConfig().isRPPainting()) {
                         if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false, player)) {
-                            ServerHandler.debugMessage("Residence", entityType, "isResPreventPainting", "return", "destroy=true");
+                            ServerHandler.debugMessage("Residence", entityType, "isRPPainting", "return", "destroy=true");
                             return;
                         }
                         break;
                     }
-                    ServerHandler.debugMessage("Residence", entityType, "isResPreventPainting", "return", "not enabled");
+                    ServerHandler.debugMessage("Residence", entityType, "isRPPainting", "return", "not enabled");
                     return;
                 case "ITEM_FRAME":
-                    if (ConfigHandler.getRegionConfig().isResPreventItemFrame()) {
+                    if (ConfigHandler.getRegionConfig().isRPItemFrame()) {
                         if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false, player)) {
-                            ServerHandler.debugMessage("Residence", entityType, "isResPreventItemFrame", "return", "destroy=true");
+                            ServerHandler.debugMessage("Residence", entityType, "isRPItemFrame", "return", "destroy=true");
                             return;
                         }
                         break;
                     }
-                    ServerHandler.debugMessage("Residence", entityType, "isResPreventItemFrame", "return", "not enabled");
+                    ServerHandler.debugMessage("Residence", entityType, "isRPItemFrame", "return", "not enabled");
                     return;
                 case "ARMOR_STAND":
-                    if (ConfigHandler.getRegionConfig().isResPreventArmorStand()) {
+                    if (ConfigHandler.getRegionConfig().isRPArmorStand()) {
                         if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false, player)) {
-                            ServerHandler.debugMessage("Residence", entityType, "isResPreventArmorStand", "return", "destroy=true");
+                            ServerHandler.debugMessage("Residence", entityType, "isRPArmorStand", "return", "destroy=true");
                             return;
                         }
                         break;
                     }
-                    ServerHandler.debugMessage("Residence", entityType, "isResPreventArmorStand", "return", "not enabled");
+                    ServerHandler.debugMessage("Residence", entityType, "isRPArmorStand", "return", "not enabled");
                     return;
                 default:
-                    ServerHandler.debugMessage("Residence", entityType, "isResPreventPainting", "return", "not contains");
+                    ServerHandler.debugMessage("Residence", entityType, "isRPPainting", "return", "not contains");
                     return;
             }
-            ServerHandler.debugMessage("Residence", entityType, "isResPreventPainting", "cancel", "final");
+            ServerHandler.debugMessage("Residence", entityType, "isRPPainting", "cancel", "final");
             e.setCancelled(true);
         }
     }
 
+    /**
+     * Visitor
+     *
+     * @param e EntityDamageByEntityEvent
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorDamageEntities(EntityDamageByEntityEvent e) {
-        if (ConfigHandler.getRegionConfig().isVisitorDamageEntities()) {
-            if (e.getDamager() instanceof Player) {
-                Player player = (Player) e.getDamager();
-                Entity entity = e.getEntity();
-                String entityType = entity.getType().name();
-                if (RegionUtils.bypassBorder(player, entity.getLocation())) {
-                    ServerHandler.debugMessage("Visitor", entityType, "Damage-Entities", "return", "border");
-                    return;
-                }
-                // Allow-Player
-                if (ConfigHandler.getRegionConfig().isVisitorDamageEntitiesPlayer()) {
-                    if (entity instanceof Player) {
-                        ServerHandler.debugMessage("Visitor", entityType, "Damage-Entities", "bypass", "Allow-Player=true");
+        if (ConfigHandler.getRegionConfig().isVEnable()) {
+            if (ConfigHandler.getRegionConfig().isVDamageEntities()) {
+                if (e.getDamager() instanceof Player) {
+                    Player player = (Player) e.getDamager();
+                    Entity entity = e.getEntity();
+                    String entityType = entity.getType().name();
+                    if (RegionUtils.bypassBorder(player, entity.getLocation())) {
+                        ServerHandler.debugMessage("Visitor", entityType, "Damage-Entities", "return", "border");
                         return;
                     }
+                    // Allow-Player
+                    if (ConfigHandler.getRegionConfig().isVDamageEntitiesPlayer()) {
+                        if (entity instanceof Player) {
+                            ServerHandler.debugMessage("Visitor", entityType, "Damage-Entities", "bypass", "Allow-Player=true");
+                            return;
+                        }
+                    }
+                    // Cancel
+                    if (ConfigHandler.getRegionConfig().isVDamageEntitiesMsg()) {
+                        Language.sendLangMessage("Message.RegionPlus.visitorDamageEntities", player);
+                    }
+                    ServerHandler.debugMessage("Visitor", entityType, "Damage-Entities", "cancel");
+                    e.setCancelled(true);
                 }
-                // Cancel
-                if (ConfigHandler.getRegionConfig().isVisitorDamageEntitiesMsg()) {
-                    Language.sendLangMessage("Message.RegionPlus.visitorDamageEntities", player);
-                }
-                ServerHandler.debugMessage("Visitor", entityType, "Damage-Entities", "cancel");
-                e.setCancelled(true);
             }
         }
     }

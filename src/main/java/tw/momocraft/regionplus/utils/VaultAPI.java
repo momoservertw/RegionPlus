@@ -5,6 +5,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import tw.momocraft.regionplus.RegionPlus;
+import tw.momocraft.regionplus.handlers.ServerHandler;
 
 public class VaultAPI {
     private Economy econ = null;
@@ -18,7 +19,7 @@ public class VaultAPI {
     private void enableFeatures() {
         if (RegionPlus.getInstance().getServer().getPluginManager().getPlugin("Vault") != null) {
             if (!this.setupEconomy()) {
-                //ServerHandler.sendErrorMessage("&cCan not find the Economy plugin.");
+                ServerHandler.sendErrorMessage("&cCan not find the Economy plugin.");
             }
             if (!this.setupPermissions()) {
                 //ServerHandler.sendErrorMessage("&cCan not find the Permission plugin.");

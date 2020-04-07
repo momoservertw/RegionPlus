@@ -1,106 +1,126 @@
 # --{ =-=-=-=-=-=-=-=-=-= RegionPlus's Configuration Settings, by Momocraft =-=-=-=-=-=-=-=-=-= }--
-Config-Version: 1
+Config-Version: 2
 Debugging: false
 Check-Updates: true
 
-Player:
-  Prevent:
-    # Prevent other plugins disable players' fly status if they have fly permission.
-    # It is very useful if you are using Multiverse and allow some players flying.
-    Fly-Disable:
-      Enable: false
-      # The permission of player to fly.
-      Permission: 'cmi.command.fly'
-      Location:
-        - world
-        - world_nether
-        - world_end
-
+# Add the block size limit in residence areas, update old flags in batches and fix bugs.
+# Need plugin: Residence
 Residence:
-  Custom-Flags:
-    # Allow potion damages entities. Default: true
-    potiondamage: false
+  Settings:
+    # It will check every areas in one residence. Because of two area may in the same location, I'm not recommend using multiple areas.
+    # You can set the "MaxAreasPerResidence: 0" in residence groups.yml  to prevent players creating multiple areas.
+    # And only use subzone to allow players to set different residence permissions.
+    All-Areas:
+      Enable: false
+      # Ignore the area which is in another area.
+      Ignore-Within-Area: false
+  # Return the difference money between IgnoreY "false" to "true" if you changed it.
+  Return-XYZ: false
   Prevent:
-    # Prevent other plugins disable players' fly status in the residence which set fly flag true.
-    Fly-Disable: true
-    # Prevent mobs destroy painting in the residence which set build flag false.
+    Enable: false
+    # Prevent potions from killing animals, monsters, and players without residence flags or enabling PVP status in the residence (requires: PvPManager).
+    Potion-Damage: true
+    # Prevent entities(contains TNT) from destroying paintings in residences without build flag.
     Painting-Destroy: true
-    # Prevent mobs destroy item_frame in the residence which set build flag false.
+    # Prevent entities(contains TNT) from destroying item_frames in residences without build flag.
     Item-Frame-Destroy: true
-    # Prevent mobs destroy armor_stand in the residence which set build flag false.
+    # Prevent entities(contains TNT) from destroying Armor_Stand in residences without build flag.
     Armor-Stand-Destroy: true
-    # Prevent zombies destroy door in the residence which set build flag false.
+    # Prevent zombies from destroying doors in residences without build flag.
     Zombie-Door-Destruction: true
-    # Prevent enderman pickup block in the residence which set build flag false.
+    # Prevent enderman from picking up blocks in residences without build flag.
     Enderman-Pickup-Block: true
-  # Using the block size to limit players' residence size just like GriefPrevention.
+  # Using the blocks size to limit players' residence size just like GriefPrevention.
   Points:
     Enable: false
+    # Send points message when using residence select tool.
+    Select-Info: true
     Check:
-      # The checking mode of points. Support: XYZ, XZ
-      Mode: 'XZ'
-      # It will not count the residence points if it is not infinite height.
-      # It is useful for changing residence setting 'IgnoreY = false' to 'IgnoreY = true'.
+      # It will not count the points if the residence are not infinite height. It is useful for changing residence "IgnoreY" setting 'false' to 'true'.
       Ignore-XYZ: true
-    # The default points limit if a player doesn't have any custom permission.
-    # More points limit permission: regionplus.points.limit.AMOUNT
-    Default-Limit: 10000
-  # Edit the residence's flags.
+    # The residence block limit for difference groups. You can add your own groups.
+    # Permission: regionplus.points.group.GROUP
+    Groups:
+      # The default group. You shouldn't remove it.
+      Default:
+        # The placeholder of "%points_group%" in message.
+        Display: '&a&lDefault'
+        # The number of block limit.
+        Limit: 10000
+      MB:
+        Display: '&a&lMB'
+        Limit: 14400
+      VIP:
+        Display: '&b&lVIP'
+        Limit: 25000
+      MVP:
+        Display: '&d&lMVP'
+        Limit: 115200
+      GOD:
+        Display: '&e&lGOD'
+        Limit: 270000
+  # Changing all old residence flag to new one.
   # Bypass permission: regionplus.bypass.flagsedit
   Flags-Editor:
     Enable: false
+    # It will delay few seconds and restart editing flags to prevent the server restart while editing flags.
+    Max-Edit-Players:
+      # Set "0" to disable this feature.
+      Limit: 100
+      # The delay seconds of restart editing flags.
+      Interval: 3
     # Automatic check the flags when the server is starting.
     Auto-Check:
       Enable: false
       Delay: 20
     Default:
-      # Add the flag that the default setting does exist but the residence does not exist.
+      # Add the flag that default setting does exist but the residence doesn't exist.
       Update: true
-      # Remove the flag that the default setting does not exist and the owner does not have permission to change it.
+      # Remove the flag that default setting doesn't exist and the residence owner doesn't have permission to change.
       Remove-No-Perms: true
-    Permission:
-      # Remove the flag that the owner does not have permission to change it.
+    Permissions:
+      # Remove the flag that the residence owner doesn't have permission to change.
       Remove-No-Perms: true
 
 # Prevent general players build or kill entities outside the border.
 # Bypass permission: regionplus.bypass.visitor.WORLD
 Visitor:
   Enable: false
-  # The visitor border of the world.
+  # The visitor border of worlds.
+  # More information: https://github.com/momoservertw/RegionPlus/wiki/Location
   Border:
     world:
-      Range:
-        R: 10000
+      R: 10000
   Prevent:
     Ignore:
-      # Visitors can only build or damage entities in the residence which they has permissions.
+      # Visitors can only build or damage entities in a residence which they has permissions.
       Has-Residence-Permissions: true
     List:
       # Prevent visitors to create residences.
-      # Need plugin: Residence
       Create-Residence:
         Enable: true
         # Send message when cancel the event.
         Message: true
       # Prevent visitors to use items.
       Use-Items:
-        Enable: false
+        Enable: true
         Message: true
         # Allows eat foods or drink potion.
         Allow-Consume: true
-        # Allows bucket water or lava.
+        # Allows bucket and place water or lava.
         Allow-Bucket: false
         # Allows shoot arrows or throw potions.
         Allow-Projectile: false
-        # Allows using fishing rod.
+        # Allows fishing.
         Allow-Fishing: false
+        # Allows use custom items.
         # Need plugin: ItemJoin
         Allow-ItemJoin: true
-      # Prevent visitors to click a block.
+      # Prevent visitors to click blocks.
       Interact-Blocks:
         Enable: true
         Message: true
-        # Allow visitors to use interact some blocks like doors.
+        # Allow visitors to use some blocks like doors.
         Allow-Use: false
         # Allow visitors to open containers like chest.
         Allow-Container: false
@@ -134,28 +154,27 @@ Message:
   RegionPlus:
     Commands:
       title: '&8▩▩▩▩▩▩▩▩▩▩▩▩▩ &d&lRegionPlus &8▩▩▩▩▩▩▩▩▩▩▩▩▩'
-      help: '&a/rp help &8- &7This help menu.'
-      reload: '&a/rp reload &8- &7Reload config file.'
+      help: '&f/rp help &8- &7This help menu.'
+      reload: '&f/rp reload &8- &7Reload config file.'
       version: '&f/rp version &8- &7Checks the plugin version and updates.'
       flagsedit: '&f/rp flagsedit &8- &7Checks the flags of residences and edits it'
-      pointsLimit: '&a/rp points limit &8- &7Check your residence points limit.'
-      pointsLimitOther: '&a/rp points limit <player> &8- &7Check the player''s residence points limit.'
-      pointsUsed: '&a/rp points used &8- &7Check how many points you have used.'
-      pointsUsedOther: '&a/rp points used <player> &8- &7Check how many points the player has used.'
-      pointsLook: '&a/rp points look &8- &7Check your remaining residence points.'
-      pointsLookOther: '&a/rp points look <player> &8- &7Check the player''s remaining residence points.'
-    pointsLimit: '&eYour residence points limit &8- &f%points_limit%'
-    targetPointsLimit: '&eYour residence points limit &8- &f%points_limit%'
-    pointsUsed: '&eYour used points &8- &f%points_used%'
-    targetPointsUsed: '&e%targetplayer% used points &8- &f%points_used%'
-    pointsRemainder: '&eYour remaining residence points &8- &f%points_remainder%'
-    targetPointsRemainder: '&e%targetplayer% remaining residence points &8- &f%points_remainder%'
-    notEnoughPoints: '&cYou dont have enough residence points &8- &8(&e%points_need%&f/&6%points_limit%&8)'
-    targetNotEnoughPoints: '&c%targetplayer% doesn''t have enough residence points.'
-    visitorCreateResidence: '&cVisitor can''t create residence there!'
-    visitorUseItems: '&cVisitor can''t use this item there!'
-    visitorInteractBlocks: '&cVisitor can''t interact blocks there!'
-    visitorInteractEntities: '&cVisitor can''t interact entities there!'
-    visitorDamageEntities: '&cVisitor can''t damage entities there!'
-    visitorDropItems: '&cVisitor can''t drop items there!'
-    visitorPickupItems: '&cVisitor can''t pickup items there!'
+      pointsLimit: '&f/rp points limit &8- &7Check your points limit.'
+      pointsLimitOther: '&f/rp points limit <player> &8- &7Check the player''s points limit.'
+      pointsUsed: '&f/rp points used &8- &7Check how many points you have used.'
+      pointsUsedOther: '&f/rp points used <player> &8- &7Check how many points the player has used.'
+      pointsLook: '&f/rp points look &8- &7Check your remaining points.'
+      pointsLookOther: '&f/rp points look <player> &8- &7Check the player''s remaining points.'
+    points: '&e&l剩餘格數: &f%points_last% &8- &7【%points_group%&7】 &6%points_used%&7/&c%points_limit% /n &7下一個等級 &7【%points_nextgroup%&7】 &8- &e%points_limit% &8➸ &d%points_nextlimit% &7(+%points_nextbonus%)'
+    targetPoints: '&e&l%targetplayer%''s Points: &f%points_last% &8- &7【%points_group%&7】 &6%points_used%&7/&c%points_limit%'
+    pointsSelect: '&e選區總大小: &6%points_need%  &e領地花費: &6%res_cost% /n &e&l需要格數: &f%points_need% &8- &6%points_last% &8➸ &c%points_newlast%'
+    notEnoughPoints: '&cYou don''t have enough points &8- &8(&e%points_need%&f/&6%points_last%&8)'
+    targetNotEnoughPoints: '&c%targetplayer% doesn''t have enough points.'
+    pointsNotEnable: '&cServer does not enable this feature.'
+    returnXYZMoney: '&6Get the difference of $%amount% on removed a old residence.'
+    visitorCreateResidence: '&cVisitor can''t create residence here!'
+    visitorUseItems: '&cVisitor can''t use this item here!'
+    visitorInteractBlocks: '&cVisitor can''t interact blocks here!'
+    visitorInteractEntities: '&cVisitor can''t interact entities here!'
+    visitorDamageEntities: '&cVisitor can''t damage entities here!'
+    visitorDropItems: '&cVisitor can''t drop items here!'
+    visitorPickupItems: '&cVisitor can''t pickup items here!'

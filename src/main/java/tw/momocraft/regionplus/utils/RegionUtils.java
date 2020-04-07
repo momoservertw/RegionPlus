@@ -32,8 +32,8 @@ public class RegionUtils {
     public static boolean bypassBorder(Player player, Location location) {
         World world = location.getWorld();
         if (world != null) {
-            String worldName = world.getName();
-            if (!LocationAPI.getLocation(location, "Visitor.Border")) {
+            String worldName = world.getName().toLowerCase();
+            if (LocationAPI.getLocation(location, "Visitor.Border")) {
                 return PermissionsHandler.hasPermission(player, "regionplus.bypass.visitor.*") &&
                         PermissionsHandler.hasPermission(player, "regionplus.bypass.visitor." + worldName);
             }

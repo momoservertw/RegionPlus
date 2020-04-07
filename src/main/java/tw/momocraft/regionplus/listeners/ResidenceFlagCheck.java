@@ -7,7 +7,9 @@ import org.bukkit.event.Listener;
 
 public class ResidenceFlagCheck implements Listener {
 
-    // Fly
+    /**
+     * @param e ResidenceFlagCheckEvent
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onResidenceFlagCheck(ResidenceFlagCheckEvent e) {
         /*

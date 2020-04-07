@@ -33,7 +33,7 @@ public class ConfigHandler {
         setUpdater(new UpdateHandler());
 
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
-            if (!reload && getRegionConfig().isResFlagAutoCheck()) {
+            if (!reload && getRegionConfig().isRFAutoCheck()) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -41,7 +41,7 @@ public class ConfigHandler {
                         ResidenceUtils flagsEdit = new ResidenceUtils();
                         flagsEdit.resetNoPermsFlags();
                     }
-                }.runTaskLater(RegionPlus.getInstance(), getRegionConfig().getResFlagAutoCheckDelay());
+                }.runTaskLater(RegionPlus.getInstance(), getRegionConfig().getRFAutoCheckDelay());
             }
         }
     }
@@ -66,8 +66,9 @@ public class ConfigHandler {
 
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceDelete(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceSizeChange(), RegionPlus.getInstance());
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceDelete(), RegionPlus.getInstance());
         }
     }
 
@@ -157,7 +158,7 @@ public class ConfigHandler {
         ServerHandler.sendConsoleMessage("&fHooked: "
                 + (getDepends().getVault().vaultEnabled() ? "Vault, " : "")
                 + (getDepends().ResidenceEnabled() ? "Residence, " : "")
-                + (getDepends().PlaceHolderAPIEnabled() ? "PlaceHolderAPI," : "")
+                + (getDepends().PlaceHolderAPIEnabled() ? "PlaceHolderAPI, " : "")
                 + (getDepends().ItemJoinEnabled() ? "ItemJoin, " : "")
                 + (getDepends().PvPManagerEnabled() ? "PvPManager, " : "")
                 + (getDepends().MultiverseCoreEnabled() ? "Multiverse-Core, " : "")

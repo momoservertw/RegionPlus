@@ -12,21 +12,28 @@ import tw.momocraft.regionplus.utils.RegionUtils;
 
 public class PlayerDropItem implements Listener {
 
+    /**
+     * Visitor
+     *
+     * @param e PlayerDropItemEvent
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorDropItems(PlayerDropItemEvent e) {
-        if (ConfigHandler.getRegionConfig().isVisitorDropItems()) {
-            Player player = e.getPlayer();
-            String itemType = e.getItemDrop().getName();
-            if (RegionUtils.bypassBorder(player, player.getLocation())) {
-                ServerHandler.debugMessage("Visitor", itemType, "Drop-Items", "return", "border");
-                return;
+        if (ConfigHandler.getRegionConfig().isVEnable()) {
+            if (ConfigHandler.getRegionConfig().isVDropItems()) {
+                Player player = e.getPlayer();
+                String itemType = e.getItemDrop().getName();
+                if (RegionUtils.bypassBorder(player, player.getLocation())) {
+                    ServerHandler.debugMessage("Visitor", itemType, "Drop-Items", "return", "border");
+                    return;
+                }
+                // Cancel
+                if (ConfigHandler.getRegionConfig().isVDropItemsMsg()) {
+                    Language.sendLangMessage("Message.RegionPlus.visitorDropItems", player);
+                }
+                ServerHandler.debugMessage("Visitor", itemType, "Drop-Items", "cancel");
+                e.setCancelled(true);
             }
-            // Cancel
-            if (ConfigHandler.getRegionConfig().isVisitorDropItemsMsg()) {
-                Language.sendLangMessage("Message.RegionPlus.visitorDropItems", player);
-            }
-            ServerHandler.debugMessage("Visitor", itemType, "Drop-Items", "cancel");
-            e.setCancelled(true);
         }
     }
 }

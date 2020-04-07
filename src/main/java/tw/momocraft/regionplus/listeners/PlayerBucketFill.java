@@ -12,33 +12,39 @@ import tw.momocraft.regionplus.utils.Language;
 import tw.momocraft.regionplus.utils.RegionUtils;
 
 public class PlayerBucketFill implements Listener {
-
+    /**
+     * Residence-Prevent
+     *
+     * @param e PlayerBucketFillEvent
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorItemsBucket(PlayerBucketFillEvent e) {
-        if (ConfigHandler.getRegionConfig().isVisitorUseItems()) {
-            if (!ConfigHandler.getRegionConfig().isVisitorItemsBucket()) {
-                Player player = e.getPlayer();
-                String itemType = e.getItemStack().getType().name();
-                if (RegionUtils.bypassBorder(player, player.getLocation())) {
-                    ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Bucket", "return", "border");
-                    return;
-                }
-                // Allow-ItemJoin
-                if (ConfigHandler.getDepends().ItemJoinEnabled()) {
-                    if (!ConfigHandler.getRegionConfig().isVisitorItemJoin()) {
-                        ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
-                        if (itemJoinAPI.isCustom(player.getInventory().getItemInMainHand())) {
-                            ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Bucket", "bypass", "Allow-ItemJoin");
-                            return;
+        if (ConfigHandler.getRegionConfig().isVEnable()) {
+            if (ConfigHandler.getRegionConfig().isVUseItems()) {
+                if (!ConfigHandler.getRegionConfig().isVItemsBucket()) {
+                    Player player = e.getPlayer();
+                    String itemType = e.getItemStack().getType().name();
+                    if (RegionUtils.bypassBorder(player, player.getLocation())) {
+                        ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Bucket", "return", "border");
+                        return;
+                    }
+                    // Allow-ItemJoin
+                    if (ConfigHandler.getDepends().ItemJoinEnabled()) {
+                        if (!ConfigHandler.getRegionConfig().isVItemJoin()) {
+                            ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
+                            if (itemJoinAPI.isCustom(player.getInventory().getItemInMainHand())) {
+                                ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Bucket", "bypass", "Allow-ItemJoin");
+                                return;
+                            }
                         }
                     }
+                    // Cancel
+                    if (ConfigHandler.getRegionConfig().isVUseItemsMsg()) {
+                        Language.sendLangMessage("Message.RegionPlus.visitorUseItems", player);
+                    }
+                    ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Bucket", "cancel", "Allow-Bucket=false");
+                    e.setCancelled(true);
                 }
-                // Cancel
-                if (ConfigHandler.getRegionConfig().isVisitorUseItemsMsg()) {
-                    Language.sendLangMessage("Message.RegionPlus.visitorUseItems", player);
-                }
-                ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Bucket", "cancel", "Allow-Bucket=false");
-                e.setCancelled(true);
             }
         }
     }

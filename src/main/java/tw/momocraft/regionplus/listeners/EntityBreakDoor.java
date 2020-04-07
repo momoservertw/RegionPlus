@@ -12,17 +12,22 @@ import tw.momocraft.regionplus.utils.ResidenceUtils;
 
 public class EntityBreakDoor implements Listener {
 
+    /**
+     * Residence-Prevent
+     *
+     * @param e EntityBreakDoorEvent
+     */
     @EventHandler(priority = EventPriority.HIGH)
     private void onResPreventZombieDoor(EntityBreakDoorEvent e) {
-        if (ConfigHandler.getRegionConfig().isResPreventEnable()) {
-            if (ConfigHandler.getRegionConfig().isResPreventZombieDoor()) {
+        if (ConfigHandler.getRegionConfig().isRPEnable()) {
+            if (ConfigHandler.getRegionConfig().isRPZombieDoor()) {
                 if (!ConfigHandler.getDepends().ResidenceEnabled()) {
                     return;
                 }
                 Entity entity = e.getEntity();
                 if (entity instanceof Zombie) {
                     if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false)) {
-                        ServerHandler.debugMessage("Residence", "Zombie", "isResPreventZombieDoor", "cancel", "destroy=false");
+                        ServerHandler.debugMessage("Residence", "Zombie", "isRPZombieDoor", "cancel", "destroy=false");
                         e.setCancelled(true);
                     }
                 }

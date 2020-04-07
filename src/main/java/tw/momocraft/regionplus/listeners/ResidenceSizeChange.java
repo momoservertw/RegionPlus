@@ -1,6 +1,6 @@
 package tw.momocraft.regionplus.listeners;
 
-import com.bekvon.bukkit.residence.event.ResidenceCreationEvent;
+import com.bekvon.bukkit.residence.event.ResidenceSizeChangeEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,10 +11,9 @@ import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.handlers.PermissionsHandler;
 import tw.momocraft.regionplus.handlers.ServerHandler;
 import tw.momocraft.regionplus.utils.Language;
-import tw.momocraft.regionplus.utils.RegionUtils;
 import tw.momocraft.regionplus.utils.ResidenceUtils;
 
-public class ResidenceCreation implements Listener {
+public class ResidenceSizeChange implements Listener {
 
     /**
      * Residence-Points
@@ -22,7 +21,8 @@ public class ResidenceCreation implements Listener {
      * @param e ResidenceCreationEvent
      */
     @EventHandler(priority = EventPriority.HIGH)
-    private void onResPointsEnable(ResidenceCreationEvent e) {
+
+    private void onResidenceSizeChange(ResidenceSizeChangeEvent e) {
         if (ConfigHandler.getRegionConfig().isPointsEnable()) {
             Player player = e.getPlayer();
             String playerName = player.getName();
@@ -30,14 +30,18 @@ public class ResidenceCreation implements Listener {
                 ServerHandler.debugMessage("Residence", playerName, "Points", "return", "bypass permission");
                 return;
             }
-            long size = ResidenceUtils.getNewSize(e.getPhysicalArea());
+            long size = ResidenceUtils.getNewSize(e.getNewArea()) - ResidenceUtils.getNewSize(e.getOldArea());
+            if (size < 0) {
+                ServerHandler.debugMessage("Residence-Points", playerName, "ResidenceSizeChangeEvent", "return", " contract");
+                return;
+            }
             long last = ResidenceUtils.getLimit(player) - ResidenceUtils.getUsed(player);
             if (size > last) {
                 String[] placeHolders = Language.newString();
                 placeHolders[24] = String.valueOf(last);
                 placeHolders[25] = String.valueOf(size);
                 Language.sendLangMessage("Message.RegionPlus.notEnoughPoints", player, placeHolders);
-                ServerHandler.debugMessage("Residence-Points", playerName, "ResidenceCreationEvent", "cancel", "notEnoughPoints");
+                ServerHandler.debugMessage("Residence-Points", playerName, "ResidenceSizeChangeEvent", "cancel", "notEnoughPoints");
                 e.setCancelled(true);
                 return;
             }
@@ -47,30 +51,7 @@ public class ResidenceCreation implements Listener {
                     Language.sendLangMessage("Message.RegionPlus.points", player, ResidenceUtils.pointsPH(player));
                 }
             }.runTaskLater(RegionPlus.getInstance(), 10);
-            ServerHandler.debugMessage("Residence-Points", playerName, "ResidenceCreationEvent", "return", "final");
-        }
-    }
-
-    /**
-     * Visitor
-     *
-     * @param e ResidenceCreationEvent
-     */
-    @EventHandler(priority = EventPriority.HIGH)
-    private void onVisitorCreateRes(ResidenceCreationEvent e) {
-        if (ConfigHandler.getRegionConfig().isVEnable()) {
-            if (ConfigHandler.getRegionConfig().isVCreateRes()) {
-                Player player = e.getPlayer();
-                String playerName = player.getName();
-                if (!RegionUtils.bypassBorder(player, player.getLocation())) {
-                    // Cancel
-                    if (ConfigHandler.getRegionConfig().isVCreateResMsg()) {
-                        Language.sendLangMessage("Message.RegionPlus.visitorCreateResidence", player);
-                    }
-                    ServerHandler.debugMessage("Visitor", playerName, "Create-Residence", "cancel", "border");
-                    e.setCancelled(true);
-                }
-            }
+            ServerHandler.debugMessage("Residence-Points", playerName, "ResidenceSizeChangeEvent", "return", "final");
         }
     }
 }

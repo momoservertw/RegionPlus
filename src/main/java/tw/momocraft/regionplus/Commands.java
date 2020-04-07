@@ -69,7 +69,7 @@ public class Commands implements CommandExecutor {
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("flagsedit")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
-                if (ConfigHandler.getRegionConfig().isResFlagEdit()) {
+                if (ConfigHandler.getRegionConfig().isRFEnable()) {
                     ResidenceUtils flagsEdit = new ResidenceUtils();
                     if (!flagsEdit.getFlagsEditRun()) {
                         ServerHandler.sendConsoleMessage("&cThe process of Flags-Edit is still running! &8(Stop process: /rp flagsedit stop)");
@@ -99,24 +99,17 @@ public class Commands implements CommandExecutor {
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("points")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
-                if (ConfigHandler.getRegionConfig().isResPointsEnable()) {
-                    Player player = (Player) sender;
-                    String[] placeHolders = Language.newString();
-                    long pointsLimit = ResidenceUtils.getLimit(player);
-                    long pointsUsed = ResidenceUtils.getUsed(player);
-                    placeHolders[8] = String.valueOf(pointsLimit);
-                    placeHolders[9] = String.valueOf(pointsUsed);
-                    placeHolders[10] = String.valueOf(pointsLimit - pointsUsed);
-                    Language.sendLangMessage("Message.RegionPlus.points", sender, placeHolders);
+                if (ConfigHandler.getRegionConfig().isPointsEnable()) {
+                    Language.sendLangMessage("Message.RegionPlus.points", sender, ResidenceUtils.pointsPH((Player) sender));
                 } else {
-                    Language.dispatchMessage(sender, "&cYou don't enable the Points feature in config.yml.");
+                    Language.sendLangMessage("Message.featureNotEnable", sender);
                 }
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);
             }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("points")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.points.other")) {
-                if (ConfigHandler.getRegionConfig().isResPointsEnable()) {
+                if (ConfigHandler.getRegionConfig().isPointsEnable()) {
                     Player player = PlayerHandler.getPlayerString(args[1]);
                     if (player == null) {
                         String[] placeHolders = Language.newString();
@@ -124,16 +117,9 @@ public class Commands implements CommandExecutor {
                         Language.sendLangMessage("Message.targetNotOnline", sender, placeHolders);
                         return true;
                     }
-                    String[] placeHolders = Language.newString();
-                    long pointsLimit = ResidenceUtils.getLimit(player);
-                    long pointsUsed = ResidenceUtils.getUsed(player);
-                    placeHolders[2] = args[1];
-                    placeHolders[8] = String.valueOf(pointsLimit);
-                    placeHolders[9] = String.valueOf(pointsUsed);
-                    placeHolders[10] = String.valueOf(pointsLimit - pointsUsed);
-                    Language.sendLangMessage("Message.RegionPlus.targetPoints", sender, placeHolders);
+                    Language.sendLangMessage("Message.RegionPlus.targetPoints", sender, ResidenceUtils.targetPointsPH(sender, player));
                 } else {
-                    Language.dispatchMessage(sender, "&cYou don't enable the residence points feature in config.yml.");
+                    Language.sendLangMessage("Message.featureNotEnable", sender);
                 }
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);

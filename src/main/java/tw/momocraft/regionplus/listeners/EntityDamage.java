@@ -14,10 +14,15 @@ import tw.momocraft.regionplus.handlers.ServerHandler;
 
 public class EntityDamage implements Listener {
 
+    /**
+     * Residence-Prevent
+     *
+     * @param e EntityDamageEvent
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onResPreventPotionDamage(EntityDamageEvent e) {
-        if (ConfigHandler.getRegionConfig().isResPreventEnable()) {
-            if (ConfigHandler.getRegionConfig().isResPreventPotionDamage()) {
+        if (ConfigHandler.getRegionConfig().isRPEnable()) {
+            if (ConfigHandler.getRegionConfig().isRPPotionDamage()) {
                 if (!ConfigHandler.getDepends().ResidenceEnabled()) {
                     return;
                 }
@@ -29,32 +34,32 @@ public class EntityDamage implements Listener {
                     if (res != null) {
                         if (entity instanceof Monster) {
                             if (res.getPermissions().has(Flags.mobkilling, false)) {
-                                ServerHandler.debugMessage("Residence", entityType, "isResPreventPotionDamage", "return", "mobkilling=true");
+                                ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "return", "mobkilling=true");
                                 return;
                             }
                         } else if (entity instanceof Animals) {
                             if (res.getPermissions().has(Flags.animalkilling, false)) {
-                                ServerHandler.debugMessage("Residence", entityType, "isResPreventPotionDamage", "return", "animalkilling=true");
+                                ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "return", "animalkilling=true");
                                 return;
                             }
                         } else if (entity instanceof Player) {
                             Player player = (Player) entity;
                             if (ConfigHandler.getDepends().PvPManagerEnabled()) {
                                 if (PvPManager.getInstance().getPlayerHandler().get(player).hasPvPEnabled()) {
-                                    ServerHandler.debugMessage("Residence", entityType, "isResPreventPotionDamage", "return", "PvPManager=true");
+                                    ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "return", "PvPManager=true");
                                     return;
                                 }
                             } else {
                                 if (res.getPermissions().has(Flags.pvp, false)) {
-                                    ServerHandler.debugMessage("Residence", entityType, "isResPreventPotionDamage", "return", "pvp=true");
+                                    ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "return", "pvp=true");
                                     return;
                                 }
                             }
                         } else {
-                            ServerHandler.debugMessage("Residence", entityType, "isResPreventPotionDamage", "return", "not contains");
+                            ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "return", "not contains");
                             return;
                         }
-                        ServerHandler.debugMessage("Residence", entityType, "isResPreventPotionDamage", "cancel", "final");
+                        ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "cancel", "final");
                         e.setCancelled(true);
                     }
                 }

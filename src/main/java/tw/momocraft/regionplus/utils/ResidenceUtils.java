@@ -3,21 +3,14 @@ package tw.momocraft.regionplus.utils;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.containers.Flags;
-import com.bekvon.bukkit.residence.permissions.PermissionGroup;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.CuboidArea;
-import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.bekvon.bukkit.residence.protection.ResidencePermissions;
-import com.bekvon.bukkit.residence.selection.SelectionManager;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
 import org.bukkit.permissions.PermissionAttachmentInfo;
-import org.bukkit.scheduler.BukkitRunnable;
-import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
-import tw.momocraft.regionplus.handlers.ServerHandler;
 
 import java.util.*;
 
@@ -92,24 +85,40 @@ public class ResidenceUtils {
         return true;
     }
 
+    public static long getLimit(Player player) {
+        Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
+        return userGroupMap.get(userGroupMap.keySet().iterator().next());
+    }
 
+    public static long getNewSize(CuboidArea area) {
+        long size = 0;
+        if (ConfigHandler.getRegionConfig().isPointsMode()) {
+            size += area.getXSize() * area.getZSize();
+        } else {
+            size += area.getXSize() * area.getZSize() * area.getYSize();
+        }
+        return size;
+    }
 
     public static long getSize(ClaimedResidence res) {
         long size = 0;
-        String mode = ConfigHandler.getRegionConfig().getResPointsMode();
-        boolean ignoreXYZ = ConfigHandler.getRegionConfig().isResPointsIgnoreXYZ();
+        boolean ignoreXYZ = ConfigHandler.getRegionConfig().isPointsIgnoreXYZ();
+        boolean allAreas = ConfigHandler.getRegionConfig().isResAllAreas();
+        boolean mode = ConfigHandler.getRegionConfig().isPointsMode();
 
         CuboidArea mainArea = res.getMainArea();
         for (CuboidArea area : res.getAreaArray()) {
-            if (mainArea.isAreaWithinArea(area)) {
-                continue;
-            }
             if (ignoreXYZ) {
                 if (area.getYSize() < 256) {
                     continue;
                 }
             }
-            if (mode.equals("XZ")) {
+            if (allAreas) {
+                if (!mainArea.equals(area) && mainArea.isAreaWithinArea(area)) {
+                    continue;
+                }
+            }
+            if (mode) {
                 size += area.getXSize() * area.getZSize();
             } else {
                 size += area.getXSize() * area.getZSize() * area.getYSize();
@@ -120,10 +129,10 @@ public class ResidenceUtils {
 
     public static long getUsed(Player player) {
         long used = 0;
-        String mode = ConfigHandler.getRegionConfig().getResPointsMode();
-        boolean ignoreXYZ = ConfigHandler.getRegionConfig().isResPointsIgnoreXYZ();
-        boolean allAreas = ConfigHandler.getRegionConfig().isResPointsAllAreas();
-        boolean ignoreWithin = ConfigHandler.getRegionConfig().isResPointsIgnoreWithin();
+        boolean mode = ConfigHandler.getRegionConfig().isPointsMode();
+        boolean ignoreXYZ = ConfigHandler.getRegionConfig().isPointsIgnoreXYZ();
+        boolean allAreas = ConfigHandler.getRegionConfig().isResAllAreas();
+        boolean ignoreWithin = ConfigHandler.getRegionConfig().isResIgnoreWithin();
         CuboidArea mainArea;
         for (ClaimedResidence res : ResidenceApi.getPlayerManager().getResidencePlayer(player.getName()).getResList()) {
             mainArea = res.getMainArea();
@@ -137,7 +146,7 @@ public class ResidenceUtils {
                             continue;
                         }
                     }
-                    if (mode.equals("XZ")) {
+                    if (mode) {
                         used += area.getXSize() * area.getZSize();
                     } else {
                         used += area.getXSize() * area.getZSize() * area.getYSize();
@@ -149,7 +158,7 @@ public class ResidenceUtils {
                         continue;
                     }
                 }
-                if (mode.equals("XZ")) {
+                if (mode) {
                     used += mainArea.getXSize() * mainArea.getZSize();
                 } else {
                     used += mainArea.getXSize() * mainArea.getZSize() * mainArea.getYSize();
@@ -159,38 +168,36 @@ public class ResidenceUtils {
         return used;
     }
 
-    public static long getLimit(Player player) {
-        List<Long> sizeList = new ArrayList<>();
+    private static Map<String, Long> getUserGroupMap(Player player) {
+        Map<String, Long> userGroupMap = new HashMap<>();
+        Map<String, Long> groupMap = ConfigHandler.getRegionConfig().getPointsMap();
         String permission;
         String group;
+        String highestGroup;
         for (PermissionAttachmentInfo pa : player.getEffectivePermissions()) {
+            if (player.isOp()) {
+                highestGroup = groupMap.keySet().iterator().next();
+                userGroupMap.put(highestGroup, groupMap.get(highestGroup));
+                break;
+            }
             permission = pa.getPermission();
-            if (permission.startsWith("regionplus.points.limit.")) {
-                sizeList.add(Long.valueOf(permission.replaceFirst("regionplus.points.limit.", "")));
-            }
             if (permission.startsWith("regionplus.points.group.")) {
-                group = permission.replaceFirst("regionplus.points.limit.", "");
-                sizeList.add(ConfigHandler.getRegionConfig().getResPointsLimitMap().get(group));
+                group = permission.replaceFirst("regionplus.points.group.", "");
+                group = group.toLowerCase();
+                if (group.equals("*")) {
+                    highestGroup = groupMap.keySet().iterator().next();
+                    userGroupMap.put(highestGroup, groupMap.get(highestGroup));
+                }
+                if (ConfigHandler.getRegionConfig().getPointsMap().get(group) != null) {
+                    userGroupMap.put(group, ConfigHandler.getRegionConfig().getPointsMap().get(group));
+                }
             }
         }
-        if (sizeList.isEmpty()) {
-            return ConfigHandler.getRegionConfig().getResPointsDefault();
+        if (userGroupMap.isEmpty()) {
+            userGroupMap.put("default", ConfigHandler.getRegionConfig().getPointsDefault());
         }
-        if (Collections.max(sizeList) == null) {
-            return ConfigHandler.getRegionConfig().getResPointsDefault();
-        }
-        return Collections.max(sizeList);
+        return Utils.sortByValue(userGroupMap);
     }
-
-    public static long getRemainder(Player player) {
-        if (player != null) {
-            long pointsLimit = getLimit(player);
-            long pointsUsed = getUsed(player);
-            return pointsLimit - pointsUsed;
-        }
-        return 0;
-    }
-
 
     private boolean flagsEditRun = false;
 
@@ -203,6 +210,7 @@ public class ResidenceUtils {
     }
 
     public void resetNoPermsFlags() {
+        /*
         flagsEditRun = true;
         String playerName;
         ResidencePermissions perms;
@@ -219,13 +227,14 @@ public class ResidenceUtils {
         Map<String, Boolean> permsPlayerFlags;
         boolean restart;
         int last;
-        int maxPlayers = ConfigHandler.getRegionConfig().getResFlagEditMax();
+        int maxLimit = ConfigHandler.getRegionConfig().getRFMaxLimit();
+        long maxInterval = ConfigHandler.getRegionConfig().getRFMaxInterval() * 20;
         List<OfflinePlayer> playerList = new ArrayList<>(Arrays.asList(Bukkit.getOfflinePlayers()));
-        restart = maxPlayers > 0 && playerList.size() > maxPlayers;
+        restart = maxLimit > 0 && playerList.size() > maxLimit;
         int startAt = 0;
         List<OfflinePlayer> editList;
         if (restart) {
-            editList = playerList.subList(0, maxPlayers);
+            editList = playerList.subList(0, maxLimit);
         } else {
             editList = playerList;
         }
@@ -241,7 +250,7 @@ public class ResidenceUtils {
                         ownerGroup = ResidenceApi.getPlayerManager().getGroup(claimedResidence.getOwner());
                         flagEntrySet = claimedResidence.getPermissions().getFlags().entrySet();
                         groupFlagEntrySet = ownerGroup.getDefaultResidenceFlags();
-                        if (ConfigHandler.getRegionConfig().isResFlagEditRemove()) {
+                        if (ConfigHandler.getRegionConfig().isRFRemove()) {
                             for (Map.Entry<String, Boolean> resFlagEntry : flagEntrySet) {
                                 if (!groupFlagEntrySet.contains(resFlagEntry)) {
                                     removeFlagList.add(resFlagEntry.getKey());
@@ -252,7 +261,7 @@ public class ResidenceUtils {
                                 ServerHandler.sendDebugMessage("&4Remove default flag: &e" + claimedResidence.getName() + "&8 - &f" + removeFlag);
                             }
                         }
-                        if (ConfigHandler.getRegionConfig().isResFlagEditUpdate()) {
+                        if (ConfigHandler.getRegionConfig().isRFUpdate()) {
                             for (Map.Entry<String, Boolean> resFlagEntry : groupFlagEntrySet) {
                                 if (!flagEntrySet.contains(resFlagEntry)) {
                                     addFlagMap.put(resFlagEntry.getKey(), resFlagEntry.getValue().toString());
@@ -264,7 +273,7 @@ public class ResidenceUtils {
                                 ServerHandler.sendDebugMessage("&6Add default flag: &e" + claimedResidence.getName() + "&8 - &f" + addFlagKey + "=" + addFlag);
                             }
                         }
-                        if (ConfigHandler.getRegionConfig().isResFlagEditRemovePerm()) {
+                        if (ConfigHandler.getRegionConfig().isRFRemovePerm()) {
                             listSplit = perms.listPlayersFlags().split("§f\\[");
                             permsPlayerList.add(listSplit[0]);
                             for (String flagsSplit : listSplit) {
@@ -295,7 +304,7 @@ public class ResidenceUtils {
             }
             if (restart) {
                 last = playerList.size() - startAt;
-                editList = playerList.subList(startAt, last > maxPlayers ? startAt += maxPlayers : last);
+                editList = playerList.subList(startAt, last > maxLimit ? startAt += maxLimit : last);
                 if (editList.isEmpty()) {
                     break;
                 }
@@ -307,12 +316,132 @@ public class ResidenceUtils {
                     public void run() {
                         ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
                     }
-                }.runTaskLater(RegionPlus.getInstance(), 60L);
+                }.runTaskLater(RegionPlus.getInstance(), maxInterval);
             } else {
                 break;
             }
         }
         ServerHandler.sendConsoleMessage("&6Flags-Edit process has ended.");
         flagsEditRun = false;
+         */
+    }
+
+    public static String[] pointsPH(Player player) {
+        Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
+        Map<String, String> groupDisplayMap = ConfigHandler.getRegionConfig().getPointsDisplayMap();
+        Map<String, Long> groupMap = ConfigHandler.getRegionConfig().getPointsMap();
+        ArrayList<String> groupList = new ArrayList<>(groupMap.keySet());
+
+        String group = userGroupMap.keySet().iterator().next();
+        long limit = userGroupMap.get(group);
+        String nextGroup;
+        long nextLimit;
+        if (groupList.size() < (groupList.indexOf(group) + 1)) {
+            nextGroup = groupList.get(groupList.indexOf(group) + 1);
+            nextLimit = groupMap.get(nextGroup);
+        } else {
+            nextGroup = group;
+            nextLimit = limit;
+        }
+        long used = ResidenceUtils.getUsed(player);
+        String[] placeHolders = Language.newString();
+
+        // %player%
+        placeHolders[1] = player.getName();
+        // %points_group%
+        placeHolders[21] = groupDisplayMap.get(group);
+        // %points_limit%
+        placeHolders[22] = String.valueOf(limit);
+        // %points_used%
+        placeHolders[23] = String.valueOf(used);
+        // %points_last%
+        placeHolders[24] = String.valueOf(limit - used);
+        // %points_nextgroup%
+        placeHolders[27] = groupDisplayMap.get(nextGroup);
+        // %points_nextlimit%
+        placeHolders[28] = String.valueOf(nextLimit);
+        // %points_nextbonus%
+        placeHolders[29] = String.valueOf(nextLimit - limit);
+        return placeHolders;
+    }
+
+    public static String[] targetPointsPH(CommandSender sender, Player player) {
+        Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
+        Map<String, Long> groupMap = ConfigHandler.getRegionConfig().getPointsMap();
+        Map<String, String> groupDisplayMap = ConfigHandler.getRegionConfig().getPointsDisplayMap();
+        ArrayList<String> groupList = new ArrayList<>(groupMap.keySet());
+        String group = userGroupMap.keySet().iterator().next();
+        String nextGroup;
+        long limit = userGroupMap.get(group);
+        long nextLimit;
+        if (groupList.size() < (groupList.indexOf(group) + 1)) {
+            nextGroup = groupList.get(groupList.indexOf(group) + 1);
+            nextLimit = groupMap.get(nextGroup);
+        } else {
+            nextGroup = group;
+            nextLimit = limit;
+        }
+        long used = ResidenceUtils.getUsed(player);
+        String[] placeHolders = Language.newString();
+
+        // %player%
+        placeHolders[1] = sender.getName();
+        // %target%
+        placeHolders[2] = player.getName();
+        // %points_group%
+        placeHolders[21] = groupDisplayMap.get(group);
+        // %points_limit%
+        placeHolders[22] = String.valueOf(limit);
+        // %points_used%
+        placeHolders[23] = String.valueOf(used);
+        // %points_last%
+        placeHolders[24] = String.valueOf(limit - used);
+        // %points_nextgroup%
+        placeHolders[27] = groupDisplayMap.get(nextGroup);
+        // %points_nextlimit%
+        placeHolders[28] = String.valueOf(nextLimit);
+        // %points_nextbonus%
+        placeHolders[29] = String.valueOf(nextLimit - limit);
+        return placeHolders;
+    }
+
+    public static String[] selectPointsPH(Player player, long size) {
+        Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
+        Map<String, Long> groupMap = ConfigHandler.getRegionConfig().getPointsMap();
+        Map<String, String> groupDisplayMap = ConfigHandler.getRegionConfig().getPointsDisplayMap();
+        ArrayList<String> groupList = new ArrayList<>(groupMap.keySet());
+        String group = userGroupMap.keySet().iterator().next();
+        String nextGroup = groupList.get(groupList.indexOf(group) + 1);
+        long limit = userGroupMap.get(group);
+        long nextLimit = groupMap.get(nextGroup);
+        long used = ResidenceUtils.getUsed(player);
+        long last = limit - used;
+        String[] placeHolders = Language.newString();
+
+        // %player%
+        placeHolders[1] = player.getName();
+        // %target%
+        // %points_group%
+        placeHolders[21] = groupDisplayMap.get(group);
+        // %points_limit%
+        placeHolders[22] = String.valueOf(limit);
+        // %points_used%
+        placeHolders[23] = String.valueOf(used);
+        // %points_last%
+        placeHolders[24] = String.valueOf(last);
+        // %points_need%
+        placeHolders[25] = String.valueOf(size);
+        // %points_newlast%
+        placeHolders[26] = String.valueOf(last - size);
+        // %points_nextgroup%
+        placeHolders[27] = groupDisplayMap.get(nextGroup);
+        // %points_nextlimit%
+        placeHolders[28] = String.valueOf(nextLimit);
+        // %points_nextbonus%
+        placeHolders[29] = String.valueOf(nextLimit - limit);
+        // %points_nextbonus%
+        placeHolders[30] = String.valueOf(
+                Residence.getInstance().getPlayerManager().getGroup(player.getName()).getCostPerBlock() * size);
+        return placeHolders;
     }
 }
