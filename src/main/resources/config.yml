@@ -66,9 +66,9 @@ Residence:
     # It will delay few seconds and restart editing flags to prevent the server restart while editing flags.
     Max-Edit-Players:
       # Set "0" to disable this feature.
-      Limit: 100
+      Limit: 30
       # The delay seconds of restart editing flags.
-      Interval: 3
+      Interval: 1
       # The restart editing messages.
       Message: true
     # Automatic check the flags when the server is starting.

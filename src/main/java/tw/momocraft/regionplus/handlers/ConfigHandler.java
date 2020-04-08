@@ -23,6 +23,7 @@ public class ConfigHandler {
     private static DependAPI depends;
     private static UpdateHandler updater;
     private static RegionConfig region;
+    private static FlagsEditor editor;
 
 
     public static void generateData(boolean reload) {
@@ -31,6 +32,7 @@ public class ConfigHandler {
         sendUtilityDepends();
         setRegionConfig(new RegionConfig());
         setUpdater(new UpdateHandler());
+        setEditor(new FlagsEditor());
 
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
             if (!reload && getRegionConfig().isRFAutoCheck()) {
@@ -39,7 +41,7 @@ public class ConfigHandler {
                     public void run() {
                         ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
                         ResidenceUtils flagsEdit = new ResidenceUtils();
-                        flagsEdit.resetNoPermsFlags();
+                        flagsEdit.editFlags();
                     }
                 }.runTaskLater(RegionPlus.getInstance(), getRegionConfig().getRFAutoCheckDelay());
             }
@@ -192,6 +194,14 @@ public class ConfigHandler {
 
     public static void setRegionConfig(RegionConfig regionConfig) {
         region = regionConfig;
+    }
+
+    public static FlagsEditor getEditor() {
+        return editor;
+    }
+
+    public static void setEditor(FlagsEditor flagsEditor) {
+        editor = flagsEditor;
     }
 
     /**

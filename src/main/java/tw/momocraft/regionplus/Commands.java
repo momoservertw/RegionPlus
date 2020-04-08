@@ -70,13 +70,12 @@ public class Commands implements CommandExecutor {
         } else if (args.length == 1 && args[0].equalsIgnoreCase("flagsedit")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
                 if (ConfigHandler.getRegionConfig().isRFEnable()) {
-                    ResidenceUtils flagsEdit = new ResidenceUtils();
-                    if (flagsEdit.getFlagsEditRun()) {
+                    if (ConfigHandler.getEditor().isRun()) {
                         ServerHandler.sendConsoleMessage("&cThe process of Flags-Edit is still running! &8(Stop process: /rp flagsedit stop)");
                         return true;
                     }
                     ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
-                    flagsEdit.resetNoPermsFlags();
+                    ResidenceUtils.editFlags();
                     return true;
                 }
                 ServerHandler.sendConsoleMessage("&cYou don't enable the residence Flags-Edit feature in config.yml.");
@@ -87,12 +86,12 @@ public class Commands implements CommandExecutor {
         } else if (args.length == 2 && args[0].equalsIgnoreCase("flagsedit") && args[1].equalsIgnoreCase("stop")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
                 ResidenceUtils flagsEdit = new ResidenceUtils();
-                if (!flagsEdit.getFlagsEditRun()) {
+                if (!ConfigHandler.getEditor().isRun()) {
                     ServerHandler.sendConsoleMessage("&cThe process of Flags-Edit isn't running now.");
                     return true;
                 }
                 ServerHandler.sendConsoleMessage("&6Stops the Flags-Edit process after finished this editing.");
-                flagsEdit.setFlagsEditRun(false);
+                ConfigHandler.getEditor().setRun(false);
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);
             }
