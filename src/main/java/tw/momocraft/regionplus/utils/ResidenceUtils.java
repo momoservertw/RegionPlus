@@ -312,7 +312,7 @@ public class ResidenceUtils {
             }
             if (restart) {
                 last = playerSize - startAt;
-                editList = playerList.subList(startAt, last >= maxLimit ? startAt += maxLimit : startAt + last);
+                editList = playerList.subList(startAt, last >= maxLimit ? startAt += maxLimit : playerSize);
                 if (editList.size() < maxLimit) {
                     restart = false;
                 }
@@ -320,10 +320,7 @@ public class ResidenceUtils {
                     ServerHandler.sendConsoleMessage("&eFlags-Edit process has not finished yet! &8- &6Last: " + last + "/" + playerSize);
                     ServerHandler.sendConsoleMessage("&fIt will restart after few seconds. &8(Stop process: /rp flagsedit stop)");
                     ServerHandler.sendConsoleMessage("");
-                }
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
+                }-
                         if (restartMsg) {
                             ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
                         }
