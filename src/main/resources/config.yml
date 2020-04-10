@@ -14,7 +14,7 @@ Residence:
       Enable: false
       # Ignore the area which is in another area.
       Ignore-Within-Area: false
-  # Return the difference money between IgnoreY "false" to "true" if you changed it.
+  # Return the difference money between IgnoreY "false" to "true" if you has changed it.
   Return-XYZ: false
   Prevent:
     Enable: false
@@ -60,7 +60,6 @@ Residence:
         Display: '&e&lGOD'
         Limit: 270000
   # Changing all old residence flag to new one.
-  # Bypass permission: regionplus.bypass.flagsedit
   Flags-Editor:
     Enable: false
     Settings:
@@ -78,6 +77,7 @@ Residence:
         Message: true
       # Bypass to remove the missing custom flags.
       Bypass-Missing-Custom-Flags: true
+      # Bypass permission: regionplus.bypass.flagsedit
       Check-Bypass-Permission: true
     # Checking the "Flags.Default" in groups.yml.
     Default:
