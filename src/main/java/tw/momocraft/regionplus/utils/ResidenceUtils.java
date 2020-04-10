@@ -8,6 +8,9 @@ import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.CuboidArea;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.bekvon.bukkit.residence.protection.ResidencePermissions;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -206,12 +209,70 @@ public class ResidenceUtils {
         return Utils.sortByValue(userGroupMap);
     }
 
+    public static void editMessage() {
+        String playerName;
+        String resName;
+        boolean bypassPerm = ConfigHandler.getRegionConfig().isRMBypassPerms();
+        boolean message = ConfigHandler.getRegionConfig().isRMMessage();
+        List<String> groups = getResGroups();
+        String groupName;
+        Table<String, String, List<String>> groupOldTable = ConfigHandler.getRegionConfig().getRMGroupTable();
+        Table<String, String, String> groupTable = HashBasedTable.create();
+        List<String> enter;
+        List<String> leave;
+        for (PermissionGroup pg : Residence.getInstance().getPermissionManager().getGroups().values()) {
+            groupTable.put(pg.getGroupName(), "enter", pg.getDefaultEnterMessage());
+            groupTable.put(pg.getGroupName(), "leave", pg.getDefaultLeaveMessage());
+        }
+        OfflinePlayer[] offlinePlayers = Bukkit.getOfflinePlayers();
+        int playerSize = offlinePlayers.length;
+        int i = playerSize;
+        for (OfflinePlayer offlinePlayer : offlinePlayers) {
+            if (message) {
+                i--;
+                if (i % 300 == 0 && i != 0) {
+                    ServerHandler.sendConsoleMessage("&eMessage-Edit process has not finished yet! &8- &6Player: " + i + "/" + playerSize);
+                }
+            }
+            playerName = offlinePlayer.getName();
+            if (bypassPerm) {
+                if (PermissionsHandler.hasPermissionOffline(offlinePlayer, "regionplus.bypass.messageedit")) {
+                    ServerHandler.debugMessage("Message-Flags-Editor", playerName, "permission", "bypass");
+                    continue;
+                }
+            }
+            if (playerName != null) {
+                groupName = getUserGroup(offlinePlayer, groups);
+                enter = groupOldTable.get(groupName, "enter");
+                if (enter == null) {
+                    enter = groupOldTable.get("other", "enter");
+                }
+                leave = groupOldTable.get(groupName, "leave");
+                if (leave == null) {
+                    leave = groupOldTable.get("other", "leave");
+                }
+                for (ClaimedResidence res : ResidenceApi.getPlayerManager().getResidencePlayer(playerName).getResList()) {
+                    resName = res.getName();
+                    res.getEnterMessage();
+                    if (enter.isEmpty() || enter.contains(res.getEnterMessage())) {
+                        res.setEnterMessage(groupTable.get(groupName, "enter"));
+                        ServerHandler.sendDebugMessage("&6Edit message: &e" + resName + "&8 - &f" + "enter" + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                    }
+                    if (leave.isEmpty() || leave.contains(res.getLeaveMessage())) {
+                        res.setLeaveMessage(groupTable.get(groupName, "leave"));
+                        ServerHandler.sendDebugMessage("&6Edit message: &e" + resName + "&8 - &f" + "leave" + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                    }
+                }
+            }
+        }
+        ServerHandler.sendConsoleMessage("&6Message-Edit process has ended.");
+    }
 
     public static void editFlags() {
         FlagsEditor flagsEditor = ConfigHandler.getEditor();
         flagsEditor.setUp();
         boolean restartMsg = ConfigHandler.getRegionConfig().isRFMessage();
-        startEdit(flagsEditor.getEditList());
+        startEditFlags(flagsEditor.getEditList());
 
         new BukkitRunnable() {
             @Override
@@ -219,7 +280,7 @@ public class ResidenceUtils {
                 if (flagsEditor.isEnd()) {
                     try {
                         flagsEditor.resetUp();
-                        startEdit(flagsEditor.getEditList());
+                        startEditFlags(flagsEditor.getEditList());
                     } catch (Exception e) {
                         ServerHandler.sendConsoleMessage("&cThere is an error occur while starting to edit residence flags.");
                         ServerHandler.sendConsoleMessage("&cPlease turn on the debug mode and send the error messages to plugin author.");
@@ -252,7 +313,7 @@ public class ResidenceUtils {
         }.runTaskTimer(RegionPlus.getInstance(), 0, ConfigHandler.getRegionConfig().getRFMaxInterval() * 20);
     }
 
-    private static void startEdit(List<OfflinePlayer> editList) {
+    private static void startEditFlags(List<OfflinePlayer> editList) {
         List<String> groups = getResGroups();
         String playerName;
         String resName;
@@ -283,13 +344,13 @@ public class ResidenceUtils {
             playerName = offlinePlayer.getName();
             if (RFBypassPerm) {
                 if (PermissionsHandler.hasPermissionOffline(offlinePlayer, "regionplus.bypass.flagsedit")) {
-                    ServerHandler.debugMessage("Residence-Flags-Editor", playerName, "bypassPermission", "bypass");
+                    ServerHandler.debugMessage("Residence-Flags-Editor", playerName, "permission", "bypass");
                     break;
                 }
             }
-            groupName = getUserGroup(offlinePlayer, groups);
-            group = Residence.getInstance().getPermissionManager().getGroupByName(groupName);
             if (playerName != null) {
+                groupName = getUserGroup(offlinePlayer, groups);
+                group = Residence.getInstance().getPermissionManager().getGroupByName(groupName);
                 for (ClaimedResidence res : ResidenceApi.getPlayerManager().getResidencePlayer(playerName).getResList()) {
                     resName = res.getName();
                     perms = res.getPermissions();

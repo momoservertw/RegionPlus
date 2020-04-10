@@ -1,5 +1,5 @@
 # --{ =-=-=-=-=-=-=-=-=-= RegionPlus's Configuration Settings, by Momocraft =-=-=-=-=-=-=-=-=-= }--
-Config-Version: 2
+Config-Version: 3
 Debugging: false
 Check-Updates: true
 
@@ -14,7 +14,7 @@ Residence:
       Enable: false
       # Ignore the area which is in another area.
       Ignore-Within-Area: false
-  # Return the difference money between IgnoreY "false" to "true" if you changed it.
+  # Return the difference money between IgnoreY "false" to "true" if you has changed it.
   Return-XYZ: false
   Prevent:
     Enable: false
@@ -63,10 +63,10 @@ Residence:
   Flags-Editor:
     Enable: false
     Settings:
-      # Automatic check the flags when the server is starting.
-      Auto-Check:
-        Enable: false
-        Delay: 20
+      # Bypass permission: regionplus.bypass.flagsedit
+      Check-Bypass-Permission: true
+      # Bypass to remove the missing custom flags.
+      Bypass-Missing-Custom-Flags: true
       # It will delay few seconds and restart editing flags to prevent the server restart while editing flags.
       Max-Edit-Players:
         # Set "0" to disable this feature.
@@ -75,10 +75,6 @@ Residence:
         Interval: 1
         # The restart editing messages.
         Message: true
-      # Bypass to remove the missing custom flags.
-      Bypass-Missing-Custom-Flags: true
-      # Bypass permission: regionplus.bypass.flagsedit
-      Check-Bypass-Permission: true
     # Checking the "Flags.Default" in groups.yml.
     Default:
       # Remove the flags that doesn't exist.
@@ -97,6 +93,39 @@ Residence:
       Remove:
         Enable: true
         Ignore-List: []
+  # Resetting all old residences' enter / leave messages to default.
+  # It will be cool to show title bar when players enter residences.
+  # And then you will need this feature to change old messages.
+  # TitleBar Example
+  # Enter: "&e&lEnter &f%residence %subtitle% &6&lOwner &6%owner"
+  # Leave: "&7Left..."
+  Message-Editor:
+    Enable: false
+    Settings:
+      # Bypass permission: regionplus.bypass.messageedit
+      Check-Bypass-Permission: true
+      # Showing the editing progress.
+      Message: true
+    # By default, it will only change the matching messages.
+    Groups:
+      # This is the default group for those without custom settings. You should not remove it.
+      other:
+        # The old enter messages. Support multiple lines and if you set the message to "[]", it will force to reset every messages in that group.
+        Enter:
+          - "Welcome %player to %residence, owned by %owner."
+        Leave:
+          - "Now leaving %residence."
+      # You can custom messages for difference groups.
+      default:
+        Enter:
+          - "Welcome %player to %residence, owned by %owner."
+        Leave:
+          - "Now leaving %residence."
+      vip:
+        Enter:
+          - "Welcome %player to %residence, owned by %owner."
+        Leave:
+          - "Now leaving %residence."
 
 # Prevent general players build or kill entities outside the border.
 # Bypass permission: regionplus.bypass.visitor.WORLD

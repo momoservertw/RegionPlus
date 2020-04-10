@@ -2,7 +2,7 @@ name: RegionPlus
 main: tw.momocraft.regionplus.RegionPlus
 author: Momocraft
 api-version: 1.13
-version: 1.0.0
+version: 1.0.1
 description: Visitor system and adding more features for Residence.
 softdepend: [Vault, Residence, PlaceHolderAPI, ItemJoin, PvPManager, LuckPerms]
 
@@ -36,6 +36,7 @@ permissions:
       regionplus.command.reload: true
       regionplus.command.version: true
       regionplus.command.flagsedit: true
+      regionplus.command.messageedit: true
       regionplus.command.points: true
       regionplus.command.points.other: true
   regionplus.command.reload:
@@ -46,6 +47,9 @@ permissions:
     default: op
   regionplus.command.flagsedit:
     description: Allows use of command /regionplus flagsedit.
+    default: op
+  regionplus.command.messageedit:
+    description: Allows use of command /regionplus messageedit.
     default: op
   regionplus.command.points:
     description: Allows use of command /regionplus points.
@@ -59,6 +63,8 @@ permissions:
     children:
       regionplus.bypass.points.limit: true
       regionplus.bypass.visitor.*: true
+      regionplus.bypass.flagsedit: true
+      regionplus.bypass.messageedit: true
   regionplus.bypass.points.limit:
     description: Allows player to bypass points limit.
     default: op
@@ -78,11 +84,17 @@ permissions:
   regionplus.bypass.visitor.world_the_end:
     description: Allows player to bypass the world of visitor limits.
     default: op
+  regionplus.bypass.flagsedit:
+    description: Allows player to bypass the residence flags editor.
+    default: op
+  regionplus.bypass.messageedit:
+    description: Allows player to bypass the residence message editor.
+    default: op
   regionplus.points.group.default:
     description: Sets player's points group to default.
     default: op
   regionplus.points.group.*:
-    description: Sets player's points group to mb.
+    description: Sets player's points group to highest one.
     default: op
   regionplus.points.group.mb:
     description: Sets player's points group to mb.

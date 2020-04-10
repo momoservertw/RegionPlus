@@ -2,6 +2,8 @@ package tw.momocraft.regionplus.utils;
 
 
 import com.bekvon.bukkit.residence.Residence;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
@@ -35,8 +37,10 @@ public class RegionConfig {
     private Map<String, String> pointsDisplayMap;
 
     private boolean RFEnable;
+    /*
     private boolean RFAutoCheck;
     private long RFAutoCheckDelay;
+    */
     private int RFMaxLimit;
     private int RFMaxInterval;
     private boolean RFMessage;
@@ -49,6 +53,11 @@ public class RegionConfig {
     private List<String> RFDefaultUpdateIgnore;
     private boolean RFPermsRemove;
     private List<String> RFPermsRemoveIgnore;
+
+    private boolean RMEnable;
+    private boolean RMBypassPerms;
+    private boolean RMMessage;
+    private Table<String, String, List<String>> RMGroupTable;
 
     private boolean VEnable;
     private boolean VCreateRes;
@@ -114,8 +123,10 @@ public class RegionConfig {
         }
 
         RFEnable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Enable");
+        /*
         RFAutoCheck = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Auto-Check.Enable");
         RFAutoCheckDelay = ConfigHandler.getConfig("config.yml").getLong("Residence.Flags-Editor.Settings.Auto-Check.Delay") * 20;
+         */
         RFMaxLimit = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Settings.Max-Edit-Players.Limit");
         RFMaxInterval = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Settings.Max-Edit-Players.Interval");
         RFMessage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Max-Edit-Players.Message");
@@ -128,6 +139,23 @@ public class RegionConfig {
         RFDefaultRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Default.Remove.Ignore-List");
         RFPermsRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Permissions.Remove.Enable");
         RFPermsRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Permissions.Remove.Ignore-List");
+
+        RMEnable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Enable");
+        RMBypassPerms = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Settings.Check-Bypass-Permission");
+        RMMessage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Settings.Message");
+        ConfigurationSection RMOldEnterConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Message-Editor.Groups");
+        ConfigurationSection RMOldLeaveConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Message-Editor.Groups");
+        RMGroupTable = HashBasedTable.create();
+        if (RMOldEnterConfig != null) {
+            for (String group : RMOldEnterConfig.getKeys(false)) {
+                RMGroupTable.put(group, "enter", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups."+ group + ".Enter"));
+            }
+        }
+        if (RMOldLeaveConfig != null) {
+            for (String group : RMOldLeaveConfig.getKeys(false)) {
+                RMGroupTable.put(group, "leave", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups."+ group + ".Leave"));
+            }
+        }
 
         VEnable = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
         VCreateRes = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Create-Residence.Enable");
@@ -245,6 +273,7 @@ public class RegionConfig {
         return RFEnable;
     }
 
+    /*
     public boolean isRFAutoCheck() {
         return RFAutoCheck;
     }
@@ -252,6 +281,7 @@ public class RegionConfig {
     public long getRFAutoCheckDelay() {
         return RFAutoCheckDelay;
     }
+     */
 
     public int getRFMaxLimit() {
         return RFMaxLimit;
@@ -293,7 +323,6 @@ public class RegionConfig {
         return RFDefaultRemoveIgnore;
     }
 
-
     public List<String> getRFPermsRemoveIgnore() {
         return RFPermsRemoveIgnore;
     }
@@ -302,6 +331,22 @@ public class RegionConfig {
         return RFPermsRemove;
     }
 
+
+    public boolean isRMEnable() {
+        return RMEnable;
+    }
+
+    public boolean isRMBypassPerms() {
+        return RMBypassPerms;
+    }
+
+    public boolean isRMMessage() {
+        return RMMessage;
+    }
+
+    public Table<String, String, List<String>> getRMGroupTable() {
+        return RMGroupTable;
+    }
 
     public boolean isVEnable() {
         return VEnable;

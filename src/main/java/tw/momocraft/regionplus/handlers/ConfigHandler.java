@@ -40,6 +40,7 @@ public class ConfigHandler {
                 ServerHandler.sendConsoleMessage("&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
             }
         }
+        /*
         if (getDepends().ResidenceEnabled()) {
             if (!reload && getRegionConfig().isRFAutoCheck()) {
                 new BukkitRunnable() {
@@ -51,6 +52,7 @@ public class ConfigHandler {
                 }.runTaskLater(RegionPlus.getInstance(), getRegionConfig().getRFAutoCheckDelay());
             }
         }
+         */
     }
 
     public static void registerEvents() {
@@ -112,7 +114,7 @@ public class ConfigHandler {
     private static void configFile() {
         getConfigData("config.yml");
         File File = new File(RegionPlus.getInstance().getDataFolder(), "config.yml");
-        if (File.exists() && getConfig("config.yml").getInt("Config-Version") != 2) {
+        if (File.exists() && getConfig("config.yml").getInt("Config-Version") != 3) {
             if (RegionPlus.getInstance().getResource("config.yml") != null) {
                 LocalDateTime currentDate = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");

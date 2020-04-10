@@ -59,6 +59,9 @@ public class TabComplete implements TabCompleter {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
                 commands.add("flagsedit");
             }
+            if (PermissionsHandler.hasPermission(sender, "regionplus.command.messageedit")) {
+                commands.add("messageedit");
+            }
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
                 commands.add("points");
             }

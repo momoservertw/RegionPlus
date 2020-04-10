@@ -85,13 +85,24 @@ public class Commands implements CommandExecutor {
             return true;
         } else if (args.length == 2 && args[0].equalsIgnoreCase("flagsedit") && args[1].equalsIgnoreCase("stop")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
-                ResidenceUtils flagsEdit = new ResidenceUtils();
                 if (!ConfigHandler.getEditor().isRun()) {
                     ServerHandler.sendConsoleMessage("&cThe process of Flags-Edit isn't running now.");
                     return true;
                 }
                 ServerHandler.sendConsoleMessage("&6Stops the Flags-Edit process after finished this editing.");
                 ConfigHandler.getEditor().setRun(false);
+            } else {
+                Language.sendLangMessage("Message.noPermission", sender);
+            }
+            return true;
+        } else if (args.length == 1 && args[0].equalsIgnoreCase("messageedit")) {
+            if (PermissionsHandler.hasPermission(sender, "regionplus.command.messageedit")) {
+                if (ConfigHandler.getRegionConfig().isRMEnable()) {
+                    ServerHandler.sendConsoleMessage("&6Starting to check residence message...");
+                    ResidenceUtils.editMessage();
+                    return true;
+                }
+                ServerHandler.sendConsoleMessage("&cYou don't enable the residence Message-Edit feature in config.yml.");
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);
             }
