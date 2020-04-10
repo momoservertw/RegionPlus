@@ -9,7 +9,6 @@ import com.bekvon.bukkit.residence.protection.CuboidArea;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.Location;
@@ -17,6 +16,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
+import tw.momocraft.regionplus.handlers.PermissionsHandler;
 import tw.momocraft.regionplus.handlers.ServerHandler;
 
 import java.util.*;
@@ -253,10 +253,12 @@ public class ResidenceUtils {
     }
 
     private static void startEdit(List<OfflinePlayer> editList) {
+        List<String> groups = getResGroups();
         String playerName;
         String resName;
         ResidencePermissions perms;
         PermissionGroup group;
+        String groupName;
         String[] listSplit;
         String[] listSplit2;
         List<String> permsPlayerList = new ArrayList<>();
@@ -265,47 +267,88 @@ public class ResidenceUtils {
         List<String> removeFlagList = new ArrayList<>();
         List<String> removeFlagPlayerList = new ArrayList<>();
         Map<String, String> addFlagMap = new HashMap<>();
-        String addFlag;
+        String flag;
         Map<String, Boolean> permsPlayerFlags;
+        boolean RFBypassPerm = ConfigHandler.getRegionConfig().isRFBypassPerms();
+        boolean RFBypassCustom = ConfigHandler.getRegionConfig().isRFBypassCustom();
+        boolean RFDefaultRemove = ConfigHandler.getRegionConfig().isRFDefaultRemove();
+        boolean RFDefaultRemoveOnly = ConfigHandler.getRegionConfig().isRFDefaultRemoveOnly();
+        List<String> RFDefaultRemoveIgnore = ConfigHandler.getRegionConfig().getRFDefaultRemoveIgnore();
+        boolean RFDefaultUpdate = ConfigHandler.getRegionConfig().isRFDefaultUpdate();
+        List<String> RFDefaultUpdateIgnore = ConfigHandler.getRegionConfig().getRFDefaultUpdateIgnore();
+        boolean RFPermsRemove = ConfigHandler.getRegionConfig().isRFPermsRemove();
+        List<String> RFPermsRemoveIgnore = ConfigHandler.getRegionConfig().getRFPermsRemoveIgnore();
 
         for (OfflinePlayer offlinePlayer : editList) {
             playerName = offlinePlayer.getName();
+            if (RFBypassPerm) {
+                if (PermissionsHandler.hasPermissionOffline(offlinePlayer, "regionplus.bypass.flagsedit")) {
+                    ServerHandler.debugMessage("Residence-Flags-Editor", playerName, "bypassPermission", "bypass");
+                    break;
+                }
+            }
+            groupName = getUserGroup(offlinePlayer, groups);
+            group = Residence.getInstance().getPermissionManager().getGroupByName(groupName);
             if (playerName != null) {
                 for (ClaimedResidence res : ResidenceApi.getPlayerManager().getResidencePlayer(playerName).getResList()) {
                     resName = res.getName();
                     perms = res.getPermissions();
-                    group = ResidenceApi.getPlayerManager().getGroup(res.getOwner());
                     // The default flags of that group.
                     defaultFlagSet = group.getDefaultResidenceFlags();
                     // The default flags of that residence.
                     flagSet = perms.getFlags().entrySet();
                     // Default - Remove
-                    if (ConfigHandler.getRegionConfig().isRFRemove()) {
+                    if (RFDefaultRemove) {
                         for (Map.Entry<String, Boolean> flagEntry : flagSet) {
                             if (!defaultFlagSet.contains(flagEntry)) {
-                                removeFlagList.add(flagEntry.getKey());
+                                flag = flagEntry.getKey();
+                                if (RFDefaultRemoveIgnore.contains(flag)) {
+                                    ServerHandler.sendDebugMessage("&5Bypass default flag: &e" + resName + "&8 - &f" + flag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                                    break;
+                                }
+                                try {
+                                    if (RFDefaultRemoveOnly) {
+                                        if (group.hasFlagAccess(Flags.valueOf(flag))) {
+                                            break;
+                                        }
+                                    }
+                                    removeFlagList.add(flag);
+                                } catch (Exception e) {
+                                    if (RFBypassCustom) {
+                                        ServerHandler.sendDebugMessage("&5Bypass default flag: &e" + resName + "&8 - &f" + flag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                                    } else {
+                                        removeFlagList.add(flag);
+                                    }
+                                }
                             }
                         }
                         for (String removeFlag : removeFlagList) {
                             perms.setFlag(removeFlag, FlagPermissions.FlagState.NEITHER);
-                            ServerHandler.sendDebugMessage("&4Remove default flag: &e" + resName + "&8 - &f" + removeFlag + " &7(Owner: " + playerName + ")");
+                            ServerHandler.sendDebugMessage("&4Remove default flag: &e" + resName + "&8 - &f" + removeFlag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
                         }
                     }
                     // Default - Update
-                    if (ConfigHandler.getRegionConfig().isRFUpdate()) {
+                    if (RFDefaultUpdate) {
                         for (Map.Entry<String, Boolean> resFlagEntry : flagSet) {
                             if (!flagSet.contains(resFlagEntry)) {
-                                addFlagMap.put(resFlagEntry.getKey(), resFlagEntry.getValue().toString());
+                                flag = resFlagEntry.getKey();
+                                if (RFDefaultUpdateIgnore.contains(flag)) {
+                                    ServerHandler.sendDebugMessage("&5Bypass update default flag: &e" + resName + "&8 - &f" + flag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                                    break;
+                                }
+                                if (!group.hasFlagAccess(Flags.valueOf(flag))) {
+                                    addFlagMap.put(flag, resFlagEntry.getValue().toString());
+                                }
                             }
                         }
                         for (String addFlagKey : addFlagMap.keySet()) {
-                            addFlag = addFlagMap.get(addFlagKey);
-                            perms.setFlag(addFlagKey, FlagPermissions.FlagState.valueOf(addFlagMap.get(addFlagKey).toUpperCase()));
-                            ServerHandler.sendDebugMessage("&6Add default flag: &e" + resName + "&8 - &f" + addFlagKey + "=" + addFlag + " &7(Owner: " + playerName + ")");
+                            flag = addFlagMap.get(addFlagKey);
+                            perms.setFlag(addFlagKey, FlagPermissions.FlagState.valueOf(flag.toUpperCase()));
+                            ServerHandler.sendDebugMessage("&6Add default flag: &e" + resName + "&8 - &f" + addFlagKey + "=" + flag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
                         }
                     }
                     // Permission (player) - Remove
-                    if (ConfigHandler.getRegionConfig().isRFRemovePerm()) {
+                    if (RFPermsRemove) {
                         // Get player permission list in residence.
                         listSplit = perms.listPlayersFlags().split("§f\\[");
                         permsPlayerList.add(listSplit[0]);
@@ -321,14 +364,26 @@ public class ResidenceUtils {
                         for (String permsPlayer : permsPlayerList) {
                             permsPlayerFlags = perms.getPlayerFlags(permsPlayer);
                             if (permsPlayerFlags != null) {
-                                for (String flag : permsPlayerFlags.keySet()) {
-                                    if (!group.hasFlagAccess(Flags.valueOf(flag))) {
-                                        removeFlagPlayerList.add(flag);
+                                for (String permsPlayerFlag : permsPlayerFlags.keySet()) {
+                                    if (RFPermsRemoveIgnore.contains(permsPlayerFlag)) {
+                                        ServerHandler.sendDebugMessage("&5Bypass player flag: &e" + resName + "&8 - &f" + permsPlayerFlag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                                        break;
+                                    }
+                                    try {
+                                        if (!group.hasFlagAccess(Flags.valueOf(permsPlayerFlag))) {
+                                            removeFlagPlayerList.add(permsPlayerFlag);
+                                        }
+                                    } catch (Exception e) {
+                                        if (RFBypassCustom) {
+                                            ServerHandler.sendDebugMessage("&5Bypass player flag: &e" + resName + "&8 - &f" + permsPlayerFlag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                                        } else {
+                                            removeFlagPlayerList.add(permsPlayerFlag);
+                                        }
                                     }
                                 }
                                 for (String removePlayerFlag : removeFlagPlayerList) {
                                     perms.setPlayerFlag(permsPlayer, removePlayerFlag, FlagPermissions.FlagState.NEITHER);
-                                    ServerHandler.sendDebugMessage("&cRemove player flag: &e" + resName + "&8 - &6" + permsPlayer + "&8 - &f" + removePlayerFlag + " &7(Owner: " + playerName + ")");
+                                    ServerHandler.sendDebugMessage("&cRemove player flag: &e" + resName + "&8 - &6" + permsPlayer + "&8 - &f" + removePlayerFlag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
                                 }
                             }
                         }
@@ -337,6 +392,21 @@ public class ResidenceUtils {
             }
         }
         ConfigHandler.getEditor().setEnd(true);
+    }
+
+    private static List<String> getResGroups() {
+        List<String> list = new ArrayList<>(Residence.getInstance().getPermissionManager().getGroups().keySet());
+        list.sort(Collections.reverseOrder());
+        return list;
+    }
+
+    private static String getUserGroup(OfflinePlayer offlinePlayer, List<String> groups) {
+        for (String group : groups) {
+            if (PermissionsHandler.hasPermissionOffline(offlinePlayer, "residence.group." + group)) {
+                return group;
+            }
+        }
+        return "default";
     }
 
     public static String[] pointsPH(Player player) {

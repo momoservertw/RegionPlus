@@ -18,7 +18,7 @@ public class DependAPI {
 		this.setItemJoinStatus(Bukkit.getServer().getPluginManager().getPlugin("ItemJoin") != null);
 		this.setPvPManagerStatus(Bukkit.getServer().getPluginManager().getPlugin("PvPManager") != null);
 		this.setMultiverseCoreStatus(Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core") != null);
-		this.setMultiverseCoreStatus(Bukkit.getServer().getPluginManager().getPlugin("LuckPerms") != null);
+		this.setLuckPermsStatus(Bukkit.getServer().getPluginManager().getPlugin("LuckPerms") != null);
 		this.setVault();
 	}
 

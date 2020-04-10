@@ -34,14 +34,19 @@ public class ConfigHandler {
         setUpdater(new UpdateHandler());
         setEditor(new FlagsEditor());
 
-        if (ConfigHandler.getDepends().ResidenceEnabled()) {
+        if (getDepends().LuckPermsEnabled()) {
+            if (getRegionConfig().isRFDefaultRemove()) {
+                ServerHandler.sendConsoleMessage("&6Flags-Edit need to check the permissions of offline players.");
+                ServerHandler.sendConsoleMessage("&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
+            }
+        }
+        if (getDepends().ResidenceEnabled()) {
             if (!reload && getRegionConfig().isRFAutoCheck()) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
-                        ResidenceUtils flagsEdit = new ResidenceUtils();
-                        flagsEdit.editFlags();
+                        ResidenceUtils.editFlags();
                     }
                 }.runTaskLater(RegionPlus.getInstance(), getRegionConfig().getRFAutoCheckDelay());
             }

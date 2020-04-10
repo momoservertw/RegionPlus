@@ -35,14 +35,20 @@ public class RegionConfig {
     private Map<String, String> pointsDisplayMap;
 
     private boolean RFEnable;
+    private boolean RFAutoCheck;
+    private long RFAutoCheckDelay;
     private int RFMaxLimit;
     private int RFMaxInterval;
     private boolean RFMessage;
-    private boolean RFAutoCheck;
-    private long RFAutoCheckDelay;
-    private boolean RFUpdate;
-    private boolean RFRemove;
-    private boolean RFRemovePerm;
+    private boolean RFBypassCustom;
+    private boolean RFBypassPerms;
+    private boolean RFDefaultRemove;
+    private boolean RFDefaultRemoveOnly;
+    private List<String> RFDefaultRemoveIgnore;
+    private boolean RFDefaultUpdate;
+    private List<String> RFDefaultUpdateIgnore;
+    private boolean RFPermsRemove;
+    private List<String> RFPermsRemoveIgnore;
 
     private boolean VEnable;
     private boolean VCreateRes;
@@ -108,14 +114,20 @@ public class RegionConfig {
         }
 
         RFEnable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Enable");
-        RFMaxLimit = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Max-Edit-Players.Limit");
-        RFMaxInterval = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Max-Edit-Players.Interval");
-        RFMessage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Max-Edit-Players.Message");
-        RFUpdate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Update");
-        RFAutoCheck = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Auto-Check.Enable");
-        RFAutoCheckDelay = ConfigHandler.getConfig("config.yml").getLong("Residence.Flags-Editor.Auto-Check.Delay") * 20;
-        RFRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Remove-No-Perms");
-        RFRemovePerm = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Permissions.Remove-No-Perms");
+        RFAutoCheck = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Auto-Check.Enable");
+        RFAutoCheckDelay = ConfigHandler.getConfig("config.yml").getLong("Residence.Flags-Editor.Settings.Auto-Check.Delay") * 20;
+        RFMaxLimit = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Settings.Max-Edit-Players.Limit");
+        RFMaxInterval = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Settings.Max-Edit-Players.Interval");
+        RFMessage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Max-Edit-Players.Message");
+        RFBypassCustom = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Bypass-Missing-Custom-Flags");
+        RFBypassPerms = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Check-Bypass-Permission");
+        RFDefaultUpdate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Update.Enable");
+        RFDefaultUpdateIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Default.Update.Ignore");
+        RFDefaultRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Remove.Enable");
+        RFDefaultRemoveOnly = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Remove.Only-No-Perms");
+        RFDefaultRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Default.Remove.Ignore-List");
+        RFPermsRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Permissions.Remove.Enable");
+        RFPermsRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Permissions.Remove.Ignore-List");
 
         VEnable = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
         VCreateRes = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Create-Residence.Enable");
@@ -233,6 +245,14 @@ public class RegionConfig {
         return RFEnable;
     }
 
+    public boolean isRFAutoCheck() {
+        return RFAutoCheck;
+    }
+
+    public long getRFAutoCheckDelay() {
+        return RFAutoCheckDelay;
+    }
+
     public int getRFMaxLimit() {
         return RFMaxLimit;
     }
@@ -245,24 +265,41 @@ public class RegionConfig {
         return RFMessage;
     }
 
-    public boolean isRFAutoCheck() {
-        return RFAutoCheck;
+    public boolean isRFBypassCustom() {
+        return RFBypassCustom;
     }
 
-    public long getRFAutoCheckDelay() {
-        return RFAutoCheckDelay;
+    public boolean isRFBypassPerms() {
+        return RFBypassPerms;
     }
 
-    public boolean isRFUpdate() {
-        return RFUpdate;
+    public boolean isRFDefaultUpdate() {
+        return RFDefaultUpdate;
     }
 
-    public boolean isRFRemove() {
-        return RFRemove;
+    public List<String> getRFDefaultUpdateIgnore() {
+        return RFDefaultUpdateIgnore;
     }
 
-    public boolean isRFRemovePerm() {
-        return RFRemovePerm;
+    public boolean isRFDefaultRemove() {
+        return RFDefaultRemove;
+    }
+
+    public boolean isRFDefaultRemoveOnly() {
+        return RFDefaultRemoveOnly;
+    }
+
+    public List<String> getRFDefaultRemoveIgnore() {
+        return RFDefaultRemoveIgnore;
+    }
+
+
+    public List<String> getRFPermsRemoveIgnore() {
+        return RFPermsRemoveIgnore;
+    }
+
+    public boolean isRFPermsRemove() {
+        return RFPermsRemove;
     }
 
 

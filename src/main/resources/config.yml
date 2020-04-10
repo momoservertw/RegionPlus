@@ -63,26 +63,40 @@ Residence:
   # Bypass permission: regionplus.bypass.flagsedit
   Flags-Editor:
     Enable: false
-    # It will delay few seconds and restart editing flags to prevent the server restart while editing flags.
-    Max-Edit-Players:
-      # Set "0" to disable this feature.
-      Limit: 30
-      # The delay seconds of restart editing flags.
-      Interval: 1
-      # The restart editing messages.
-      Message: true
-    # Automatic check the flags when the server is starting.
-    Auto-Check:
-      Enable: false
-      Delay: 20
+    Settings:
+      # Automatic check the flags when the server is starting.
+      Auto-Check:
+        Enable: false
+        Delay: 20
+      # It will delay few seconds and restart editing flags to prevent the server restart while editing flags.
+      Max-Edit-Players:
+        # Set "0" to disable this feature.
+        Limit: 30
+        # The delay seconds of restart editing flags.
+        Interval: 1
+        # The restart editing messages.
+        Message: true
+      # Bypass to remove the missing custom flags.
+      Bypass-Missing-Custom-Flags: true
+      Check-Bypass-Permission: true
+    # Checking the "Flags.Default" in groups.yml.
     Default:
-      # Add the flag that default setting does exist but the residence doesn't exist.
-      Update: true
-      # Remove the flag that default setting doesn't exist and the residence owner doesn't have permission to change.
-      Remove-No-Perms: true
+      # Remove the flags that doesn't exist.
+      Remove:
+        Enable: true
+        # Only remove the flags that residence owner doesn't have permission to change.
+        Only-No-Perms: true
+        Ignore-List: []
+      # Add the flags that does exist but the residence doesn't have.
+      Update:
+        Enable: true
+        Ignore-List: []
+    # Checking the "Flags.Permission" in groups.yml.
     Permissions:
-      # Remove the flag that the residence owner doesn't have permission to change.
-      Remove-No-Perms: true
+      # Remove the flags that the residence owner doesn't have permission to change.
+      Remove:
+        Enable: true
+        Ignore-List: []
 
 # Prevent general players build or kill entities outside the border.
 # Bypass permission: regionplus.bypass.visitor.WORLD
