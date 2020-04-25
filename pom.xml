@@ -107,6 +107,15 @@
             <version>5.0</version>
             <scope>provided</scope>
         </dependency>
+        <!--SurvivalMechanics API-->
+        <dependency>
+            <groupId>me.MultiverseCore</groupId>
+            <artifactId>MultiverseCore</artifactId>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/SurvivalMechanics.jar
+            </systemPath>
+            <version>LEGACY</version>
+        </dependency>
     </dependencies>
 
 </project>
