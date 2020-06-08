@@ -38,13 +38,9 @@ public class Commands implements CommandExecutor {
                     Language.sendLangMessage("Message.RegionPlus.Commands.flagsedit", sender, false);
                 }
                 if (PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
-                    Language.sendLangMessage("Message.RegionPlus.Commands.pointsLook", sender, false);
-                    Language.sendLangMessage("Message.RegionPlus.Commands.pointsUsed", sender, false);
-                    Language.sendLangMessage("Message.RegionPlus.Commands.pointsLimit", sender, false);
+                    Language.sendLangMessage("Message.RegionPlus.Commands.points", sender, false);
                     if (PermissionsHandler.hasPermission(sender, "regionplus.command.points.other")) {
-                        Language.sendLangMessage("Message.RegionPlus.Commands.targetPointsLook", sender, false);
-                        Language.sendLangMessage("Message.RegionPlus.Commands.targetPointsUsed", sender, false);
-                        Language.sendLangMessage("Message.RegionPlus.Commands.targetPointsLimit", sender, false);
+                        Language.sendLangMessage("Message.RegionPlus.Commands.targetPoints", sender, false);
                     }
                 }
             } else {
@@ -69,7 +65,7 @@ public class Commands implements CommandExecutor {
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("flagsedit")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
-                if (ConfigHandler.getRegionConfig().isRFEnable()) {
+                if (ConfigHandler.getConfigPath().isRFEnable()) {
                     if (ConfigHandler.getEditor().isRun()) {
                         ServerHandler.sendConsoleMessage("&cThe process of Flags-Edit is still running! &8(Stop process: /rp flagsedit stop)");
                         return true;
@@ -97,7 +93,7 @@ public class Commands implements CommandExecutor {
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("messageedit")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.messageedit")) {
-                if (ConfigHandler.getRegionConfig().isRMEnable()) {
+                if (ConfigHandler.getConfigPath().isRMEnable()) {
                     ServerHandler.sendConsoleMessage("&6Starting to check residence message...");
                     ResidenceUtils.editMessage();
                     return true;
@@ -109,7 +105,7 @@ public class Commands implements CommandExecutor {
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("points")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
-                if (ConfigHandler.getRegionConfig().isPointsEnable()) {
+                if (ConfigHandler.getConfigPath().isPointsEnable()) {
                     Language.sendLangMessage("Message.RegionPlus.points", sender, ResidenceUtils.pointsPH((Player) sender));
                 } else {
                     Language.sendLangMessage("Message.featureNotEnable", sender);
@@ -119,7 +115,7 @@ public class Commands implements CommandExecutor {
             }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("points")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.points.other")) {
-                if (ConfigHandler.getRegionConfig().isPointsEnable()) {
+                if (ConfigHandler.getConfigPath().isPointsEnable()) {
                     Player player = PlayerHandler.getPlayerString(args[1]);
                     if (player == null) {
                         String[] placeHolders = Language.newString();

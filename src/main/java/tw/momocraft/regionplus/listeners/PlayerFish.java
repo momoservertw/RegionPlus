@@ -20,9 +20,9 @@ public class PlayerFish implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorItemsFishing(PlayerFishEvent e) {
-        if (ConfigHandler.getRegionConfig().isVEnable()) {
-            if (ConfigHandler.getRegionConfig().isVUseItems()) {
-                if (!ConfigHandler.getRegionConfig().isVItemsFishing()) {
+        if (ConfigHandler.getConfigPath().isVEnable()) {
+            if (ConfigHandler.getConfigPath().isVUseItems()) {
+                if (!ConfigHandler.getConfigPath().isVItemsFishing()) {
                     Player player = e.getPlayer();
                     if (RegionUtils.bypassBorder(player, player.getLocation())) {
                         ServerHandler.debugMessage("Visitor", "FISHING_ROD", "Use-Items.Fishing", "return", "border");
@@ -30,7 +30,7 @@ public class PlayerFish implements Listener {
                     }
                     // Allow-ItemJoin
                     if (ConfigHandler.getDepends().ItemJoinEnabled()) {
-                        if (!ConfigHandler.getRegionConfig().isVItemJoin()) {
+                        if (!ConfigHandler.getConfigPath().isVItemJoin()) {
                             ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
                             if (itemJoinAPI.isCustom(player.getInventory().getItemInMainHand())) {
                                 ServerHandler.debugMessage("Visitor", "FISHING_ROD", "Use-Items.Fishing", "bypass", "Allow-ItemJoin=true");
@@ -39,7 +39,7 @@ public class PlayerFish implements Listener {
                         }
                     }
                     // Cancel
-                    if (ConfigHandler.getRegionConfig().isVUseItemsMsg()) {
+                    if (ConfigHandler.getConfigPath().isVUseItemsMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorUseItems", player);
                     }
                     ServerHandler.debugMessage("Visitor", "FISHING_ROD", "Use-Items.Fishing", "cancel", "Allow-Fishing=false");

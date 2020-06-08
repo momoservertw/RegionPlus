@@ -20,8 +20,8 @@ public class PlayerInteractEntity implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorInteractEntities(PlayerInteractEntityEvent e) {
-        if (ConfigHandler.getRegionConfig().isVEnable()) {
-            if (ConfigHandler.getRegionConfig().isVInteractEntities()) {
+        if (ConfigHandler.getConfigPath().isVEnable()) {
+            if (ConfigHandler.getConfigPath().isVInteractEntities()) {
                 Player player = e.getPlayer();
                 Entity entity = e.getRightClicked();
                 String entityType = entity.getType().name();
@@ -31,13 +31,13 @@ public class PlayerInteractEntity implements Listener {
                 }
                 // Allow-NPC
                 if (entity.hasMetadata("NPC")) {
-                    if (ConfigHandler.getRegionConfig().isVInteractEntitiesNPC()) {
+                    if (ConfigHandler.getConfigPath().isVInteractEntitiesNPC()) {
                         ServerHandler.debugMessage("Visitor", entityType, "Interact-Entities", "bypass", "Allow-NPC=true");
                         return;
                     }
                 }
                 // Cancel
-                if (ConfigHandler.getRegionConfig().isVInteractEntitiesMsg()) {
+                if (ConfigHandler.getConfigPath().isVInteractEntitiesMsg()) {
                     Language.sendLangMessage("Message.RegionPlus.visitorInteractEntities", player);
                 }
                 ServerHandler.debugMessage("Visitor", entityType, "Interact-Entities", "cancel");

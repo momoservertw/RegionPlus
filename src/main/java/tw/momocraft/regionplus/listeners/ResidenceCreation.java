@@ -23,7 +23,7 @@ public class ResidenceCreation implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onResPointsEnable(ResidenceCreationEvent e) {
-        if (ConfigHandler.getRegionConfig().isPointsEnable()) {
+        if (ConfigHandler.getConfigPath().isPointsEnable()) {
             Player player = e.getPlayer();
             String playerName = player.getName();
             if (PermissionsHandler.hasPermission(player, "regionplus.bypass.points.limit")) {
@@ -58,13 +58,13 @@ public class ResidenceCreation implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onVisitorCreateRes(ResidenceCreationEvent e) {
-        if (ConfigHandler.getRegionConfig().isVEnable()) {
-            if (ConfigHandler.getRegionConfig().isVCreateRes()) {
+        if (ConfigHandler.getConfigPath().isVEnable()) {
+            if (ConfigHandler.getConfigPath().isVCreateRes()) {
                 Player player = e.getPlayer();
                 String playerName = player.getName();
                 if (!RegionUtils.bypassBorder(player, player.getLocation())) {
                     // Cancel
-                    if (ConfigHandler.getRegionConfig().isVCreateResMsg()) {
+                    if (ConfigHandler.getConfigPath().isVCreateResMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorCreateResidence", player);
                     }
                     ServerHandler.debugMessage("Visitor", playerName, "Create-Residence", "cancel", "border");

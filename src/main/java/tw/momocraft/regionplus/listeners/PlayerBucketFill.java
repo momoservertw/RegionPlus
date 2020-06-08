@@ -19,9 +19,9 @@ public class PlayerBucketFill implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorItemsBucket(PlayerBucketFillEvent e) {
-        if (ConfigHandler.getRegionConfig().isVEnable()) {
-            if (ConfigHandler.getRegionConfig().isVUseItems()) {
-                if (!ConfigHandler.getRegionConfig().isVItemsBucket()) {
+        if (ConfigHandler.getConfigPath().isVEnable()) {
+            if (ConfigHandler.getConfigPath().isVUseItems()) {
+                if (!ConfigHandler.getConfigPath().isVItemsBucket()) {
                     Player player = e.getPlayer();
                     String itemType = e.getItemStack().getType().name();
                     if (RegionUtils.bypassBorder(player, player.getLocation())) {
@@ -30,7 +30,7 @@ public class PlayerBucketFill implements Listener {
                     }
                     // Allow-ItemJoin
                     if (ConfigHandler.getDepends().ItemJoinEnabled()) {
-                        if (!ConfigHandler.getRegionConfig().isVItemJoin()) {
+                        if (!ConfigHandler.getConfigPath().isVItemJoin()) {
                             ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
                             if (itemJoinAPI.isCustom(player.getInventory().getItemInMainHand())) {
                                 ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Bucket", "bypass", "Allow-ItemJoin");
@@ -39,7 +39,7 @@ public class PlayerBucketFill implements Listener {
                         }
                     }
                     // Cancel
-                    if (ConfigHandler.getRegionConfig().isVUseItemsMsg()) {
+                    if (ConfigHandler.getConfigPath().isVUseItemsMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorUseItems", player);
                     }
                     ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Bucket", "cancel", "Allow-Bucket=false");

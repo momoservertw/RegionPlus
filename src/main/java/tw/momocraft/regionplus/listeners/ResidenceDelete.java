@@ -24,7 +24,7 @@ public class ResidenceDelete implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     private void onResidenceDelete(ResidenceDeleteEvent e) {
-        if (ConfigHandler.getRegionConfig().isResReturnXYZ() && Residence.getInstance().getConfigManager().isSelectionIgnoreY()) {
+        if (ConfigHandler.getConfigPath().isResReturnXYZ() && Residence.getInstance().getConfigManager().isSelectionIgnoreY()) {
             Player player = e.getPlayer();
             String playerName = player.getName();
             if (!e.getCause().equals(ResidenceDeleteEvent.DeleteCause.PLAYER_DELETE)) {
@@ -40,8 +40,8 @@ public class ResidenceDelete implements Listener {
             int Z;
             double oldSell = 0;
             double newSell = 0;
-            if (ConfigHandler.getRegionConfig().isResAllAreas()) {
-                boolean ignoreWithin = ConfigHandler.getRegionConfig().isResIgnoreWithin();
+            if (ConfigHandler.getConfigPath().isResAllAreas()) {
+                boolean ignoreWithin = ConfigHandler.getConfigPath().isResIgnoreWithin();
                 for (CuboidArea area : res.getAreaArray()) {
                     if (ignoreWithin && mainArea.isAreaWithinArea(area)) {
                         continue;

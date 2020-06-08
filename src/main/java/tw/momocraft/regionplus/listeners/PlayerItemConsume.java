@@ -20,9 +20,9 @@ public class PlayerItemConsume implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorItemsConsume(PlayerItemConsumeEvent e) {
-        if (ConfigHandler.getRegionConfig().isVEnable()) {
-            if (ConfigHandler.getRegionConfig().isVUseItems()) {
-                if (!ConfigHandler.getRegionConfig().isVItemsConsume()) {
+        if (ConfigHandler.getConfigPath().isVEnable()) {
+            if (ConfigHandler.getConfigPath().isVUseItems()) {
+                if (!ConfigHandler.getConfigPath().isVItemsConsume()) {
                     Player player = e.getPlayer();
                     String itemType = e.getItem().getType().name();
                     if (RegionUtils.bypassBorder(player, player.getLocation())) {
@@ -31,7 +31,7 @@ public class PlayerItemConsume implements Listener {
                     }
                     // Allow-ItemJoin
                     if (ConfigHandler.getDepends().ItemJoinEnabled()) {
-                        if (!ConfigHandler.getRegionConfig().isVItemJoin()) {
+                        if (!ConfigHandler.getConfigPath().isVItemJoin()) {
                             ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
                             if (itemJoinAPI.isCustom(player.getInventory().getItemInMainHand())) {
                                 ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Consume", "bypass", "Allow-ItemJoin=true");
@@ -40,7 +40,7 @@ public class PlayerItemConsume implements Listener {
                         }
                     }
                     // Cancel
-                    if (ConfigHandler.getRegionConfig().isVUseItemsMsg()) {
+                    if (ConfigHandler.getConfigPath().isVUseItemsMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorUseItems", player);
                     }
                     ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Consume", "cancel", "Allow-Consume=false");

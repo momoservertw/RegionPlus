@@ -24,7 +24,7 @@ public class ResidenceOwnerChange implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onResidenceOwnerChange(ResidenceOwnerChangeEvent e) {
-        if (ConfigHandler.getRegionConfig().isPointsEnable()) {
+        if (ConfigHandler.getConfigPath().isPointsEnable()) {
             Player newOwner = Bukkit.getPlayer(e.getNewOwnerUuid());
             String newOwnerName = e.getNewOwner();
             Player owner = Bukkit.getPlayer(e.getResidence().getOwner());

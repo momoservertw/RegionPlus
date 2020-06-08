@@ -22,7 +22,7 @@ public class FlagsEditor {
         run = true;
         restart = true;
         end = false;
-        maxLimit = ConfigHandler.getRegionConfig().getRFMaxLimit();
+        maxLimit = ConfigHandler.getConfigPath().getRFMaxLimit();
         startAt = 0;
         last = 0;
         playerList = Arrays.asList(Bukkit.getOfflinePlayers());

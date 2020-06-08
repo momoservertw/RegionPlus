@@ -10,7 +10,7 @@ import tw.momocraft.regionplus.handlers.ConfigHandler;
 
 import java.util.*;
 
-public class RegionConfig {
+public class ConfigPath {
 
     private boolean playerPreventFly;
     private String playerPreventFlyPerm;
@@ -24,11 +24,21 @@ public class RegionConfig {
     private boolean RPZombieDoor;
     private boolean RPEndermanPickup;
 
+    private boolean resSMClimb;
+    private boolean resSMCrawl;
+    private boolean resSMFlight;
+    private boolean resSMMobkick;
+    private boolean resSMRoofhang;
+    private boolean resSMSlide;
+    private boolean resSMSwim;
+    private boolean resSMWallkick;
+
     private boolean pointsEnable;
     private boolean pointsSelectInfo;
     private Material pointsSelectTool;
     private boolean pointsMode;
     private boolean pointsIgnoreXYZ;
+    private boolean pointsExpandXYZ;
     private boolean resReturnXYZ;
     private boolean resAllAreas;
     private boolean resIgnoreWithin;
@@ -84,7 +94,7 @@ public class RegionConfig {
     private boolean VPickupItemsMsg;
     private boolean VUseItemsMsg;
 
-    public RegionConfig() {
+    public ConfigPath() {
         setUp();
     }
 
@@ -95,6 +105,15 @@ public class RegionConfig {
         resAllAreas = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.All-Areas.Enable");
         resIgnoreWithin = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.All-Areas.Ignore-Within-Area");
         resReturnXYZ = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Return-XYZ");
+
+        resSMClimb = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Climb");
+        resSMCrawl = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Crawl");
+        resSMFlight = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Flight");
+        resSMMobkick = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Mobkick");
+        resSMRoofhang = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Roofhang");
+        resSMSlide = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Slide");
+        resSMSwim = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Swim");
+        resSMWallkick = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Wallkick");
 
         RPEnable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Enable");
         RPFlyDisable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Fly-Disable");
@@ -110,6 +129,7 @@ public class RegionConfig {
         pointsSelectTool = Residence.getInstance().getConfigManager().getSelectionTool().getMaterial();
         pointsMode = Residence.getInstance().getConfigManager().isSelectionIgnoreY();
         pointsIgnoreXYZ = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.Ignore-XYZ");
+        pointsExpandXYZ = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.Expand-XYZ");
         pointsDefault = ConfigHandler.getConfig("config.yml").getLong("Residence.Points.Groups.Default.Limit");
         pointsMap = new HashMap<>();
         pointsDisplayMap = new HashMap<>();
@@ -148,12 +168,12 @@ public class RegionConfig {
         RMGroupTable = HashBasedTable.create();
         if (RMOldEnterConfig != null) {
             for (String group : RMOldEnterConfig.getKeys(false)) {
-                RMGroupTable.put(group, "enter", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups."+ group + ".Enter"));
+                RMGroupTable.put(group, "enter", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups." + group + ".Enter"));
             }
         }
         if (RMOldLeaveConfig != null) {
             for (String group : RMOldLeaveConfig.getKeys(false)) {
-                RMGroupTable.put(group, "leave", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups."+ group + ".Leave"));
+                RMGroupTable.put(group, "leave", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups." + group + ".Leave"));
             }
         }
 
@@ -244,6 +264,10 @@ public class RegionConfig {
         return pointsIgnoreXYZ;
     }
 
+    public boolean isPointsExpandXYZ() {
+        return pointsExpandXYZ;
+    }
+
     public boolean isResReturnXYZ() {
         return resReturnXYZ;
     }
@@ -254,6 +278,38 @@ public class RegionConfig {
 
     public boolean isResIgnoreWithin() {
         return resIgnoreWithin;
+    }
+
+    public boolean isResSMClimb() {
+        return resSMClimb;
+    }
+
+    public boolean isResSMCrawl() {
+        return resSMCrawl;
+    }
+
+    public boolean isResSMFlight() {
+        return resSMFlight;
+    }
+
+    public boolean isResSMMobkick() {
+        return resSMMobkick;
+    }
+
+    public boolean isResSMRoofhang() {
+        return resSMRoofhang;
+    }
+
+    public boolean isResSMSlide() {
+        return resSMSlide;
+    }
+
+    public boolean isResSMSwim() {
+        return resSMSwim;
+    }
+
+    public boolean isResSMWallkick() {
+        return resSMWallkick;
     }
 
     public Long getPointsDefault() {

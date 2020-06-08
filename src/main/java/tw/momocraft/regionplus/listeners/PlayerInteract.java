@@ -26,8 +26,8 @@ public class PlayerInteract implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onResPointsSelectInfo(PlayerInteractEvent e) {
-        if (ConfigHandler.getRegionConfig().isPointsSelectInfo()) {
-            if (e.getMaterial().equals(ConfigHandler.getRegionConfig().getPointsSelectTool())) {
+        if (ConfigHandler.getConfigPath().isPointsSelectInfo()) {
+            if (e.getMaterial().equals(ConfigHandler.getConfigPath().getPointsSelectTool())) {
                 Player player = e.getPlayer();
                 String playerName = player.getName();
                 SelectionManager smanager = Residence.getInstance().getSelectionManager();
@@ -43,7 +43,7 @@ public class PlayerInteract implements Listener {
                 }
                 if (world1.equals(loc2.getWorld())) {
                     long size;
-                    if (ConfigHandler.getRegionConfig().isPointsMode()) {
+                    if (ConfigHandler.getConfigPath().isPointsMode()) {
                         size = (Math.abs(loc1.getBlockX() - loc2.getBlockX()) + 1) * (Math.abs(loc1.getBlockZ() - loc2.getBlockZ()) + 1);
                     } else {
                         size = (Math.abs(loc1.getBlockX() - loc2.getBlockX()) + 1) * (Math.abs(loc1.getBlockZ() - loc2.getBlockZ()) + 1)
@@ -65,13 +65,13 @@ public class PlayerInteract implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (ConfigHandler.getRegionConfig().isVEnable()) {
-            if (ConfigHandler.getRegionConfig().isVInteractBlock()) {
+        if (ConfigHandler.getConfigPath().isVEnable()) {
+            if (ConfigHandler.getConfigPath().isVInteractBlock()) {
                 Player player = e.getPlayer();
                 String blockType = e.getMaterial().name();
                 if (e.getAction().equals(Action.PHYSICAL)) {
                     // Allow-Use
-                    if (ConfigHandler.getRegionConfig().isVInteractBlockUse()) {
+                    if (ConfigHandler.getConfigPath().isVInteractBlockUse()) {
                         if (RegionUtils.bypassBorder(player, player.getLocation())) {
                             ServerHandler.debugMessage("Visitor", blockType, "Interact-Blocks", "return", "border");
                             return;
@@ -80,7 +80,7 @@ public class PlayerInteract implements Listener {
                             case "TRIPWIRE":
                             case "ACACIA_PRESSURE_PLATE":
                             case "BIRCH_PRESSURE_PLATE":
-                                if (ConfigHandler.getRegionConfig().isVInteractBlockMsg()) {
+                                if (ConfigHandler.getConfigPath().isVInteractBlockMsg()) {
                                     Language.sendLangMessage("Message.RegionPlus.visitorInteractEntities", player);
                                 }
                                 ServerHandler.debugMessage("Visitor", blockType, "Interact-Blocks", "cancel", "Physical");
@@ -103,10 +103,10 @@ public class PlayerInteract implements Listener {
                     blockType = block.getType().name();
                     // Allow-Use
                     if (RegionUtils.isCanUseEntity(blockType)) {
-                        if (ConfigHandler.getRegionConfig().isVInteractBlockUse()) {
+                        if (ConfigHandler.getConfigPath().isVInteractBlockUse()) {
                             // Allow-Container
                             if (RegionUtils.isContainer(blockType)) {
-                                if (ConfigHandler.getRegionConfig().isVInteractBlockContainer()) {
+                                if (ConfigHandler.getConfigPath().isVInteractBlockContainer()) {
                                     ServerHandler.debugMessage("Visitor", blockType, "Interact-Blocks", "bypass", "Allow-Use=true, Allow-Container=true");
                                     return;
                                 }
@@ -118,13 +118,13 @@ public class PlayerInteract implements Listener {
                     }
                     // Allow-Container
                     if (RegionUtils.isContainer(blockType)) {
-                        if (ConfigHandler.getRegionConfig().isVInteractBlockContainer()) {
+                        if (ConfigHandler.getConfigPath().isVInteractBlockContainer()) {
                             ServerHandler.debugMessage("Visitor", blockType, "Interact-Blocks", "bypass", "Allow-Container=true");
                             return;
                         }
                     }
                     // Cancel
-                    if (ConfigHandler.getRegionConfig().isVInteractBlockMsg()) {
+                    if (ConfigHandler.getConfigPath().isVInteractBlockMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorInteractBlocks", player);
                     }
                     ServerHandler.debugMessage("Visitor", blockType, "Interact-Blocks", "cancel");

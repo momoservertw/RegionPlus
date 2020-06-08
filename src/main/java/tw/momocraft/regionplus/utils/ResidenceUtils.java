@@ -102,7 +102,7 @@ public class ResidenceUtils {
 
     public static long getNewSize(CuboidArea area) {
         long size = 0;
-        if (ConfigHandler.getRegionConfig().isPointsMode()) {
+        if (ConfigHandler.getConfigPath().isPointsMode()) {
             size += area.getXSize() * area.getZSize();
         } else {
             size += area.getXSize() * area.getZSize() * area.getYSize();
@@ -112,9 +112,9 @@ public class ResidenceUtils {
 
     public static long getSize(ClaimedResidence res) {
         long size = 0;
-        boolean ignoreXYZ = ConfigHandler.getRegionConfig().isPointsIgnoreXYZ();
-        boolean allAreas = ConfigHandler.getRegionConfig().isResAllAreas();
-        boolean mode = ConfigHandler.getRegionConfig().isPointsMode();
+        boolean ignoreXYZ = ConfigHandler.getConfigPath().isPointsIgnoreXYZ();
+        boolean allAreas = ConfigHandler.getConfigPath().isResAllAreas();
+        boolean mode = ConfigHandler.getConfigPath().isPointsMode();
 
         CuboidArea mainArea = res.getMainArea();
         for (CuboidArea area : res.getAreaArray()) {
@@ -139,10 +139,10 @@ public class ResidenceUtils {
 
     public static long getUsed(Player player) {
         long used = 0;
-        boolean mode = ConfigHandler.getRegionConfig().isPointsMode();
-        boolean ignoreXYZ = ConfigHandler.getRegionConfig().isPointsIgnoreXYZ();
-        boolean allAreas = ConfigHandler.getRegionConfig().isResAllAreas();
-        boolean ignoreWithin = ConfigHandler.getRegionConfig().isResIgnoreWithin();
+        boolean mode = ConfigHandler.getConfigPath().isPointsMode();
+        boolean ignoreXYZ = ConfigHandler.getConfigPath().isPointsIgnoreXYZ();
+        boolean allAreas = ConfigHandler.getConfigPath().isResAllAreas();
+        boolean ignoreWithin = ConfigHandler.getConfigPath().isResIgnoreWithin();
         CuboidArea mainArea;
         for (ClaimedResidence res : ResidenceApi.getPlayerManager().getResidencePlayer(player.getName()).getResList()) {
             mainArea = res.getMainArea();
@@ -180,7 +180,7 @@ public class ResidenceUtils {
 
     private static Map<String, Long> getUserGroupMap(Player player) {
         Map<String, Long> userGroupMap = new HashMap<>();
-        Map<String, Long> groupMap = ConfigHandler.getRegionConfig().getPointsMap();
+        Map<String, Long> groupMap = ConfigHandler.getConfigPath().getPointsMap();
         String permission;
         String group;
         String highestGroup;
@@ -198,13 +198,13 @@ public class ResidenceUtils {
                     highestGroup = groupMap.keySet().iterator().next();
                     userGroupMap.put(highestGroup, groupMap.get(highestGroup));
                 }
-                if (ConfigHandler.getRegionConfig().getPointsMap().get(group) != null) {
-                    userGroupMap.put(group, ConfigHandler.getRegionConfig().getPointsMap().get(group));
+                if (ConfigHandler.getConfigPath().getPointsMap().get(group) != null) {
+                    userGroupMap.put(group, ConfigHandler.getConfigPath().getPointsMap().get(group));
                 }
             }
         }
         if (userGroupMap.isEmpty()) {
-            userGroupMap.put("default", ConfigHandler.getRegionConfig().getPointsDefault());
+            userGroupMap.put("default", ConfigHandler.getConfigPath().getPointsDefault());
         }
         return Utils.sortByValue(userGroupMap);
     }
@@ -212,11 +212,11 @@ public class ResidenceUtils {
     public static void editMessage() {
         String playerName;
         String resName;
-        boolean bypassPerm = ConfigHandler.getRegionConfig().isRMBypassPerms();
-        boolean message = ConfigHandler.getRegionConfig().isRMMessage();
+        boolean bypassPerm = ConfigHandler.getConfigPath().isRMBypassPerms();
+        boolean message = ConfigHandler.getConfigPath().isRMMessage();
         List<String> groups = getResGroups();
         String groupName;
-        Table<String, String, List<String>> groupOldTable = ConfigHandler.getRegionConfig().getRMGroupTable();
+        Table<String, String, List<String>> groupOldTable = ConfigHandler.getConfigPath().getRMGroupTable();
         Table<String, String, String> groupTable = HashBasedTable.create();
         List<String> enter;
         List<String> leave;
@@ -271,7 +271,7 @@ public class ResidenceUtils {
     public static void editFlags() {
         FlagsEditor flagsEditor = ConfigHandler.getEditor();
         flagsEditor.setUp();
-        boolean restartMsg = ConfigHandler.getRegionConfig().isRFMessage();
+        boolean restartMsg = ConfigHandler.getConfigPath().isRFMessage();
         startEditFlags(flagsEditor.getEditList());
 
         new BukkitRunnable() {
@@ -310,7 +310,7 @@ public class ResidenceUtils {
                     }
                 }
             }
-        }.runTaskTimer(RegionPlus.getInstance(), 0, ConfigHandler.getRegionConfig().getRFMaxInterval() * 20);
+        }.runTaskTimer(RegionPlus.getInstance(), 0, ConfigHandler.getConfigPath().getRFMaxInterval() * 20);
     }
 
     private static void startEditFlags(List<OfflinePlayer> editList) {
@@ -330,15 +330,15 @@ public class ResidenceUtils {
         Map<String, String> addFlagMap = new HashMap<>();
         String flag;
         Map<String, Boolean> permsPlayerFlags;
-        boolean RFBypassPerm = ConfigHandler.getRegionConfig().isRFBypassPerms();
-        boolean RFBypassCustom = ConfigHandler.getRegionConfig().isRFBypassCustom();
-        boolean RFDefaultRemove = ConfigHandler.getRegionConfig().isRFDefaultRemove();
-        boolean RFDefaultRemoveOnly = ConfigHandler.getRegionConfig().isRFDefaultRemoveOnly();
-        List<String> RFDefaultRemoveIgnore = ConfigHandler.getRegionConfig().getRFDefaultRemoveIgnore();
-        boolean RFDefaultUpdate = ConfigHandler.getRegionConfig().isRFDefaultUpdate();
-        List<String> RFDefaultUpdateIgnore = ConfigHandler.getRegionConfig().getRFDefaultUpdateIgnore();
-        boolean RFPermsRemove = ConfigHandler.getRegionConfig().isRFPermsRemove();
-        List<String> RFPermsRemoveIgnore = ConfigHandler.getRegionConfig().getRFPermsRemoveIgnore();
+        boolean RFBypassPerm = ConfigHandler.getConfigPath().isRFBypassPerms();
+        boolean RFBypassCustom = ConfigHandler.getConfigPath().isRFBypassCustom();
+        boolean RFDefaultRemove = ConfigHandler.getConfigPath().isRFDefaultRemove();
+        boolean RFDefaultRemoveOnly = ConfigHandler.getConfigPath().isRFDefaultRemoveOnly();
+        List<String> RFDefaultRemoveIgnore = ConfigHandler.getConfigPath().getRFDefaultRemoveIgnore();
+        boolean RFDefaultUpdate = ConfigHandler.getConfigPath().isRFDefaultUpdate();
+        List<String> RFDefaultUpdateIgnore = ConfigHandler.getConfigPath().getRFDefaultUpdateIgnore();
+        boolean RFPermsRemove = ConfigHandler.getConfigPath().isRFPermsRemove();
+        List<String> RFPermsRemoveIgnore = ConfigHandler.getConfigPath().getRFPermsRemoveIgnore();
 
         for (OfflinePlayer offlinePlayer : editList) {
             playerName = offlinePlayer.getName();
@@ -472,8 +472,8 @@ public class ResidenceUtils {
 
     public static String[] pointsPH(Player player) {
         Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
-        Map<String, String> groupDisplayMap = ConfigHandler.getRegionConfig().getPointsDisplayMap();
-        Map<String, Long> groupMap = ConfigHandler.getRegionConfig().getPointsMap();
+        Map<String, String> groupDisplayMap = ConfigHandler.getConfigPath().getPointsDisplayMap();
+        Map<String, Long> groupMap = ConfigHandler.getConfigPath().getPointsMap();
         List<String> groupList = new ArrayList<>(groupMap.keySet());
 
         String group = userGroupMap.keySet().iterator().next();
@@ -511,8 +511,8 @@ public class ResidenceUtils {
 
     public static String[] targetPointsPH(CommandSender sender, Player player) {
         Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
-        Map<String, Long> groupMap = ConfigHandler.getRegionConfig().getPointsMap();
-        Map<String, String> groupDisplayMap = ConfigHandler.getRegionConfig().getPointsDisplayMap();
+        Map<String, Long> groupMap = ConfigHandler.getConfigPath().getPointsMap();
+        Map<String, String> groupDisplayMap = ConfigHandler.getConfigPath().getPointsDisplayMap();
         List<String> groupList = new ArrayList<>(groupMap.keySet());
         String group = userGroupMap.keySet().iterator().next();
         String nextGroup;
@@ -551,8 +551,8 @@ public class ResidenceUtils {
 
     public static String[] selectPointsPH(Player player, long size) {
         Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
-        Map<String, Long> groupMap = ConfigHandler.getRegionConfig().getPointsMap();
-        Map<String, String> groupDisplayMap = ConfigHandler.getRegionConfig().getPointsDisplayMap();
+        Map<String, Long> groupMap = ConfigHandler.getConfigPath().getPointsMap();
+        Map<String, String> groupDisplayMap = ConfigHandler.getConfigPath().getPointsDisplayMap();
         List<String> groupList = new ArrayList<>(groupMap.keySet());
         String group = userGroupMap.keySet().iterator().next();
         String nextGroup;

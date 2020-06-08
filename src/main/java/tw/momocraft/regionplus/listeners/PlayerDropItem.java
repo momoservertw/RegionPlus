@@ -19,8 +19,8 @@ public class PlayerDropItem implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorDropItems(PlayerDropItemEvent e) {
-        if (ConfigHandler.getRegionConfig().isVEnable()) {
-            if (ConfigHandler.getRegionConfig().isVDropItems()) {
+        if (ConfigHandler.getConfigPath().isVEnable()) {
+            if (ConfigHandler.getConfigPath().isVDropItems()) {
                 Player player = e.getPlayer();
                 String itemType = e.getItemDrop().getName();
                 if (RegionUtils.bypassBorder(player, player.getLocation())) {
@@ -28,7 +28,7 @@ public class PlayerDropItem implements Listener {
                     return;
                 }
                 // Cancel
-                if (ConfigHandler.getRegionConfig().isVDropItemsMsg()) {
+                if (ConfigHandler.getConfigPath().isVDropItemsMsg()) {
                     Language.sendLangMessage("Message.RegionPlus.visitorDropItems", player);
                 }
                 ServerHandler.debugMessage("Visitor", itemType, "Drop-Items", "cancel");

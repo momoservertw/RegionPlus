@@ -21,7 +21,7 @@ public class EntityDamageByEntity implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onResPreventEnable(EntityDamageByEntityEvent e) {
-        if (ConfigHandler.getRegionConfig().isRPEnable()) {
+        if (ConfigHandler.getConfigPath().isRPEnable()) {
             if (!ConfigHandler.getDepends().ResidenceEnabled()) {
                 return;
             }
@@ -33,7 +33,7 @@ public class EntityDamageByEntity implements Listener {
             String entityType = entity.getType().name();
             switch (entityType) {
                 case "PAINTING":
-                    if (ConfigHandler.getRegionConfig().isRPPainting()) {
+                    if (ConfigHandler.getConfigPath().isRPPainting()) {
                         if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false, player)) {
                             ServerHandler.debugMessage("Residence", entityType, "isRPPainting", "return", "destroy=true");
                             return;
@@ -43,7 +43,7 @@ public class EntityDamageByEntity implements Listener {
                     ServerHandler.debugMessage("Residence", entityType, "isRPPainting", "return", "not enabled");
                     return;
                 case "ITEM_FRAME":
-                    if (ConfigHandler.getRegionConfig().isRPItemFrame()) {
+                    if (ConfigHandler.getConfigPath().isRPItemFrame()) {
                         if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false, player)) {
                             ServerHandler.debugMessage("Residence", entityType, "isRPItemFrame", "return", "destroy=true");
                             return;
@@ -53,7 +53,7 @@ public class EntityDamageByEntity implements Listener {
                     ServerHandler.debugMessage("Residence", entityType, "isRPItemFrame", "return", "not enabled");
                     return;
                 case "ARMOR_STAND":
-                    if (ConfigHandler.getRegionConfig().isRPArmorStand()) {
+                    if (ConfigHandler.getConfigPath().isRPArmorStand()) {
                         if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false, player)) {
                             ServerHandler.debugMessage("Residence", entityType, "isRPArmorStand", "return", "destroy=true");
                             return;
@@ -78,8 +78,8 @@ public class EntityDamageByEntity implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorDamageEntities(EntityDamageByEntityEvent e) {
-        if (ConfigHandler.getRegionConfig().isVEnable()) {
-            if (ConfigHandler.getRegionConfig().isVDamageEntities()) {
+        if (ConfigHandler.getConfigPath().isVEnable()) {
+            if (ConfigHandler.getConfigPath().isVDamageEntities()) {
                 if (e.getDamager() instanceof Player) {
                     Player player = (Player) e.getDamager();
                     Entity entity = e.getEntity();
@@ -89,14 +89,14 @@ public class EntityDamageByEntity implements Listener {
                         return;
                     }
                     // Allow-Player
-                    if (ConfigHandler.getRegionConfig().isVDamageEntitiesPlayer()) {
+                    if (ConfigHandler.getConfigPath().isVDamageEntitiesPlayer()) {
                         if (entity instanceof Player) {
                             ServerHandler.debugMessage("Visitor", entityType, "Damage-Entities", "bypass", "Allow-Player=true");
                             return;
                         }
                     }
                     // Cancel
-                    if (ConfigHandler.getRegionConfig().isVDamageEntitiesMsg()) {
+                    if (ConfigHandler.getConfigPath().isVDamageEntitiesMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorDamageEntities", player);
                     }
                     ServerHandler.debugMessage("Visitor", entityType, "Damage-Entities", "cancel");

@@ -21,8 +21,8 @@ public class EntityDamage implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onResPreventPotionDamage(EntityDamageEvent e) {
-        if (ConfigHandler.getRegionConfig().isRPEnable()) {
-            if (ConfigHandler.getRegionConfig().isRPPotionDamage()) {
+        if (ConfigHandler.getConfigPath().isRPEnable()) {
+            if (ConfigHandler.getConfigPath().isRPPotionDamage()) {
                 if (!ConfigHandler.getDepends().ResidenceEnabled()) {
                     return;
                 }

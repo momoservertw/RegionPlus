@@ -109,8 +109,8 @@
         </dependency>
         <!--SurvivalMechanics API-->
         <dependency>
-            <groupId>me.MultiverseCore</groupId>
-            <artifactId>MultiverseCore</artifactId>
+            <groupId>me.SurvivalMechanics</groupId>
+            <artifactId>SurvivalMechanics</artifactId>
             <scope>system</scope>
             <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/SurvivalMechanics.jar
             </systemPath>

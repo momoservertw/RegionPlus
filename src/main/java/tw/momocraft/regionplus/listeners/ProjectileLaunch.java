@@ -20,9 +20,9 @@ public class ProjectileLaunch implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorItemsProjectile(ProjectileLaunchEvent e) {
-        if (ConfigHandler.getRegionConfig().isVEnable()) {
-            if (ConfigHandler.getRegionConfig().isVUseItems()) {
-                if (!ConfigHandler.getRegionConfig().isVItemsProjectile()) {
+        if (ConfigHandler.getConfigPath().isVEnable()) {
+            if (ConfigHandler.getConfigPath().isVUseItems()) {
+                if (!ConfigHandler.getConfigPath().isVItemsProjectile()) {
                     if (e.getEntity().getShooter() instanceof Player) {
                         Player player = (Player) e.getEntity().getShooter();
                         String entityType = e.getEntity().getType().name();
@@ -32,7 +32,7 @@ public class ProjectileLaunch implements Listener {
                         }
                         // Allow-ItemJoin
                         if (ConfigHandler.getDepends().ItemJoinEnabled()) {
-                            if (!ConfigHandler.getRegionConfig().isVItemJoin()) {
+                            if (!ConfigHandler.getConfigPath().isVItemJoin()) {
                                 ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
                                 if (itemJoinAPI.isCustom(player.getInventory().getItemInMainHand())) {
                                     ServerHandler.debugMessage("Visitor", entityType, "Use-Items.Projectile", "bypass", "Allow-ItemJoin=true");
@@ -41,7 +41,7 @@ public class ProjectileLaunch implements Listener {
                             }
                         }
                         // Cancel
-                        if (ConfigHandler.getRegionConfig().isVUseItemsMsg()) {
+                        if (ConfigHandler.getConfigPath().isVUseItemsMsg()) {
                             Language.sendLangMessage("Message.RegionPlus.visitorUseItems", player);
                         }
                         ServerHandler.debugMessage("Visitor", entityType, "Use-Items.Projectile", "cancel", "Allow-Projectile=false");

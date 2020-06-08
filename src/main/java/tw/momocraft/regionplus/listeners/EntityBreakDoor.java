@@ -1,7 +1,5 @@
 package tw.momocraft.regionplus.listeners;
 
-import me.DeeCaaD.SurvivalMechanics.Events.PlayerToggleCrawlEvent;
-import me.DeeCaaD.SurvivalMechanics.PlayerToggleCrawl;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -21,8 +19,8 @@ public class EntityBreakDoor implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onResPreventZombieDoor(EntityBreakDoorEvent e) {
-        if (ConfigHandler.getRegionConfig().isRPEnable()) {
-            if (ConfigHandler.getRegionConfig().isRPZombieDoor()) {
+        if (ConfigHandler.getConfigPath().isRPEnable()) {
+            if (ConfigHandler.getConfigPath().isRPZombieDoor()) {
                 if (!ConfigHandler.getDepends().ResidenceEnabled()) {
                     return;
                 }

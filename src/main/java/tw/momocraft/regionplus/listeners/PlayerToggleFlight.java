@@ -20,12 +20,12 @@ public class PlayerToggleFlight implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onPlayerToggleFlight(PlayerToggleFlightEvent e) {
-        if (ConfigHandler.getRegionConfig().isRPEnable()) {
+        if (ConfigHandler.getConfigPath().isRPEnable()) {
             if (!ConfigHandler.getDepends().ResidenceEnabled()) {
                 return;
             }
             if (!e.isFlying() && !e.getPlayer().isSneaking()) {
-                if (ConfigHandler.getRegionConfig().isRPFlyDisable()) {
+                if (ConfigHandler.getConfigPath().isRPFlyDisable()) {
                     Player player = e.getPlayer();
                     ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(e.getPlayer().getLocation());
                     if (res != null) {
@@ -41,8 +41,8 @@ public class PlayerToggleFlight implements Listener {
     }
         /*
         if (e.isFlying()) {
-            if (ConfigHandler.getRegionConfig().isPlayerPreventFly()) {
-                String flyPerm = ConfigHandler.getRegionConfig().getPlayerPreventFlyPerm();
+            if (ConfigHandler.getConfigPath().isPlayerPreventFly()) {
+                String flyPerm = ConfigHandler.getConfigPath().getPlayerPreventFlyPerm();
                 if (PermissionsHandler.hasPermission(e.getPlayer(), flyPerm)) {
                     ServerHandler.debugMessage("Residence", "Fly-Disable", "Permission", "bypass");
                     return;

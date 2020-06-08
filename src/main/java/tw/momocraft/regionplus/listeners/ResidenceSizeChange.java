@@ -23,12 +23,18 @@ public class ResidenceSizeChange implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
 
     private void onResidenceSizeChange(ResidenceSizeChangeEvent e) {
-        if (ConfigHandler.getRegionConfig().isPointsEnable()) {
+        if (ConfigHandler.getConfigPath().isPointsEnable()) {
             Player player = e.getPlayer();
             String playerName = player.getName();
             if (PermissionsHandler.hasPermission(player, "regionplus.bypass.points.limit")) {
                 ServerHandler.debugMessage("Residence", playerName, "Points", "return", "bypass permission");
                 return;
+            }
+            if (!ConfigHandler.getConfigPath().isPointsExpandXYZ()) {
+                if (e.getResidence().getMainArea().getYSize() < 256) {
+                    Language.sendLangMessage("Message.RegionPlus.expandXYZFailed", player);
+                    return;
+                }
             }
             long size = ResidenceUtils.getNewSize(e.getNewArea()) - ResidenceUtils.getNewSize(e.getOldArea());
             if (size < 0) {

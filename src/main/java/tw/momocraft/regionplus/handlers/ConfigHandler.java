@@ -1,11 +1,11 @@
 package tw.momocraft.regionplus.handlers;
 
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.scheduler.BukkitRunnable;
 import tw.momocraft.regionplus.Commands;
 import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.listeners.*;
@@ -22,7 +22,7 @@ public class ConfigHandler {
     private static YamlConfiguration spigotYAML;
     private static DependAPI depends;
     private static UpdateHandler updater;
-    private static RegionConfig region;
+    private static ConfigPath region;
     private static FlagsEditor editor;
 
 
@@ -30,26 +30,26 @@ public class ConfigHandler {
         configFile();
         setDepends(new DependAPI());
         sendUtilityDepends();
-        setRegionConfig(new RegionConfig());
+        setRegionConfig(new ConfigPath());
         setUpdater(new UpdateHandler());
         setEditor(new FlagsEditor());
 
         if (getDepends().LuckPermsEnabled()) {
-            if (getRegionConfig().isRFDefaultRemove()) {
+            if (getConfigPath().isRFDefaultRemove()) {
                 ServerHandler.sendConsoleMessage("&6Flags-Edit need to check the permissions of offline players.");
                 ServerHandler.sendConsoleMessage("&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
             }
         }
         /*
         if (getDepends().ResidenceEnabled()) {
-            if (!reload && getRegionConfig().isRFAutoCheck()) {
+            if (!reload && getConfigPath().isRFAutoCheck()) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
                         ResidenceUtils.editFlags();
                     }
-                }.runTaskLater(RegionPlus.getInstance(), getRegionConfig().getRFAutoCheckDelay());
+                }.runTaskLater(RegionPlus.getInstance(), getConfigPath().getRFAutoCheckDelay());
             }
         }
          */
@@ -77,6 +77,21 @@ public class ConfigHandler {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceSizeChange(), RegionPlus.getInstance());
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceDelete(), RegionPlus.getInstance());
+
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleClimb(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleCrawl(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleMobkick(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleRoofhang(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleSlide(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleSwim(), RegionPlus.getInstance());
+            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleWallkick(), RegionPlus.getInstance());
+            FlagPermissions.addFlag("climb");
+            FlagPermissions.addFlag("crawl");
+            FlagPermissions.addFlag("mobkick");
+            FlagPermissions.addFlag("roofhang");
+            FlagPermissions.addFlag("slide");
+            FlagPermissions.addFlag("swim");
+            FlagPermissions.addFlag("wallkick");
         }
     }
 
@@ -171,6 +186,7 @@ public class ConfigHandler {
                 + (getDepends().PvPManagerEnabled() ? "PvPManager, " : "")
                 + (getDepends().MultiverseCoreEnabled() ? "Multiverse-Core, " : "")
                 + (getDepends().LuckPermsEnabled() ? "LuckPerms, " : "")
+                + (getDepends().SurvivalMechanicsEnabled() ? "SurvivalMechanics, " : "")
         );
     }
 
@@ -195,11 +211,11 @@ public class ConfigHandler {
     }
 
 
-    public static RegionConfig getRegionConfig() {
+    public static ConfigPath getConfigPath() {
         return region;
     }
 
-    public static void setRegionConfig(RegionConfig regionConfig) {
+    public static void setRegionConfig(ConfigPath regionConfig) {
         region = regionConfig;
     }
 

@@ -6,6 +6,15 @@ Check-Updates: true
 # Add the block size limit in residence areas, update old flags in batches and fix bugs.
 # Need plugin: Residence
 Residence:
+  Custom-Flags:
+    SurvivalMechanics:
+      Climb: true
+      Crawl: true
+      Mobkick: true
+      Roofhang: true
+      Slide: true
+      Swim: true
+      Wallkick: true
   Settings:
     # It will check every areas in one residence. Because of two area may in the same location, I'm not recommend using multiple areas.
     # You can set the "MaxAreasPerResidence: 0" in residence groups.yml  to prevent players creating multiple areas.
@@ -16,6 +25,8 @@ Residence:
       Ignore-Within-Area: false
   # Return the difference money between IgnoreY "false" to "true" if you has changed it.
   Return-XYZ: false
+  # Allow expanding residence which doesn't ignore-Y.
+  Expand-XYZ: true
   Prevent:
     Enable: false
     # Prevent potions from killing animals, monsters, and players without residence flags or enabling PVP status in the residence (requires: PvPManager).
@@ -204,12 +215,8 @@ Message:
       reload: '&f/rp reload &8- &7Reload config file.'
       version: '&f/rp version &8- &7Checks the plugin version and updates.'
       flagsedit: '&f/rp flagsedit &8- &7Checks the flags of residences and edits it'
-      pointsLimit: '&f/rp points limit &8- &7Check your points limit.'
-      pointsLimitOther: '&f/rp points limit <player> &8- &7Check the player''s points limit.'
-      pointsUsed: '&f/rp points used &8- &7Check how many points you have used.'
-      pointsUsedOther: '&f/rp points used <player> &8- &7Check how many points the player has used.'
-      pointsLook: '&f/rp points look &8- &7Check your remaining points.'
-      pointsLookOther: '&f/rp points look <player> &8- &7Check the player''s remaining points.'
+      points: '&f/rp points &8- &7Check your points limit.'
+      pointsOther: '&f/rp points limit <player> &8- &7Check the player''s points limit.'
     points: '&e&lPoints: &f%points_last% &8- &7【%points_group%&7】 &6%points_used%&7/&c%points_limit% /n &7Next group &7【%points_nextgroup%&7】 &8- &e%points_limit% &8➸ &d%points_nextlimit% &7(+%points_nextbonus%)'
     targetPoints: '&e&l%targetplayer%''s Points: &f%points_last% &8- &7【%points_group%&7】 &6%points_used%&7/&c%points_limit%'
     pointsSelect: '&eSelection total size: &6%points_need%  &eLand cost: &6%res_cost% /n &e&lNeed points: &f%points_need% &8- &6%points_last% &8➸ &c%points_newlast%'
@@ -217,6 +224,7 @@ Message:
     targetNotEnoughPoints: '&c%targetplayer% doesn''t have enough points.'
     transactionFailed: '&cThe transaction fails and the money is returned.'
     returnXYZMoney: '&6Get the difference of $%amount% on removed a old residence.'
+    expandXYZFailed: '&cYou cannot expand your residence which is unlimited height.'
     visitorCreateResidence: '&cVisitor can''t create residence here!'
     visitorUseItems: '&cVisitor can''t use this item here!'
     visitorInteractBlocks: '&cVisitor can''t interact blocks here!'
