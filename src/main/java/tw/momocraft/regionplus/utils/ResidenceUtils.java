@@ -10,6 +10,8 @@ import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MultiverseCoreConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -119,7 +121,9 @@ public class ResidenceUtils {
         CuboidArea mainArea = res.getMainArea();
         for (CuboidArea area : res.getAreaArray()) {
             if (ignoreXYZ) {
-                if (area.getYSize() < 256) {
+                if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() < 128) {
+                    continue;
+                } else if (area.getYSize() < 256) {
                     continue;
                 }
             }
@@ -152,7 +156,9 @@ public class ResidenceUtils {
                         continue;
                     }
                     if (ignoreXYZ) {
-                        if (area.getYSize() < 256) {
+                        if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() < 128) {
+                            continue;
+                        } else if (area.getYSize() < 256) {
                             continue;
                         }
                     }
@@ -164,7 +170,9 @@ public class ResidenceUtils {
                 }
             } else {
                 if (ignoreXYZ) {
-                    if (mainArea.getYSize() < 256) {
+                    if (mainArea.getWorld().getEnvironment().name().equals("NETHER") && mainArea.getYSize() < 128) {
+                        continue;
+                    } else if (mainArea.getYSize() < 256) {
                         continue;
                     }
                 }

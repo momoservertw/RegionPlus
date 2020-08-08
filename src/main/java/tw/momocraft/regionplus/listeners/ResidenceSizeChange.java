@@ -1,6 +1,7 @@
 package tw.momocraft.regionplus.listeners;
 
 import com.bekvon.bukkit.residence.event.ResidenceSizeChangeEvent;
+import com.bekvon.bukkit.residence.protection.CuboidArea;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -31,7 +32,11 @@ public class ResidenceSizeChange implements Listener {
                 return;
             }
             if (!ConfigHandler.getConfigPath().isPointsExpandXYZ()) {
-                if (e.getResidence().getMainArea().getYSize() < 256) {
+                CuboidArea area = e.getResidence().getMainArea();
+                if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() < 128) {
+                    Language.sendLangMessage("Message.RegionPlus.expandXYZFailed", player);
+                    return;
+                } else if (area.getYSize() < 256) {
                     Language.sendLangMessage("Message.RegionPlus.expandXYZFailed", player);
                     return;
                 }
