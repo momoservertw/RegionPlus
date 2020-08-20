@@ -19,30 +19,33 @@ public class PlayerBucketFill implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorItemsBucket(PlayerBucketFillEvent e) {
-        if (ConfigHandler.getConfigPath().isVEnable()) {
-            if (ConfigHandler.getConfigPath().isVUseItems()) {
-                if (!ConfigHandler.getConfigPath().isVItemsBucket()) {
+        if (ConfigHandler.getConfigPath().isVisitor()) {
+            if (ConfigHandler.getConfigPath().isVisUseItems()) {
+                if (!ConfigHandler.getConfigPath().isVisItemsBucket()) {
                     Player player = e.getPlayer();
                     String itemType = e.getItemStack().getType().name();
                     if (RegionUtils.bypassBorder(player, player.getLocation())) {
-                        ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Bucket", "return", "border");
+                        ServerHandler.sendFeatureMessage("Visitor", itemType, "Use-Items.Bucket", "return", "border",
+                                new Throwable().getStackTrace()[0]);
                         return;
                     }
                     // Allow-ItemJoin
                     if (ConfigHandler.getDepends().ItemJoinEnabled()) {
-                        if (!ConfigHandler.getConfigPath().isVItemJoin()) {
+                        if (!ConfigHandler.getConfigPath().isVisItemJoin()) {
                             ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
                             if (itemJoinAPI.isCustom(player.getInventory().getItemInMainHand())) {
-                                ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Bucket", "bypass", "Allow-ItemJoin");
+                                ServerHandler.sendFeatureMessage("Visitor", itemType, "Use-Items.Bucket", "bypass", "Allow-ItemJoin",
+                                        new Throwable().getStackTrace()[0]);
                                 return;
                             }
                         }
                     }
                     // Cancel
-                    if (ConfigHandler.getConfigPath().isVUseItemsMsg()) {
+                    if (ConfigHandler.getConfigPath().isVisUseItemsMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorUseItems", player);
                     }
-                    ServerHandler.debugMessage("Visitor", itemType, "Use-Items.Bucket", "cancel", "Allow-Bucket=false");
+                    ServerHandler.sendFeatureMessage("Visitor", itemType, "Use-Items.Bucket", "cancel", "Allow-Bucket=false",
+                            new Throwable().getStackTrace()[0]);
                     e.setCancelled(true);
                 }
             }

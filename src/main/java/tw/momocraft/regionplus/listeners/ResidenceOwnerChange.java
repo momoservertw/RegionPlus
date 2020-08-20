@@ -24,7 +24,7 @@ public class ResidenceOwnerChange implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onResidenceOwnerChange(ResidenceOwnerChangeEvent e) {
-        if (ConfigHandler.getConfigPath().isPointsEnable()) {
+        if (ConfigHandler.getConfigPath().isPoints()) {
             Player newOwner = Bukkit.getPlayer(e.getNewOwnerUuid());
             String newOwnerName = e.getNewOwner();
             Player owner = Bukkit.getPlayer(e.getResidence().getOwner());
@@ -62,7 +62,8 @@ public class ResidenceOwnerChange implements Listener {
                         }
                     }.runTaskLater(RegionPlus.getInstance(), 10);
                 }
-                ServerHandler.debugMessage("Residence-Points", newOwnerName, "ResidenceOwnerChangeEvent", "cancel", "targetNotEnoughPoints");
+                ServerHandler.sendFeatureMessage("Residence-Points", newOwnerName, "ResidenceOwnerChangeEvent", "cancel", "targetNotEnoughPoints",
+                        new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
                 return;
             }
@@ -72,7 +73,8 @@ public class ResidenceOwnerChange implements Listener {
                     Language.sendLangMessage("Message.RegionPlus.points", newOwner, ResidenceUtils.pointsPH(newOwner));
                 }
             }.runTaskLater(RegionPlus.getInstance(), 10);
-            ServerHandler.debugMessage("Residence-Points", newOwnerName, "ResidenceOwnerChangeEvent", "return", "succeed");
+            ServerHandler.sendFeatureMessage("Residence-Points", newOwnerName, "ResidenceOwnerChangeEvent", "return", "succeed",
+                    new Throwable().getStackTrace()[0]);
         }
     }
 }

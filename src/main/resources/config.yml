@@ -3,18 +3,9 @@ Config-Version: 3
 Debugging: false
 Check-Updates: true
 
-# Add the block size limit in residence areas, update old flags in batches and fix bugs.
-# Need plugin: Residence
+# Adding more features for Residence.
+# More information: https://github.com/momoservertw/RegionPlus/wiki/Residence
 Residence:
-  Custom-Flags:
-    SurvivalMechanics:
-      Climb: true
-      Crawl: true
-      Mobkick: true
-      Roofhang: true
-      Slide: true
-      Swim: true
-      Wallkick: true
   Settings:
     # It will check every areas in one residence. Because of two area may in the same location, I'm not recommend using multiple areas.
     # You can set the "MaxAreasPerResidence: 0" in residence groups.yml  to prevent players creating multiple areas.
@@ -23,32 +14,47 @@ Residence:
       Enable: false
       # Ignore the area which is in another area.
       Ignore-Within-Area: false
-  # Return the difference money between IgnoreY "false" to "true" if you has changed it.
-  Return-XYZ: false
-  # Allow expanding residence which doesn't ignore-Y.
-  Expand-XYZ: true
+  # Fixed some bugs and improved the player's gaming experience.
   Prevent:
     Enable: false
-    # Prevent potions from killing animals, monsters, and players without residence flags or enabling PVP status in the residence (requires: PvPManager).
+    # Prevent potions from killing animals, monsters, and players without "pvp" flags or enabling PVP status in the residence (requires: PvPManager).
     Potion-Damage: true
-    # Prevent entities(contains TNT) from destroying paintings in residences without build flag.
+    # Prevent entities(contains TNT) from destroying paintings in residences without "destroy" flag.
     Painting-Destroy: true
-    # Prevent entities(contains TNT) from destroying item_frames in residences without build flag.
+    # Prevent entities(contains TNT) from destroying item_frames in residences without "destroy" flag.
     Item-Frame-Destroy: true
-    # Prevent entities(contains TNT) from destroying Armor_Stand in residences without build flag.
+    # Prevent entities(contains TNT) from destroying Armor_Stand in residences without "destroy" flag.
     Armor-Stand-Destroy: true
-    # Prevent zombies from destroying doors in residences without build flag.
+    # Prevent zombies from destroying doors in residences without "destroy" flag.
     Zombie-Door-Destruction: true
-    # Prevent enderman from picking up blocks in residences without build flag.
+    # Prevent enderman pickup blocks in the residence without "destroy" flag.
     Enderman-Pickup-Block: true
+    # Prevent block damage from explosion in the residence without "tnt" flag.
+    Block-Damage: true
+  # Adding more flags for residence.
+  Custom-Flags:
+    # Toggle the feature of SurvivalMechanics.
+    SurvivalMechanics:
+      Climb: true
+      Crawl: true
+      Mobkick: true
+      Roofhang: true
+      Slide: true
+      Swim: true
+      Wallkick: true
+  # Avoid the bugs after you changed the option"IgnoreY" false to true in Residence config.yml.
+  IgnoreY-Changed:
+    # It will not count the points if the residence are not infinite height. It is useful for changing residence "IgnoreY" setting 'false' to 'true'.
+    Points: true
+    # Return the correct money when removing a residence which doesn't ignore-Y.
+    Return: false
+    # Allow expanding residence which doesn't ignore-Y.
+    Expand: false
   # Using the blocks size to limit players' residence size just like GriefPrevention.
   Points:
     Enable: false
     # Send points message when using residence select tool.
     Select-Info: true
-    Check:
-      # It will not count the points if the residence are not infinite height. It is useful for changing residence "IgnoreY" setting 'false' to 'true'.
-      Ignore-XYZ: true
     # The residence block limit for difference groups. You can add your own groups.
     # Permission: regionplus.points.group.GROUP
     Groups:
@@ -74,10 +80,11 @@ Residence:
   Flags-Editor:
     Enable: false
     Settings:
-      # Bypass permission: regionplus.bypass.flagsedit
-      Check-Bypass-Permission: true
-      # Bypass to remove the missing custom flags.
-      Bypass-Missing-Custom-Flags: true
+      Bypass:
+        # Bypass permission: regionplus.bypass.flagsedit
+        Permission: true
+        # Bypass to remove the missing custom flags.
+        Missing-Custom-Flags: true
       # It will delay few seconds and restart editing flags to prevent the server restart while editing flags.
       Max-Edit-Players:
         # Set "0" to disable this feature.
@@ -104,29 +111,23 @@ Residence:
       Remove:
         Enable: true
         Ignore-List: []
-  # Resetting all old residences' enter / leave messages to default.
+  # Resetting all old residences' enter/leave messages to default.
   # It will be cool to show title bar when players enter residences.
-  # And then you will need this feature to change old messages.
   # TitleBar Example
   # Enter: "&e&lEnter &f%residence %subtitle% &6&lOwner &6%owner"
   # Leave: "&7Left..."
   Message-Editor:
     Enable: false
     Settings:
-      # Bypass permission: regionplus.bypass.messageedit
-      Check-Bypass-Permission: true
+      Bypass:
+        # Bypass permission: regionplus.bypass.messageedit
+        Permission: true
       # Showing the editing progress.
       Message: true
     # By default, it will only change the matching messages.
     Groups:
-      # This is the default group for those without custom settings. You should not remove it.
-      other:
-        # The old enter messages. Support multiple lines and if you set the message to "[]", it will force to reset every messages in that group.
-        Enter:
-          - "Welcome %player to %residence, owned by %owner."
-        Leave:
-          - "Now leaving %residence."
-      # You can custom messages for difference groups.
+      # Changing messages for difference groups
+      # Support multiple lines and if you set the message to "[]", it will force to reset every messages in that group.
       default:
         Enter:
           - "Welcome %player to %residence, owned by %owner."
@@ -144,9 +145,12 @@ Visitor:
   Enable: false
   # The visitor border of worlds.
   # More information: https://github.com/momoservertw/RegionPlus/wiki/Location
-  Border:
-    world:
-      "!R": 10000
+  Location:
+    Normal:
+      Worlds:
+        - world
+      Area:
+        "!R": 10000
   Prevent:
     Ignore:
       # Visitors can only build or damage entities in a residence which they has permissions.
@@ -200,6 +204,28 @@ Visitor:
       Pickup-Items:
         Enable: true
         Message: true
+# Command: rp tp
+Teleport:
+  Enable: false
+  Groups:
+    Lobby:
+      Warps:
+        - gift
+        - mission
+        - shop
+        - donate
+        - youtuber
+        - bank
+      Actions:
+        GPS:
+          Servers:
+            - lobby
+          Commands:
+            - gps start %player% %warp%
+        Tp:
+          Commands:
+            - 'message-op: 【Navigate】;&eClick to navigate to "%warp%";/gps start %player% %warp%'
+            - server lobby %player%
 
 Message:
   prefix: '&7[&dRegionPlus&7]&r '

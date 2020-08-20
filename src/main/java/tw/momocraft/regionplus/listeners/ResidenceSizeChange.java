@@ -24,16 +24,17 @@ public class ResidenceSizeChange implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
 
     private void onResidenceSizeChange(ResidenceSizeChangeEvent e) {
-        if (ConfigHandler.getConfigPath().isPointsEnable()) {
+        if (ConfigHandler.getConfigPath().isPoints()) {
             Player player = e.getPlayer();
             String playerName = player.getName();
             if (PermissionsHandler.hasPermission(player, "regionplus.bypass.points.limit")) {
-                ServerHandler.debugMessage("Residence", playerName, "Points", "return", "bypass permission");
+                ServerHandler.sendFeatureMessage("Residence", playerName, "Points", "return", "bypass permission",
+                        new Throwable().getStackTrace()[0]);
                 return;
             }
-            if (!ConfigHandler.getConfigPath().isPointsExpandXYZ()) {
+            if (!ConfigHandler.getConfigPath().isResIgnoreYExpand()) {
                 CuboidArea area = e.getResidence().getMainArea();
-                if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() < 128) {
+                if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() < 129) {
                     Language.sendLangMessage("Message.RegionPlus.expandXYZFailed", player);
                     return;
                 } else if (area.getYSize() < 256) {
@@ -43,7 +44,8 @@ public class ResidenceSizeChange implements Listener {
             }
             long size = ResidenceUtils.getNewSize(e.getNewArea()) - ResidenceUtils.getNewSize(e.getOldArea());
             if (size < 0) {
-                ServerHandler.debugMessage("Residence-Points", playerName, "ResidenceSizeChangeEvent", "return", " contract");
+                ServerHandler.sendFeatureMessage("Residence-Points", playerName, "ResidenceSizeChangeEvent", "return", " contract",
+                        new Throwable().getStackTrace()[0]);
                 return;
             }
             long last = ResidenceUtils.getLimit(player) - ResidenceUtils.getUsed(player);
@@ -52,7 +54,8 @@ public class ResidenceSizeChange implements Listener {
                 placeHolders[24] = String.valueOf(last);
                 placeHolders[25] = String.valueOf(size);
                 Language.sendLangMessage("Message.RegionPlus.notEnoughPoints", player, placeHolders);
-                ServerHandler.debugMessage("Residence-Points", playerName, "ResidenceSizeChangeEvent", "cancel", "notEnoughPoints");
+                ServerHandler.sendFeatureMessage("Residence-Points", playerName, "ResidenceSizeChangeEvent", "cancel", "notEnoughPoints",
+                        new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
                 return;
             }
@@ -62,7 +65,8 @@ public class ResidenceSizeChange implements Listener {
                     Language.sendLangMessage("Message.RegionPlus.points", player, ResidenceUtils.pointsPH(player));
                 }
             }.runTaskLater(RegionPlus.getInstance(), 10);
-            ServerHandler.debugMessage("Residence-Points", playerName, "ResidenceSizeChangeEvent", "return", "final");
+            ServerHandler.sendFeatureMessage("Residence-Points", playerName, "ResidenceSizeChangeEvent", "return", "final",
+                    new Throwable().getStackTrace()[0]);
         }
     }
 }

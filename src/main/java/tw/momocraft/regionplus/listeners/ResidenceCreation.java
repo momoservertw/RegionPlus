@@ -23,11 +23,12 @@ public class ResidenceCreation implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onResPointsEnable(ResidenceCreationEvent e) {
-        if (ConfigHandler.getConfigPath().isPointsEnable()) {
+        if (ConfigHandler.getConfigPath().isPoints()) {
             Player player = e.getPlayer();
             String playerName = player.getName();
             if (PermissionsHandler.hasPermission(player, "regionplus.bypass.points.limit")) {
-                ServerHandler.debugMessage("Residence", playerName, "Points", "return", "bypass permission");
+                ServerHandler.sendFeatureMessage("Residence", playerName, "Points", "return", "bypass permission",
+                        new Throwable().getStackTrace()[0]);
                 return;
             }
             long size = ResidenceUtils.getNewSize(e.getPhysicalArea());
@@ -37,7 +38,8 @@ public class ResidenceCreation implements Listener {
                 placeHolders[24] = String.valueOf(last);
                 placeHolders[25] = String.valueOf(size);
                 Language.sendLangMessage("Message.RegionPlus.notEnoughPoints", player, placeHolders);
-                ServerHandler.debugMessage("Residence-Points", playerName, "ResidenceCreationEvent", "cancel", "notEnoughPoints");
+                ServerHandler.sendFeatureMessage("Residence-Points", playerName, "ResidenceCreationEvent", "cancel", "notEnoughPoints",
+                        new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
                 return;
             }
@@ -47,7 +49,8 @@ public class ResidenceCreation implements Listener {
                     Language.sendLangMessage("Message.RegionPlus.points", player, ResidenceUtils.pointsPH(player));
                 }
             }.runTaskLater(RegionPlus.getInstance(), 10);
-            ServerHandler.debugMessage("Residence-Points", playerName, "ResidenceCreationEvent", "return", "final");
+            ServerHandler.sendFeatureMessage("Residence-Points", playerName, "ResidenceCreationEvent", "return", "final",
+                    new Throwable().getStackTrace()[0]);
         }
     }
 
@@ -58,16 +61,17 @@ public class ResidenceCreation implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onVisitorCreateRes(ResidenceCreationEvent e) {
-        if (ConfigHandler.getConfigPath().isVEnable()) {
-            if (ConfigHandler.getConfigPath().isVCreateRes()) {
+        if (ConfigHandler.getConfigPath().isVisitor()) {
+            if (ConfigHandler.getConfigPath().isVisResCreate()) {
                 Player player = e.getPlayer();
                 String playerName = player.getName();
                 if (!RegionUtils.bypassBorder(player, player.getLocation())) {
                     // Cancel
-                    if (ConfigHandler.getConfigPath().isVCreateResMsg()) {
+                    if (ConfigHandler.getConfigPath().isVisResCreateMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorCreateResidence", player);
                     }
-                    ServerHandler.debugMessage("Visitor", playerName, "Create-Residence", "cancel", "border");
+                    ServerHandler.sendFeatureMessage("Visitor", playerName, "Create-Residence", "cancel", "border",
+                            new Throwable().getStackTrace()[0]);
                     e.setCancelled(true);
                 }
             }

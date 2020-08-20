@@ -20,29 +20,32 @@ public class PlayerFish implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorItemsFishing(PlayerFishEvent e) {
-        if (ConfigHandler.getConfigPath().isVEnable()) {
-            if (ConfigHandler.getConfigPath().isVUseItems()) {
-                if (!ConfigHandler.getConfigPath().isVItemsFishing()) {
+        if (ConfigHandler.getConfigPath().isVisitor()) {
+            if (ConfigHandler.getConfigPath().isVisUseItems()) {
+                if (!ConfigHandler.getConfigPath().isVisItemsFishing()) {
                     Player player = e.getPlayer();
                     if (RegionUtils.bypassBorder(player, player.getLocation())) {
-                        ServerHandler.debugMessage("Visitor", "FISHING_ROD", "Use-Items.Fishing", "return", "border");
+                        ServerHandler.sendFeatureMessage("Visitor", "FISHING_ROD", "Use-Items.Fishing", "return", "border",
+                                new Throwable().getStackTrace()[0]);
                         return;
                     }
                     // Allow-ItemJoin
                     if (ConfigHandler.getDepends().ItemJoinEnabled()) {
-                        if (!ConfigHandler.getConfigPath().isVItemJoin()) {
+                        if (!ConfigHandler.getConfigPath().isVisItemJoin()) {
                             ItemJoinAPI itemJoinAPI = new ItemJoinAPI();
                             if (itemJoinAPI.isCustom(player.getInventory().getItemInMainHand())) {
-                                ServerHandler.debugMessage("Visitor", "FISHING_ROD", "Use-Items.Fishing", "bypass", "Allow-ItemJoin=true");
+                                ServerHandler.sendFeatureMessage("Visitor", "FISHING_ROD", "Use-Items.Fishing", "bypass", "Allow-ItemJoin=true",
+                                        new Throwable().getStackTrace()[0]);
                                 return;
                             }
                         }
                     }
                     // Cancel
-                    if (ConfigHandler.getConfigPath().isVUseItemsMsg()) {
+                    if (ConfigHandler.getConfigPath().isVisUseItemsMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorUseItems", player);
                     }
-                    ServerHandler.debugMessage("Visitor", "FISHING_ROD", "Use-Items.Fishing", "cancel", "Allow-Fishing=false");
+                    ServerHandler.sendFeatureMessage("Visitor", "FISHING_ROD", "Use-Items.Fishing", "cancel", "Allow-Fishing=false",
+                    new Throwable().getStackTrace()[0]);
                     e.setCancelled(true);
                 }
             }

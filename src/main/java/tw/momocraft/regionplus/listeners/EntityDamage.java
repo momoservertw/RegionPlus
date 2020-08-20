@@ -21,45 +21,51 @@ public class EntityDamage implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onResPreventPotionDamage(EntityDamageEvent e) {
-        if (ConfigHandler.getConfigPath().isRPEnable()) {
-            if (ConfigHandler.getConfigPath().isRPPotionDamage()) {
-                if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-                    return;
-                }
+        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+            return;
+        }
+        if (ConfigHandler.getConfigPath().isResPrevent()) {
+            if (ConfigHandler.getConfigPath().isResPreventPotion()) {
                 Entity entity = e.getEntity();
                 String entityType = entity.getType().name();
                 String damageCause = e.getCause().name();
                 if (damageCause.equals("POISON") || damageCause.equals("MAGIC")) {
-                    ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(e.getEntity().getLocation());
+                    ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(entity.getLocation());
                     if (res != null) {
                         if (entity instanceof Monster) {
                             if (res.getPermissions().has(Flags.mobkilling, false)) {
-                                ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "return", "mobkilling=true");
+                                ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventPotion", "return", "mobkilling=true",
+                                        new Throwable().getStackTrace()[0]);
                                 return;
                             }
                         } else if (entity instanceof Animals) {
                             if (res.getPermissions().has(Flags.animalkilling, false)) {
-                                ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "return", "animalkilling=true");
+                                ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventPotion", "return", "animalkilling=true",
+                                        new Throwable().getStackTrace()[0]);
                                 return;
                             }
                         } else if (entity instanceof Player) {
                             Player player = (Player) entity;
                             if (ConfigHandler.getDepends().PvPManagerEnabled()) {
                                 if (PvPManager.getInstance().getPlayerHandler().get(player).hasPvPEnabled()) {
-                                    ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "return", "PvPManager=true");
+                                    ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventPotion", "return", "PvPManager=true",
+                                            new Throwable().getStackTrace()[0]);
                                     return;
                                 }
                             } else {
                                 if (res.getPermissions().has(Flags.pvp, false)) {
-                                    ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "return", "pvp=true");
+                                    ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventPotion", "return", "pvp=true",
+                                    new Throwable().getStackTrace()[0]);
                                     return;
                                 }
                             }
                         } else {
-                            ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "return", "not contains");
+                            ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventPotion", "return", "not contains",
+                                    new Throwable().getStackTrace()[0]);
                             return;
                         }
-                        ServerHandler.debugMessage("Residence", entityType, "isRPPotionDamage", "cancel", "final");
+                        ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventPotion", "cancel", "final",
+                                new Throwable().getStackTrace()[0]);
                         e.setCancelled(true);
                     }
                 }

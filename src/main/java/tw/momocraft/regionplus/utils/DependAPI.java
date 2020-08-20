@@ -10,6 +10,7 @@ public class DependAPI {
 	private boolean MultiverseCore = false;
 	private boolean LuckPerms = false;
 	private boolean SurvivalMechanics = false;
+	private boolean GPS = false;
 	private VaultAPI vault;
 
 	
@@ -21,6 +22,7 @@ public class DependAPI {
 		this.setMultiverseCoreStatus(Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core") != null);
 		this.setLuckPermsStatus(Bukkit.getServer().getPluginManager().getPlugin("LuckPerms") != null);
 		this.setSMStatus(Bukkit.getServer().getPluginManager().getPlugin("SurvivalMechanics") != null);
+		this.setGPSStatus(Bukkit.getServer().getPluginManager().getPlugin("GPS") != null);
 		this.setVault();
 	}
 
@@ -45,6 +47,9 @@ public class DependAPI {
 	public boolean SurvivalMechanicsEnabled() {
 		return this.SurvivalMechanics;
 	}
+	public boolean GPSEnabled() {
+		return this.GPS;
+	}
 
 
 	public void setResidenceStatus(boolean bool) {
@@ -67,6 +72,9 @@ public class DependAPI {
 	}
 	public void setSMStatus(boolean bool) {
 		this.SurvivalMechanics = bool;
+	}
+	public void setGPSStatus(boolean bool) {
+		this.GPS = bool;
 	}
 
 	public VaultAPI getVault() {

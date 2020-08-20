@@ -10,8 +10,6 @@ import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.onarandombox.MultiverseCore.api.MultiverseCoreConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -114,14 +112,13 @@ public class ResidenceUtils {
 
     public static long getSize(ClaimedResidence res) {
         long size = 0;
-        boolean ignoreXYZ = ConfigHandler.getConfigPath().isPointsIgnoreXYZ();
+        boolean ignoreXYZ = ConfigHandler.getConfigPath().isResIgnoreYPoints();
         boolean allAreas = ConfigHandler.getConfigPath().isResAllAreas();
         boolean mode = ConfigHandler.getConfigPath().isPointsMode();
-
         CuboidArea mainArea = res.getMainArea();
         for (CuboidArea area : res.getAreaArray()) {
             if (ignoreXYZ) {
-                if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() < 128) {
+                if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() < 129) {
                     continue;
                 } else if (area.getYSize() < 256) {
                     continue;
@@ -144,7 +141,7 @@ public class ResidenceUtils {
     public static long getUsed(Player player) {
         long used = 0;
         boolean mode = ConfigHandler.getConfigPath().isPointsMode();
-        boolean ignoreXYZ = ConfigHandler.getConfigPath().isPointsIgnoreXYZ();
+        boolean ignoreXYZ = ConfigHandler.getConfigPath().isResIgnoreYPoints();
         boolean allAreas = ConfigHandler.getConfigPath().isResAllAreas();
         boolean ignoreWithin = ConfigHandler.getConfigPath().isResIgnoreWithin();
         CuboidArea mainArea;
@@ -156,7 +153,7 @@ public class ResidenceUtils {
                         continue;
                     }
                     if (ignoreXYZ) {
-                        if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() < 128) {
+                        if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() < 129) {
                             continue;
                         } else if (area.getYSize() < 256) {
                             continue;
@@ -170,7 +167,7 @@ public class ResidenceUtils {
                 }
             } else {
                 if (ignoreXYZ) {
-                    if (mainArea.getWorld().getEnvironment().name().equals("NETHER") && mainArea.getYSize() < 128) {
+                    if (mainArea.getWorld().getEnvironment().name().equals("NETHER") && mainArea.getYSize() < 129) {
                         continue;
                     } else if (mainArea.getYSize() < 256) {
                         continue;
@@ -201,13 +198,14 @@ public class ResidenceUtils {
             permission = pa.getPermission();
             if (permission.startsWith("regionplus.points.group.")) {
                 group = permission.replaceFirst("regionplus.points.group.", "");
-                group = group.toLowerCase();
                 if (group.equals("*")) {
                     highestGroup = groupMap.keySet().iterator().next();
                     userGroupMap.put(highestGroup, groupMap.get(highestGroup));
+                    break;
                 }
+                group = group.toLowerCase();
                 if (ConfigHandler.getConfigPath().getPointsMap().get(group) != null) {
-                    userGroupMap.put(group, ConfigHandler.getConfigPath().getPointsMap().get(group));
+                    userGroupMap.put(group, groupMap.get(group));
                 }
             }
         }
@@ -220,11 +218,11 @@ public class ResidenceUtils {
     public static void editMessage() {
         String playerName;
         String resName;
-        boolean bypassPerm = ConfigHandler.getConfigPath().isRMBypassPerms();
-        boolean message = ConfigHandler.getConfigPath().isRMMessage();
+        boolean bypassPerm = ConfigHandler.getConfigPath().isResMsgBypassPerm();
+        boolean message = ConfigHandler.getConfigPath().isResMsgMsg();
         List<String> groups = getResGroups();
         String groupName;
-        Table<String, String, List<String>> groupOldTable = ConfigHandler.getConfigPath().getRMGroupTable();
+        Table<String, String, List<String>> groupOldTable = ConfigHandler.getConfigPath().getResMsgGroupTable();
         Table<String, String, String> groupTable = HashBasedTable.create();
         List<String> enter;
         List<String> leave;
@@ -245,7 +243,8 @@ public class ResidenceUtils {
             playerName = offlinePlayer.getName();
             if (bypassPerm) {
                 if (PermissionsHandler.hasPermissionOffline(offlinePlayer, "regionplus.bypass.messageedit")) {
-                    ServerHandler.debugMessage("Message-Flags-Editor", playerName, "permission", "bypass");
+                    ServerHandler.sendFeatureMessage("Message-Flags-Editor", playerName, "permission", "bypass",
+                            new Throwable().getStackTrace()[0]);
                     continue;
                 }
             }
@@ -264,11 +263,13 @@ public class ResidenceUtils {
                     res.getEnterMessage();
                     if (enter.isEmpty() || enter.contains(res.getEnterMessage())) {
                         res.setEnterMessage(groupTable.get(groupName, "enter"));
-                        ServerHandler.sendDebugMessage("&6Edit message: &e" + resName + "&8 - &f" + "enter" + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                        ServerHandler.sendFeatureMessage("Residence.Message-Editor", resName, "enter", "change", "Owner: " + playerName + ", Group: " + groupName,
+                                new Throwable().getStackTrace()[0]);
                     }
                     if (leave.isEmpty() || leave.contains(res.getLeaveMessage())) {
                         res.setLeaveMessage(groupTable.get(groupName, "leave"));
-                        ServerHandler.sendDebugMessage("&6Edit message: &e" + resName + "&8 - &f" + "leave" + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                        ServerHandler.sendFeatureMessage("Residence.Message-Editor", resName, "leave", "change", "Owner: " + playerName + ", Group: " + groupName,
+                                new Throwable().getStackTrace()[0]);
                     }
                 }
             }
@@ -279,7 +280,7 @@ public class ResidenceUtils {
     public static void editFlags() {
         FlagsEditor flagsEditor = ConfigHandler.getEditor();
         flagsEditor.setUp();
-        boolean restartMsg = ConfigHandler.getConfigPath().isRFMessage();
+        boolean restartMsg = ConfigHandler.getConfigPath().isResFlagMaxMessage();
         startEditFlags(flagsEditor.getEditList());
 
         new BukkitRunnable() {
@@ -294,8 +295,8 @@ public class ResidenceUtils {
                         ServerHandler.sendConsoleMessage("&cPlease turn on the debug mode and send the error messages to plugin author.");
                         ServerHandler.sendConsoleMessage("&ehttps://github.com/momoservertw/RegionPlus/issues");
                         ServerHandler.sendConsoleMessage("&6Flags-Edit process has ended.");
-                        flagsEditor.setRun(false);
                         ServerHandler.sendDebugTrace(e);
+                        flagsEditor.setRun(false);
                         cancel();
                         return;
                     }
@@ -318,41 +319,42 @@ public class ResidenceUtils {
                     }
                 }
             }
-        }.runTaskTimer(RegionPlus.getInstance(), 0, ConfigHandler.getConfigPath().getRFMaxInterval() * 20);
+        }.runTaskTimer(RegionPlus.getInstance(), 0, ConfigHandler.getConfigPath().getResFlagMaxInterval() * 20);
     }
 
     private static void startEditFlags(List<OfflinePlayer> editList) {
         List<String> groups = getResGroups();
         String playerName;
         String resName;
-        ResidencePermissions perms;
+        ResidencePermissions resPerm;
         PermissionGroup group;
         String groupName;
         String[] listSplit;
         String[] listSplit2;
         List<String> permsPlayerList = new ArrayList<>();
         Set<Map.Entry<String, Boolean>> flagSet;
-        Set<Map.Entry<String, Boolean>> defaultFlagSet;
+        Set<Map.Entry<String, Boolean>> defaultFlags;
         List<String> removeFlagList = new ArrayList<>();
         List<String> removeFlagPlayerList = new ArrayList<>();
         Map<String, String> addFlagMap = new HashMap<>();
         String flag;
         Map<String, Boolean> permsPlayerFlags;
-        boolean RFBypassPerm = ConfigHandler.getConfigPath().isRFBypassPerms();
-        boolean RFBypassCustom = ConfigHandler.getConfigPath().isRFBypassCustom();
-        boolean RFDefaultRemove = ConfigHandler.getConfigPath().isRFDefaultRemove();
-        boolean RFDefaultRemoveOnly = ConfigHandler.getConfigPath().isRFDefaultRemoveOnly();
-        List<String> RFDefaultRemoveIgnore = ConfigHandler.getConfigPath().getRFDefaultRemoveIgnore();
-        boolean RFDefaultUpdate = ConfigHandler.getConfigPath().isRFDefaultUpdate();
-        List<String> RFDefaultUpdateIgnore = ConfigHandler.getConfigPath().getRFDefaultUpdateIgnore();
-        boolean RFPermsRemove = ConfigHandler.getConfigPath().isRFPermsRemove();
-        List<String> RFPermsRemoveIgnore = ConfigHandler.getConfigPath().getRFPermsRemoveIgnore();
+        boolean bypassPerm = ConfigHandler.getConfigPath().isResFlagBypassPerms();
+        boolean bypassCustom = ConfigHandler.getConfigPath().isResFlagBypassCustom();
+        boolean defaultRemove = ConfigHandler.getConfigPath().isResFlagRemove();
+        boolean defaultRemoveOnly = ConfigHandler.getConfigPath().isResFlagRemoveOnly();
+        List<String> defaultRemoveIgnore = ConfigHandler.getConfigPath().getResFlagRemoveIgnore();
+        boolean defaultUpdate = ConfigHandler.getConfigPath().isResFlagUpdate();
+        List<String> defaultUpdateIgnore = ConfigHandler.getConfigPath().getResFlagUpdateIgnore();
+        boolean permsRemove = ConfigHandler.getConfigPath().isResFlagPermsRemove();
+        List<String> permsRemoveIgnore = ConfigHandler.getConfigPath().getResFlagPermsRemoveIgnore();
 
         for (OfflinePlayer offlinePlayer : editList) {
             playerName = offlinePlayer.getName();
-            if (RFBypassPerm) {
+            if (bypassPerm) {
                 if (PermissionsHandler.hasPermissionOffline(offlinePlayer, "regionplus.bypass.flagsedit")) {
-                    ServerHandler.debugMessage("Residence-Flags-Editor", playerName, "permission", "bypass");
+                    ServerHandler.sendFeatureMessage("Residence.Flags-Editor", playerName, "permission", "bypass",
+                            new Throwable().getStackTrace()[0]);
                     break;
                 }
             }
@@ -361,30 +363,32 @@ public class ResidenceUtils {
                 group = Residence.getInstance().getPermissionManager().getGroupByName(groupName);
                 for (ClaimedResidence res : ResidenceApi.getPlayerManager().getResidencePlayer(playerName).getResList()) {
                     resName = res.getName();
-                    perms = res.getPermissions();
+                    resPerm = res.getPermissions();
                     // The default flags of that group.
-                    defaultFlagSet = group.getDefaultResidenceFlags();
+                    defaultFlags = group.getDefaultResidenceFlags();
                     // The default flags of that residence.
-                    flagSet = perms.getFlags().entrySet();
+                    flagSet = resPerm.getFlags().entrySet();
                     // Default - Remove
-                    if (RFDefaultRemove) {
+                    if (defaultRemove) {
                         for (Map.Entry<String, Boolean> flagEntry : flagSet) {
-                            if (!defaultFlagSet.contains(flagEntry)) {
+                            if (!defaultFlags.contains(flagEntry)) {
                                 flag = flagEntry.getKey();
-                                if (RFDefaultRemoveIgnore.contains(flag)) {
-                                    ServerHandler.sendDebugMessage("&5Bypass default flag: &e" + resName + "&8 - &f" + flag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                                if (defaultRemoveIgnore.contains(flag)) {
+                                    ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "default flags", "bypass", "Flag: " + flag + "Owner: " + playerName + ", Group: " + groupName,
+                                            new Throwable().getStackTrace()[0]);
                                     break;
                                 }
                                 try {
-                                    if (RFDefaultRemoveOnly) {
+                                    if (defaultRemoveOnly) {
                                         if (group.hasFlagAccess(Flags.valueOf(flag))) {
                                             break;
                                         }
                                     }
                                     removeFlagList.add(flag);
                                 } catch (Exception e) {
-                                    if (RFBypassCustom) {
-                                        ServerHandler.sendDebugMessage("&5Bypass default flag: &e" + resName + "&8 - &f" + flag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                                    if (bypassCustom) {
+                                        ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "default flags", "bypass", "Flag: " + flag + ", Owner: " + playerName + ", Group: " + groupName,
+                                                new Throwable().getStackTrace()[0]);
                                     } else {
                                         removeFlagList.add(flag);
                                     }
@@ -392,17 +396,19 @@ public class ResidenceUtils {
                             }
                         }
                         for (String removeFlag : removeFlagList) {
-                            perms.setFlag(removeFlag, FlagPermissions.FlagState.NEITHER);
-                            ServerHandler.sendDebugMessage("&4Remove default flag: &e" + resName + "&8 - &f" + removeFlag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                            resPerm.setFlag(removeFlag, FlagPermissions.FlagState.NEITHER);
+                            ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "default flags", "remove", "Flag: " + removeFlag + ", Owner: " + playerName + ", Group: " + groupName,
+                                    new Throwable().getStackTrace()[0]);
                         }
                     }
                     // Default - Update
-                    if (RFDefaultUpdate) {
+                    if (defaultUpdate) {
                         for (Map.Entry<String, Boolean> resFlagEntry : flagSet) {
                             if (!flagSet.contains(resFlagEntry)) {
                                 flag = resFlagEntry.getKey();
-                                if (RFDefaultUpdateIgnore.contains(flag)) {
-                                    ServerHandler.sendDebugMessage("&5Bypass update default flag: &e" + resName + "&8 - &f" + flag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                                if (defaultUpdateIgnore.contains(flag)) {
+                                    ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "update flags", "bypass", "Flag: " + flag + ", Owner: " + playerName + ", Group: " + groupName,
+                                            new Throwable().getStackTrace()[0]);
                                     break;
                                 }
                                 if (!group.hasFlagAccess(Flags.valueOf(flag))) {
@@ -412,14 +418,15 @@ public class ResidenceUtils {
                         }
                         for (String addFlagKey : addFlagMap.keySet()) {
                             flag = addFlagMap.get(addFlagKey);
-                            perms.setFlag(addFlagKey, FlagPermissions.FlagState.valueOf(flag.toUpperCase()));
-                            ServerHandler.sendDebugMessage("&6Add default flag: &e" + resName + "&8 - &f" + addFlagKey + "=" + flag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                            resPerm.setFlag(addFlagKey, FlagPermissions.FlagState.valueOf(flag.toUpperCase()));
+                            ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "update flags", "change", "Flag: " + addFlagKey + "=" + flag + ", Owner: " + playerName + ", Group: " + groupName,
+                                    new Throwable().getStackTrace()[0]);
                         }
                     }
                     // Permission (player) - Remove
-                    if (RFPermsRemove) {
+                    if (permsRemove) {
                         // Get player permission list in residence.
-                        listSplit = perms.listPlayersFlags().split("§f\\[");
+                        listSplit = resPerm.listPlayersFlags().split("§f\\[");
                         permsPlayerList.add(listSplit[0]);
                         for (String flagsSplit : listSplit) {
                             listSplit2 = flagsSplit.split("§f] ");
@@ -431,11 +438,12 @@ public class ResidenceUtils {
                         }
                         // Check every player's permissions.
                         for (String permsPlayer : permsPlayerList) {
-                            permsPlayerFlags = perms.getPlayerFlags(permsPlayer);
+                            permsPlayerFlags = resPerm.getPlayerFlags(permsPlayer);
                             if (permsPlayerFlags != null) {
                                 for (String permsPlayerFlag : permsPlayerFlags.keySet()) {
-                                    if (RFPermsRemoveIgnore.contains(permsPlayerFlag)) {
-                                        ServerHandler.sendDebugMessage("&5Bypass player flag: &e" + resName + "&8 - &f" + permsPlayerFlag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                                    if (permsRemoveIgnore.contains(permsPlayerFlag)) {
+                                        ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "player flags", "bypass", "Flag: " + permsPlayerFlag + ", Owner: " + playerName + ", Group: " + groupName,
+                                                new Throwable().getStackTrace()[0]);
                                         break;
                                     }
                                     try {
@@ -443,16 +451,18 @@ public class ResidenceUtils {
                                             removeFlagPlayerList.add(permsPlayerFlag);
                                         }
                                     } catch (Exception e) {
-                                        if (RFBypassCustom) {
-                                            ServerHandler.sendDebugMessage("&5Bypass player flag: &e" + resName + "&8 - &f" + permsPlayerFlag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                                        if (bypassCustom) {
+                                            ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "player flags", "bypass", "Flag: " + permsPlayerFlag + ", Owner: " + playerName + ", Group: " + groupName,
+                                                    new Throwable().getStackTrace()[0]);
                                         } else {
                                             removeFlagPlayerList.add(permsPlayerFlag);
                                         }
                                     }
                                 }
                                 for (String removePlayerFlag : removeFlagPlayerList) {
-                                    perms.setPlayerFlag(permsPlayer, removePlayerFlag, FlagPermissions.FlagState.NEITHER);
-                                    ServerHandler.sendDebugMessage("&cRemove player flag: &e" + resName + "&8 - &6" + permsPlayer + "&8 - &f" + removePlayerFlag + " &7(Owner: " + playerName + ", Group: " + groupName + ")");
+                                    resPerm.setPlayerFlag(permsPlayer, removePlayerFlag, FlagPermissions.FlagState.NEITHER);
+                                    ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "player flags", "remove", "Flag: " + removePlayerFlag + ", Player: " + permsPlayer + ", Owner: " + playerName + ", Group: " + groupName,
+                                            new Throwable().getStackTrace()[0]);
                                 }
                             }
                         }

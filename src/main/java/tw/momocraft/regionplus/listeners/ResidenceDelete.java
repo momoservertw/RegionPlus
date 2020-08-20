@@ -24,7 +24,7 @@ public class ResidenceDelete implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     private void onResidenceDelete(ResidenceDeleteEvent e) {
-        if (ConfigHandler.getConfigPath().isResReturnXYZ() && Residence.getInstance().getConfigManager().isSelectionIgnoreY()) {
+        if (ConfigHandler.getConfigPath().isResIgnoreYPoints() && Residence.getInstance().getConfigManager().isSelectionIgnoreY()) {
             Player player = e.getPlayer();
             String playerName = player.getName();
             if (!e.getCause().equals(ResidenceDeleteEvent.DeleteCause.PLAYER_DELETE)) {
@@ -66,7 +66,8 @@ public class ResidenceDelete implements Listener {
                 placeHolders[5] = String.valueOf(ConfigHandler.getDepends().getVault().getEconomy().getBalance(player));
                 placeHolders[6] = String.valueOf(difference);
                 Language.sendLangMessage("Message.RegionPlus.returnXYZMoney", player, placeHolders);
-                ServerHandler.debugMessage("Residence-returnXYZ", playerName, "ResidenceDeleteEvent", "return");
+                ServerHandler.sendFeatureMessage("Residence-returnXYZ", playerName, "ResidenceDeleteEvent", "return",
+                        new Throwable().getStackTrace()[0]);
                 return;
             }
             new BukkitRunnable() {
@@ -75,7 +76,8 @@ public class ResidenceDelete implements Listener {
                     Language.sendLangMessage("Message.RegionPlus.points", player, ResidenceUtils.pointsPH(player));
                 }
             }.runTaskLater(RegionPlus.getInstance(), 10);
-            ServerHandler.debugMessage("Residence-returnXYZ", playerName, "ResidenceDeleteEvent", "return", "final");
+            ServerHandler.sendFeatureMessage("Residence-returnXYZ", playerName, "ResidenceDeleteEvent", "return", "final",
+                    new Throwable().getStackTrace()[0]);
         }
     }
 }

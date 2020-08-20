@@ -7,6 +7,7 @@ import com.google.common.collect.Table;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
+import tw.momocraft.regionplus.utils.locationutils.LocationMap;
 
 import java.util.*;
 
@@ -15,14 +16,18 @@ public class ConfigPath {
     private boolean playerPreventFly;
     private String playerPreventFlyPerm;
 
-    private boolean RPEnable;
-    private boolean RPPotionDamage;
-    private boolean RPFlyDisable;
-    private boolean RPPainting;
-    private boolean RPItemFrame;
-    private boolean RPArmorStand;
-    private boolean RPZombieDoor;
-    private boolean RPEndermanPickup;
+    private boolean resAllAreas;
+    private boolean resIgnoreWithin;
+
+    private boolean resPrevent;
+    private boolean resPreventPotion;
+    private boolean resPreventFly;
+    private boolean resPreventPainting;
+    private boolean resPreventItemFrame;
+    private boolean resPreventArmorStand;
+    private boolean resPreventZombieDoor;
+    private boolean resPreventEndermanPick;
+    private boolean resPreventBlockDamage;
 
     private boolean resSMClimb;
     private boolean resSMCrawl;
@@ -33,66 +38,61 @@ public class ConfigPath {
     private boolean resSMSwim;
     private boolean resSMWallkick;
 
-    private boolean pointsEnable;
+    private boolean points;
     private boolean pointsSelectInfo;
     private Material pointsSelectTool;
     private boolean pointsMode;
-    private boolean pointsIgnoreXYZ;
-    private boolean pointsExpandXYZ;
-    private boolean resReturnXYZ;
-    private boolean resAllAreas;
-    private boolean resIgnoreWithin;
+    private boolean resIgnoreYPoints;
+    private boolean resIgnoreYExpand;
+
     private Long pointsDefault;
     private Map<String, Long> pointsMap;
     private Map<String, String> pointsDisplayMap;
 
-    private boolean RFEnable;
-    /*
-    private boolean RFAutoCheck;
-    private long RFAutoCheckDelay;
-    */
-    private int RFMaxLimit;
-    private int RFMaxInterval;
-    private boolean RFMessage;
-    private boolean RFBypassCustom;
-    private boolean RFBypassPerms;
-    private boolean RFDefaultRemove;
-    private boolean RFDefaultRemoveOnly;
-    private List<String> RFDefaultRemoveIgnore;
-    private boolean RFDefaultUpdate;
-    private List<String> RFDefaultUpdateIgnore;
-    private boolean RFPermsRemove;
-    private List<String> RFPermsRemoveIgnore;
+    private boolean resFlag;
+    private int resFlagLimit;
+    private int resFlagMaxInterval;
+    private boolean resFlagMaxMessage;
+    private boolean resFlagBypassCustom;
+    private boolean resFlagBypassPerms;
+    private boolean resFlagRemove;
+    private boolean resFlagRemoveOnly;
+    private List<String> resFlagRemoveIgnore;
+    private boolean resFlagUpdate;
+    private List<String> resFlagUpdateIgnore;
+    private boolean resFlagPermsRemove;
+    private List<String> resFlagPermsRemoveIgnore;
 
-    private boolean RMEnable;
-    private boolean RMBypassPerms;
-    private boolean RMMessage;
-    private Table<String, String, List<String>> RMGroupTable;
+    private boolean resMsg;
+    private boolean resMsgBypassPerm;
+    private boolean resMsgMsg;
+    private Table<String, String, List<String>> resMsgGroupTable;
 
-    private boolean VEnable;
-    private boolean VCreateRes;
-    private boolean VCreateResMsg;
-    private boolean VInteractBlock;
-    private boolean VInteractBlockUse;
-    private boolean VInteractBlockContainer;
-    private boolean VInteractEntities;
-    private boolean VInteractEntitiesNPC;
-    private boolean VDamageEntities;
-    private boolean VDamageEntitiesPlayer;
-    private boolean VDropItems;
-    private boolean VPickupItems;
-    private boolean VUseItems;
-    private boolean VItemsConsume;
-    private boolean VItemsBucket;
-    private boolean VItemsProjectile;
-    private boolean VItemsFishing;
-    private boolean VItemJoin;
-    private boolean VInteractBlockMsg;
-    private boolean VInteractEntitiesMsg;
-    private boolean VDamageEntitiesMsg;
-    private boolean VDropItemsMsg;
-    private boolean VPickupItemsMsg;
-    private boolean VUseItemsMsg;
+    private boolean visitor;
+    private boolean visResCreate;
+    private boolean visResCreateMsg;
+    private boolean visInteractBlock;
+    private boolean visInteractBlockUse;
+    private boolean visInteractBlockContainer;
+    private boolean visInteractEnt;
+    private boolean visInteractEntNPC;
+    private boolean visDamageEnt;
+    private boolean visDamageEntPlayer;
+    private boolean visDropItems;
+    private boolean visPickupItems;
+    private boolean visUseItems;
+    private boolean visItemsConsume;
+    private boolean visItemsBucket;
+    private boolean visItemsProjectile;
+    private boolean visItemsFishing;
+    private boolean visItemJoin;
+    private boolean visInteractBlockMsg;
+    private boolean visInteractEntMsg;
+    private boolean visDamageEntMsg;
+    private boolean visDropItemsMsg;
+    private boolean visPickupItemsMsg;
+    private boolean visUseItemsMsg;
+    private Map<String, LocationMap> visLocMaps;
 
     public ConfigPath() {
         setUp();
@@ -104,7 +104,6 @@ public class ConfigPath {
 
         resAllAreas = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.All-Areas.Enable");
         resIgnoreWithin = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.All-Areas.Ignore-Within-Area");
-        resReturnXYZ = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Return-XYZ");
 
         resSMClimb = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Climb");
         resSMCrawl = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Crawl");
@@ -115,21 +114,20 @@ public class ConfigPath {
         resSMSwim = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Swim");
         resSMWallkick = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Wallkick");
 
-        RPEnable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Enable");
-        RPFlyDisable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Fly-Disable");
-        RPPotionDamage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Potion-Damage");
-        RPPainting = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Painting-Destroy");
-        RPItemFrame = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Item-Frame-Destroy");
-        RPArmorStand = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Armor-Stand-Destroy");
-        RPZombieDoor = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent. Zombie-Door-Destruction");
-        RPEndermanPickup = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Enderman-Pickup-Block");
+        resPrevent = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Enable");
+        resPreventFly = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Fly-Disable");
+        resPreventPotion = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Potion-Damage");
+        resPreventPainting = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Painting-Destroy");
+        resPreventItemFrame = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Item-Frame-Destroy");
+        resPreventArmorStand = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Armor-Stand-Destroy");
+        resPreventZombieDoor = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent. Zombie-Door-Destruction");
+        resPreventEndermanPick = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Enderman-Pickup-Block");
+        resPreventBlockDamage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Block-Damage");
 
-        pointsEnable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Enable");
+        points = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Enable");
         pointsSelectInfo = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Select-Info");
         pointsSelectTool = Residence.getInstance().getConfigManager().getSelectionTool().getMaterial();
         pointsMode = Residence.getInstance().getConfigManager().isSelectionIgnoreY();
-        pointsIgnoreXYZ = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.Ignore-XYZ");
-        pointsExpandXYZ = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Check.Expand-XYZ");
         pointsDefault = ConfigHandler.getConfig("config.yml").getLong("Residence.Points.Groups.Default.Limit");
         pointsMap = new HashMap<>();
         pointsDisplayMap = new HashMap<>();
@@ -142,66 +140,103 @@ public class ConfigPath {
             pointsMap = Utils.sortByValue(pointsMap);
         }
 
-        RFEnable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Enable");
+
+        resIgnoreYPoints = ConfigHandler.getConfig("config.yml").getBoolean("Residence.IgnoreY-Changed.Points");
+        resIgnoreYExpand = ConfigHandler.getConfig("config.yml").getBoolean("Residence.IgnoreY-Changed.Expand");
+
+        resFlag = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Enable");
         /*
         RFAutoCheck = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Auto-Check.Enable");
         RFAutoCheckDelay = ConfigHandler.getConfig("config.yml").getLong("Residence.Flags-Editor.Settings.Auto-Check.Delay") * 20;
          */
-        RFMaxLimit = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Settings.Max-Edit-Players.Limit");
-        RFMaxInterval = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Settings.Max-Edit-Players.Interval");
-        RFMessage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Max-Edit-Players.Message");
-        RFBypassCustom = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Bypass-Missing-Custom-Flags");
-        RFBypassPerms = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Check-Bypass-Permission");
-        RFDefaultUpdate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Update.Enable");
-        RFDefaultUpdateIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Default.Update.Ignore");
-        RFDefaultRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Remove.Enable");
-        RFDefaultRemoveOnly = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Remove.Only-No-Perms");
-        RFDefaultRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Default.Remove.Ignore-List");
-        RFPermsRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Permissions.Remove.Enable");
-        RFPermsRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Permissions.Remove.Ignore-List");
+        resFlagLimit = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Settings.Max-Edit-Players.Limit");
+        resFlagMaxInterval = ConfigHandler.getConfig("config.yml").getInt("Residence.Flags-Editor.Settings.Max-Edit-Players.Interval");
+        resFlagMaxMessage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Max-Edit-Players.Message");
+        resFlagBypassCustom = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Bypass.Custom-Flags");
+        resFlagBypassPerms = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Bypass.Permission");
+        resFlagUpdate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Update.Enable");
+        resFlagUpdateIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Default.Update.Ignore");
+        resFlagRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Remove.Enable");
+        resFlagRemoveOnly = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Default.Remove.Only-No-Perms");
+        resFlagRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Default.Remove.Ignore-List");
+        resFlagPermsRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Permissions.Remove.Enable");
+        resFlagPermsRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Permissions.Remove.Ignore-List");
 
-        RMEnable = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Enable");
-        RMBypassPerms = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Settings.Check-Bypass-Permission");
-        RMMessage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Settings.Message");
-        ConfigurationSection RMOldEnterConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Message-Editor.Groups");
-        ConfigurationSection RMOldLeaveConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Message-Editor.Groups");
-        RMGroupTable = HashBasedTable.create();
-        if (RMOldEnterConfig != null) {
-            for (String group : RMOldEnterConfig.getKeys(false)) {
-                RMGroupTable.put(group, "enter", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups." + group + ".Enter"));
+        resMsg = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Enable");
+        resMsgBypassPerm = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Settings.Bypass.Permission");
+        resMsgMsg = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Settings.Message");
+        ConfigurationSection resMsgOldEnterConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Message-Editor.Groups");
+        ConfigurationSection resMsgOldLeaveConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Message-Editor.Groups");
+        resMsgGroupTable = HashBasedTable.create();
+        if (resMsgOldEnterConfig != null) {
+            for (String group : resMsgOldEnterConfig.getKeys(false)) {
+                resMsgGroupTable.put(group, "enter", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups." + group + ".Enter"));
             }
         }
-        if (RMOldLeaveConfig != null) {
-            for (String group : RMOldLeaveConfig.getKeys(false)) {
-                RMGroupTable.put(group, "leave", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups." + group + ".Leave"));
+        if (resMsgOldLeaveConfig != null) {
+            for (String group : resMsgOldLeaveConfig.getKeys(false)) {
+                resMsgGroupTable.put(group, "leave", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups." + group + ".Leave"));
             }
         }
 
-        VEnable = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
-        VCreateRes = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Create-Residence.Enable");
-        VCreateResMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Create-Residence.Message");
-        VInteractBlock = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Enable");
-        VInteractBlockMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Message");
-        VInteractBlockUse = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Allow-Use");
-        VInteractBlockContainer = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Allow-Container");
-        VInteractEntities = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entities.Enable");
-        VInteractEntitiesMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entities.Message");
-        VInteractEntitiesNPC = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entities.Allow-NPC");
-        VDamageEntities = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Damage-Entities.Enable");
-        VDamageEntitiesMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Damage-Entities.Message");
-        VDamageEntitiesPlayer = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Damage-Entities.Allow-Player");
-        VDropItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Drop-Items.Enable");
-        VDropItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Drop-Items.Message");
-        VPickupItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Pickup-Items.Enable");
-        VPickupItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Pickup-Items.Message");
-        VUseItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Enable");
-        VUseItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Message");
-        VItemsConsume = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Consume");
-        VItemsBucket = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Bucket");
-        VItemsProjectile = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Projectile");
-        VItemsFishing = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Fishing");
-        VItemJoin = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-ItemJoin");
+        visitor = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
+        visResCreate = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Create-Residence.Enable");
+        visResCreateMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Create-Residence.Message");
+        visInteractBlock = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Enable");
+        visInteractBlockMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Message");
+        visInteractBlockUse = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Allow-Use");
+        visInteractBlockContainer = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Allow-Container");
+        visInteractEnt = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entities.Enable");
+        visInteractEntMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entities.Message");
+        visInteractEntNPC = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entities.Allow-NPC");
+        visDamageEnt = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Damage-Entities.Enable");
+        visDamageEntMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Damage-Entities.Message");
+        visDamageEntPlayer = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Damage-Entities.Allow-Player");
+        visDropItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Drop-Items.Enable");
+        visDropItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Drop-Items.Message");
+        visPickupItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Pickup-Items.Enable");
+        visPickupItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Pickup-Items.Message");
+        visUseItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Enable");
+        visUseItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Message");
+        visItemsConsume = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Consume");
+        visItemsBucket = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Bucket");
+        visItemsProjectile = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Projectile");
+        visItemsFishing = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Fishing");
+        visItemJoin = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-ItemJoin");
+        visLocMaps = getLocationMaps("Visitor.Location");
     }
+
+    private Map<String, LocationMap> getLocationMaps(String path) {
+        Map<String, LocationMap> locMaps = new HashMap<>();
+        ConfigurationSection locConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection(path);
+        ConfigurationSection areaConfig;
+        LocationMap locMap;
+        LocationMap locWorldMap = new LocationMap();
+        List<String> worlds = new ArrayList<>();
+        if (locConfig != null) {
+            for (String group : locConfig.getKeys(false)) {
+                if (ConfigHandler.getConfig("config.yml").getConfigurationSection(path + "." + group) == null) {
+                    worlds.add(group);
+                    continue;
+                }
+                locMap = new LocationMap();
+                locMap.setWorlds(ConfigHandler.getConfig("config.yml").getStringList(path + "." + group + ".Worlds"));
+                areaConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection(path + "." + group + ".Area");
+                if (areaConfig != null) {
+                    for (String type : areaConfig.getKeys(false)) {
+                        locMap.addCord(type, ConfigHandler.getConfig("config.yml").getString(path + "." + group + ".Area." + type));
+                    }
+                }
+                locMaps.put(group, locMap);
+            }
+        } else {
+            worlds.addAll(ConfigHandler.getConfig("config.yml").getStringList(path));
+        }
+        locWorldMap.setWorlds(worlds);
+        locMaps.put("worldList", locWorldMap);
+        return locMaps;
+    }
+
 
     public boolean isPlayerPreventFly() {
         return playerPreventFly;
@@ -211,66 +246,6 @@ public class ConfigPath {
         return playerPreventFlyPerm;
     }
 
-    public boolean isRPEnable() {
-        return RPEnable;
-    }
-
-    public boolean isRPFlyDisable() {
-        return RPFlyDisable;
-    }
-
-    public boolean isRPPotionDamage() {
-        return RPPotionDamage;
-    }
-
-    public boolean isRPItemFrame() {
-        return RPItemFrame;
-    }
-
-    public boolean isRPPainting() {
-        return RPPainting;
-    }
-
-    public boolean isRPArmorStand() {
-        return RPArmorStand;
-    }
-
-    public boolean isRPZombieDoor() {
-        return RPZombieDoor;
-    }
-
-    public boolean isRPEndermanPickup() {
-        return RPEndermanPickup;
-    }
-
-
-    public boolean isPointsEnable() {
-        return pointsEnable;
-    }
-
-    public boolean isPointsSelectInfo() {
-        return pointsSelectInfo;
-    }
-
-    public Material getPointsSelectTool() {
-        return pointsSelectTool;
-    }
-
-    public boolean isPointsMode() {
-        return pointsMode;
-    }
-
-    public boolean isPointsIgnoreXYZ() {
-        return pointsIgnoreXYZ;
-    }
-
-    public boolean isPointsExpandXYZ() {
-        return pointsExpandXYZ;
-    }
-
-    public boolean isResReturnXYZ() {
-        return resReturnXYZ;
-    }
 
     public boolean isResAllAreas() {
         return resAllAreas;
@@ -279,6 +254,44 @@ public class ConfigPath {
     public boolean isResIgnoreWithin() {
         return resIgnoreWithin;
     }
+
+
+    public boolean isResPrevent() {
+        return resPrevent;
+    }
+
+    public boolean isResPreventFly() {
+        return resPreventFly;
+    }
+
+    public boolean isResPreventPotion() {
+        return resPreventPotion;
+    }
+
+    public boolean isResPreventItemFrame() {
+        return resPreventItemFrame;
+    }
+
+    public boolean isResPreventPainting() {
+        return resPreventPainting;
+    }
+
+    public boolean isResPreventArmorStand() {
+        return resPreventArmorStand;
+    }
+
+    public boolean isResPreventZombieDoor() {
+        return resPreventZombieDoor;
+    }
+
+    public boolean isResPreventEndermanPick() {
+        return resPreventEndermanPick;
+    }
+
+    public boolean isResPreventBlockDamage() {
+        return resPreventBlockDamage;
+    }
+
 
     public boolean isResSMClimb() {
         return resSMClimb;
@@ -312,6 +325,33 @@ public class ConfigPath {
         return resSMWallkick;
     }
 
+
+    public boolean isPoints() {
+        return points;
+    }
+
+    public boolean isPointsSelectInfo() {
+        return pointsSelectInfo;
+    }
+
+    public Material getPointsSelectTool() {
+        return pointsSelectTool;
+    }
+
+    public boolean isPointsMode() {
+        return pointsMode;
+    }
+
+
+    public boolean isResIgnoreYPoints() {
+        return resIgnoreYPoints;
+    }
+
+    public boolean isResIgnoreYExpand() {
+        return resIgnoreYExpand;
+    }
+
+
     public Long getPointsDefault() {
         return pointsDefault;
     }
@@ -325,8 +365,8 @@ public class ConfigPath {
     }
 
 
-    public boolean isRFEnable() {
-        return RFEnable;
+    public boolean isResFlag() {
+        return resFlag;
     }
 
     /*
@@ -339,164 +379,168 @@ public class ConfigPath {
     }
      */
 
-    public int getRFMaxLimit() {
-        return RFMaxLimit;
+    public int getResFlagLimit() {
+        return resFlagLimit;
     }
 
-    public int getRFMaxInterval() {
-        return RFMaxInterval;
+    public int getResFlagMaxInterval() {
+        return resFlagMaxInterval;
     }
 
-    public boolean isRFMessage() {
-        return RFMessage;
+    public boolean isResFlagMaxMessage() {
+        return resFlagMaxMessage;
     }
 
-    public boolean isRFBypassCustom() {
-        return RFBypassCustom;
+    public boolean isResFlagBypassCustom() {
+        return resFlagBypassCustom;
     }
 
-    public boolean isRFBypassPerms() {
-        return RFBypassPerms;
+    public boolean isResFlagBypassPerms() {
+        return resFlagBypassPerms;
     }
 
-    public boolean isRFDefaultUpdate() {
-        return RFDefaultUpdate;
+    public boolean isResFlagUpdate() {
+        return resFlagUpdate;
     }
 
-    public List<String> getRFDefaultUpdateIgnore() {
-        return RFDefaultUpdateIgnore;
+    public List<String> getResFlagUpdateIgnore() {
+        return resFlagUpdateIgnore;
     }
 
-    public boolean isRFDefaultRemove() {
-        return RFDefaultRemove;
+    public boolean isResFlagRemove() {
+        return resFlagRemove;
     }
 
-    public boolean isRFDefaultRemoveOnly() {
-        return RFDefaultRemoveOnly;
+    public boolean isResFlagRemoveOnly() {
+        return resFlagRemoveOnly;
     }
 
-    public List<String> getRFDefaultRemoveIgnore() {
-        return RFDefaultRemoveIgnore;
+    public List<String> getResFlagRemoveIgnore() {
+        return resFlagRemoveIgnore;
     }
 
-    public List<String> getRFPermsRemoveIgnore() {
-        return RFPermsRemoveIgnore;
+    public List<String> getResFlagPermsRemoveIgnore() {
+        return resFlagPermsRemoveIgnore;
     }
 
-    public boolean isRFPermsRemove() {
-        return RFPermsRemove;
+    public boolean isResFlagPermsRemove() {
+        return resFlagPermsRemove;
     }
 
 
-    public boolean isRMEnable() {
-        return RMEnable;
+    public boolean isResMsg() {
+        return resMsg;
     }
 
-    public boolean isRMBypassPerms() {
-        return RMBypassPerms;
+    public boolean isResMsgBypassPerm() {
+        return resMsgBypassPerm;
     }
 
-    public boolean isRMMessage() {
-        return RMMessage;
+    public boolean isResMsgMsg() {
+        return resMsgMsg;
     }
 
-    public Table<String, String, List<String>> getRMGroupTable() {
-        return RMGroupTable;
+    public Table<String, String, List<String>> getResMsgGroupTable() {
+        return resMsgGroupTable;
     }
 
-    public boolean isVEnable() {
-        return VEnable;
+    public boolean isVisitor() {
+        return visitor;
     }
 
-    public boolean isVCreateRes() {
-        return VCreateRes;
+    public boolean isVisResCreate() {
+        return visResCreate;
     }
 
-    public boolean isVCreateResMsg() {
-        return VCreateResMsg;
+    public boolean isVisResCreateMsg() {
+        return visResCreateMsg;
     }
 
-    public boolean isVInteractBlock() {
-        return VInteractBlock;
+    public boolean isVisInteractBlock() {
+        return visInteractBlock;
     }
 
-    public boolean isVInteractEntities() {
-        return VInteractEntities;
+    public boolean isVisInteractEnt() {
+        return visInteractEnt;
     }
 
-    public boolean isVInteractBlockContainer() {
-        return VInteractBlockContainer;
+    public boolean isVisInteractBlockContainer() {
+        return visInteractBlockContainer;
     }
 
-    public boolean isVInteractBlockUse() {
-        return VInteractBlockUse;
+    public boolean isVisInteractBlockUse() {
+        return visInteractBlockUse;
     }
 
-    public boolean isVInteractEntitiesNPC() {
-        return VInteractEntitiesNPC;
+    public boolean isVisInteractEntNPC() {
+        return visInteractEntNPC;
     }
 
-    public boolean isVDamageEntities() {
-        return VDamageEntities;
+    public boolean isVisDamageEnt() {
+        return visDamageEnt;
     }
 
-    public boolean isVDamageEntitiesPlayer() {
-        return VDamageEntitiesPlayer;
+    public boolean isVisDamageEntPlayer() {
+        return visDamageEntPlayer;
     }
 
-    public boolean isVDropItems() {
-        return VDropItems;
+    public boolean isVisDropItems() {
+        return visDropItems;
     }
 
-    public boolean isVItemsBucket() {
-        return VItemsBucket;
+    public boolean isVisItemsBucket() {
+        return visItemsBucket;
     }
 
-    public boolean isVItemsConsume() {
-        return VItemsConsume;
+    public boolean isVisItemsConsume() {
+        return visItemsConsume;
     }
 
-    public boolean isVItemsFishing() {
-        return VItemsFishing;
+    public boolean isVisItemsFishing() {
+        return visItemsFishing;
     }
 
-    public boolean isVItemJoin() {
-        return VItemJoin;
+    public boolean isVisItemJoin() {
+        return visItemJoin;
     }
 
-    public boolean isVItemsProjectile() {
-        return VItemsProjectile;
+    public boolean isVisItemsProjectile() {
+        return visItemsProjectile;
     }
 
-    public boolean isVPickupItems() {
-        return VPickupItems;
+    public boolean isVisPickupItems() {
+        return visPickupItems;
     }
 
-    public boolean isVUseItems() {
-        return VUseItems;
+    public boolean isVisUseItems() {
+        return visUseItems;
     }
 
-    public boolean isVDamageEntitiesMsg() {
-        return VDamageEntitiesMsg;
+    public boolean isVisDamageEntMsg() {
+        return visDamageEntMsg;
     }
 
-    public boolean isVDropItemsMsg() {
-        return VDropItemsMsg;
+    public boolean isVisDropItemsMsg() {
+        return visDropItemsMsg;
     }
 
-    public boolean isVInteractBlockMsg() {
-        return VInteractBlockMsg;
+    public boolean isVisInteractBlockMsg() {
+        return visInteractBlockMsg;
     }
 
-    public boolean isVInteractEntitiesMsg() {
-        return VInteractEntitiesMsg;
+    public boolean isVisInteractEntMsg() {
+        return visInteractEntMsg;
     }
 
-    public boolean isVPickupItemsMsg() {
-        return VPickupItemsMsg;
+    public boolean isVisPickupItemsMsg() {
+        return visPickupItemsMsg;
     }
 
-    public boolean isVUseItemsMsg() {
-        return VUseItemsMsg;
+    public boolean isVisUseItemsMsg() {
+        return visUseItemsMsg;
+    }
+
+    public Map<String, LocationMap> getVisLocMaps() {
+        return visLocMaps;
     }
 }

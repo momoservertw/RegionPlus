@@ -20,18 +20,19 @@ public class PlayerToggleFlight implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onPlayerToggleFlight(PlayerToggleFlightEvent e) {
-        if (ConfigHandler.getConfigPath().isRPEnable()) {
-            if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-                return;
-            }
+        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+            return;
+        }
+        if (ConfigHandler.getConfigPath().isResPrevent()) {
             if (!e.isFlying() && !e.getPlayer().isSneaking()) {
-                if (ConfigHandler.getConfigPath().isRPFlyDisable()) {
+                if (ConfigHandler.getConfigPath().isResPreventFly()) {
                     Player player = e.getPlayer();
                     ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(e.getPlayer().getLocation());
                     if (res != null) {
                         ResidencePermissions perms = res.getPermissions();
                         if (perms.has(Flags.fly, false) || perms.playerHas(player, Flags.fly, false)) {
-                            ServerHandler.debugMessage("Residence", "isResPreventFly", "residence flag", "cancel");
+                            ServerHandler.sendFeatureMessage("Residence", "isResPreventFly", "residence flag", "cancel",
+                                    new Throwable().getStackTrace()[0]);
                             e.setCancelled(true);
                         }
                     }
@@ -44,10 +45,10 @@ public class PlayerToggleFlight implements Listener {
             if (ConfigHandler.getConfigPath().isPlayerPreventFly()) {
                 String flyPerm = ConfigHandler.getConfigPath().getPlayerPreventFlyPerm();
                 if (PermissionsHandler.hasPermission(e.getPlayer(), flyPerm)) {
-                    ServerHandler.debugMessage("Residence", "Fly-Disable", "Permission", "bypass");
+                    ServerHandler.sendFeatureMessage("Residence", "Fly-Disable", "Permission", "bypass");
                     return;
                 }
-                if (LocationAPI.getLocation(e.getPlayer().getLocation(), "Player.Prevent.Fly-Disable.Location")) {
+                if (LocationUtils.getLocation(e.getPlayer().getLocation(), "Player.Prevent.Fly-Disable.Location")) {
                     e.setCancelled(true);
                 }
             }

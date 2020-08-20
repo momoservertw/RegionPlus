@@ -20,27 +20,30 @@ public class PlayerInteractEntity implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorInteractEntities(PlayerInteractEntityEvent e) {
-        if (ConfigHandler.getConfigPath().isVEnable()) {
-            if (ConfigHandler.getConfigPath().isVInteractEntities()) {
+        if (ConfigHandler.getConfigPath().isVisitor()) {
+            if (ConfigHandler.getConfigPath().isVisInteractEnt()) {
                 Player player = e.getPlayer();
                 Entity entity = e.getRightClicked();
                 String entityType = entity.getType().name();
                 if (RegionUtils.bypassBorder(player, player.getLocation())) {
-                    ServerHandler.debugMessage("Visitor", entityType, "Interact-Entities", "return", "border");
+                    ServerHandler.sendFeatureMessage("Visitor", entityType, "Interact-Entities", "return", "border",
+                            new Throwable().getStackTrace()[0]);
                     return;
                 }
                 // Allow-NPC
                 if (entity.hasMetadata("NPC")) {
-                    if (ConfigHandler.getConfigPath().isVInteractEntitiesNPC()) {
-                        ServerHandler.debugMessage("Visitor", entityType, "Interact-Entities", "bypass", "Allow-NPC=true");
+                    if (ConfigHandler.getConfigPath().isVisInteractEntNPC()) {
+                        ServerHandler.sendFeatureMessage("Visitor", entityType, "Interact-Entities", "bypass", "Allow-NPC=true",
+                                new Throwable().getStackTrace()[0]);
                         return;
                     }
                 }
                 // Cancel
-                if (ConfigHandler.getConfigPath().isVInteractEntitiesMsg()) {
+                if (ConfigHandler.getConfigPath().isVisInteractEntMsg()) {
                     Language.sendLangMessage("Message.RegionPlus.visitorInteractEntities", player);
                 }
-                ServerHandler.debugMessage("Visitor", entityType, "Interact-Entities", "cancel");
+                ServerHandler.sendFeatureMessage("Visitor", entityType, "Interact-Entities", "cancel",
+                        new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
             }
         }

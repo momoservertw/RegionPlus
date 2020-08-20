@@ -1,5 +1,7 @@
 package tw.momocraft.regionplus;
 
+import com.live.bemmamin.gps.api.GPSAPI;
+import com.live.bemmamin.gps.commands.gps.GPSCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -65,7 +67,7 @@ public class Commands implements CommandExecutor {
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("flagsedit")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
-                if (ConfigHandler.getConfigPath().isRFEnable()) {
+                if (ConfigHandler.getConfigPath().isResFlag()) {
                     if (ConfigHandler.getEditor().isRun()) {
                         ServerHandler.sendConsoleMessage("&cThe process of Flags-Edit is still running! &8(Stop process: /rp flagsedit stop)");
                         return true;
@@ -93,7 +95,7 @@ public class Commands implements CommandExecutor {
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("messageedit")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.messageedit")) {
-                if (ConfigHandler.getConfigPath().isRMEnable()) {
+                if (ConfigHandler.getConfigPath().isResMsg()) {
                     ServerHandler.sendConsoleMessage("&6Starting to check residence message...");
                     ResidenceUtils.editMessage();
                     return true;
@@ -105,7 +107,7 @@ public class Commands implements CommandExecutor {
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("points")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
-                if (ConfigHandler.getConfigPath().isPointsEnable()) {
+                if (ConfigHandler.getConfigPath().isPoints()) {
                     Language.sendLangMessage("Message.RegionPlus.points", sender, ResidenceUtils.pointsPH((Player) sender));
                 } else {
                     Language.sendLangMessage("Message.featureNotEnable", sender);
@@ -115,7 +117,7 @@ public class Commands implements CommandExecutor {
             }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("points")) {
             if (PermissionsHandler.hasPermission(sender, "regionplus.command.points.other")) {
-                if (ConfigHandler.getConfigPath().isPointsEnable()) {
+                if (ConfigHandler.getConfigPath().isPoints()) {
                     Player player = PlayerHandler.getPlayerString(args[1]);
                     if (player == null) {
                         String[] placeHolders = Language.newString();
@@ -127,6 +129,14 @@ public class Commands implements CommandExecutor {
                 } else {
                     Language.sendLangMessage("Message.featureNotEnable", sender);
                 }
+            } else {
+                Language.sendLangMessage("Message.noPermission", sender);
+            }
+            return true;
+        } else if (args.length == 1 && args[0].equalsIgnoreCase("tp")) {
+            if (PermissionsHandler.hasPermission(sender, "regionplus.command.tp")) {
+                //GPSAPI gpsapi = new GPSAPI(RegionPlus.getInstance());
+                //gpsapi.startCompass();
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);
             }

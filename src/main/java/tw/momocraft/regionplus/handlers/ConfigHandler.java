@@ -35,7 +35,7 @@ public class ConfigHandler {
         setEditor(new FlagsEditor());
 
         if (getDepends().LuckPermsEnabled()) {
-            if (getConfigPath().isRFDefaultRemove()) {
+            if (getConfigPath().isResFlagRemove()) {
                 ServerHandler.sendConsoleMessage("&6Flags-Edit need to check the permissions of offline players.");
                 ServerHandler.sendConsoleMessage("&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
             }
@@ -78,20 +78,16 @@ public class ConfigHandler {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceDelete(), RegionPlus.getInstance());
 
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleClimb(), RegionPlus.getInstance());
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleCrawl(), RegionPlus.getInstance());
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleMobkick(), RegionPlus.getInstance());
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleRoofhang(), RegionPlus.getInstance());
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleSlide(), RegionPlus.getInstance());
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleSwim(), RegionPlus.getInstance());
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleWallkick(), RegionPlus.getInstance());
-            FlagPermissions.addFlag("climb");
-            FlagPermissions.addFlag("crawl");
-            FlagPermissions.addFlag("mobkick");
-            FlagPermissions.addFlag("roofhang");
-            FlagPermissions.addFlag("slide");
-            FlagPermissions.addFlag("swim");
-            FlagPermissions.addFlag("wallkick");
+            if (ConfigHandler.getDepends().SurvivalMechanicsEnabled()) {
+                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new SurvivalMechanics(), RegionPlus.getInstance());
+                FlagPermissions.addFlag("climb");
+                FlagPermissions.addFlag("crawl");
+                FlagPermissions.addFlag("mobkick");
+                FlagPermissions.addFlag("roofhang");
+                FlagPermissions.addFlag("slide");
+                FlagPermissions.addFlag("swim");
+                FlagPermissions.addFlag("wallkick");
+            }
         }
     }
 
@@ -187,6 +183,7 @@ public class ConfigHandler {
                 + (getDepends().MultiverseCoreEnabled() ? "Multiverse-Core, " : "")
                 + (getDepends().LuckPermsEnabled() ? "LuckPerms, " : "")
                 + (getDepends().SurvivalMechanicsEnabled() ? "SurvivalMechanics, " : "")
+                + (getDepends().GPSEnabled() ? "GPS, " : "")
         );
     }
 

@@ -3,18 +3,9 @@ Config-Version: 3
 Debugging: false
 Check-Updates: true
 
-# Add the block size limit in residence areas, update old flags in batches and fix bugs.
-# Need plugin: Residence
+# Adding more features for Residence.
+# More information: https://github.com/momoservertw/RegionPlus/wiki/Residence
 Residence:
-  Custom-Flags:
-    SurvivalMechanics:
-      Climb: true
-      Crawl: true
-      Mobkick: true
-      Roofhang: true
-      Slide: true
-      Swim: true
-      Wallkick: true
   Settings:
     # It will check every areas in one residence. Because of two area may in the same location, I'm not recommend using multiple areas.
     # You can set the "MaxAreasPerResidence: 0" in residence groups.yml  to prevent players creating multiple areas.
@@ -23,24 +14,34 @@ Residence:
       Enable: false
       # Ignore the area which is in another area.
       Ignore-Within-Area: false
-  # Return the difference money between IgnoreY "false" to "true" if you has changed it.
-  Return-XYZ: false
-  # Allow expanding residence which doesn't ignore-Y.
-  Expand-XYZ: true
+  # Fixed some bugs and improved the player's gaming experience.
   Prevent:
     Enable: false
-    # Prevent potions from killing animals, monsters, and players without residence flags or enabling PVP status in the residence (requires: PvPManager).
+    # Prevent potions from killing animals, monsters, and players without "pvp" flags or enabling PVP status in the residence (requires: PvPManager).
     Potion-Damage: true
-    # Prevent entities(contains TNT) from destroying paintings in residences without build flag.
+    # Prevent entities(contains TNT) from destroying paintings in residences without "build" flag.
     Painting-Destroy: true
-    # Prevent entities(contains TNT) from destroying item_frames in residences without build flag.
+    # Prevent entities(contains TNT) from destroying item_frames in residences without "build" flag.
     Item-Frame-Destroy: true
-    # Prevent entities(contains TNT) from destroying Armor_Stand in residences without build flag.
+    # Prevent entities(contains TNT) from destroying Armor_Stand in residences without "build" flag.
     Armor-Stand-Destroy: true
-    # Prevent zombies from destroying doors in residences without build flag.
+    # Prevent zombies from destroying doors in residences without "build" flag.
     Zombie-Door-Destruction: true
-    # Prevent enderman from picking up blocks in residences without build flag.
+    # Prevent enderman pickup blocks in the residence without "build" flag.
     Enderman-Pickup-Block: true
+    # Prevent block damage from explosion in the residence without "tnt" flag.
+    Block-Damage: true
+  # Adding more flags for residence.
+  Custom-Flags:
+    # Toggle the feature of SurvivalMechanics.
+    SurvivalMechanics:
+      Climb: true
+      Crawl: true
+      Mobkick: true
+      Roofhang: true
+      Slide: true
+      Swim: true
+      Wallkick: true
   # Using the blocks size to limit players' residence size just like GriefPrevention.
   Points:
     Enable: false
@@ -48,7 +49,7 @@ Residence:
     Select-Info: true
     Check:
       # It will not count the points if the residence are not infinite height. It is useful for changing residence "IgnoreY" setting 'false' to 'true'.
-      Ignore-XYZ: true
+      IgnoreY: true
     # The residence block limit for difference groups. You can add your own groups.
     # Permission: regionplus.points.group.GROUP
     Groups:
@@ -70,6 +71,12 @@ Residence:
       GOD:
         Display: '&e&lGOD'
         Limit: 270000
+  # Avoid the bugs after you changed the option"IgnoreY" false to true in Residence config.yml.
+  IgnoreY-Changed:
+    # Return the correct money when removing a residence which doesn't ignore-Y.
+    Return: false
+    # Allow expanding residence which doesn't ignore-Y.
+    Expand: false
   # Changing all old residence flag to new one.
   Flags-Editor:
     Enable: false

@@ -21,10 +21,10 @@ public class EntityDamageByEntity implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onResPreventEnable(EntityDamageByEntityEvent e) {
-        if (ConfigHandler.getConfigPath().isRPEnable()) {
-            if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-                return;
-            }
+        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+            return;
+        }
+        if (ConfigHandler.getConfigPath().isResPrevent()) {
             Player player = null;
             if (e.getDamager() instanceof Player) {
                 player = (Player) e.getDamager();
@@ -33,40 +33,48 @@ public class EntityDamageByEntity implements Listener {
             String entityType = entity.getType().name();
             switch (entityType) {
                 case "PAINTING":
-                    if (ConfigHandler.getConfigPath().isRPPainting()) {
+                    if (ConfigHandler.getConfigPath().isResPreventPainting()) {
                         if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false, player)) {
-                            ServerHandler.debugMessage("Residence", entityType, "isRPPainting", "return", "destroy=true");
+                            ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventPainting", "return", "destroy=true",
+                                    new Throwable().getStackTrace()[0]);
                             return;
                         }
                         break;
                     }
-                    ServerHandler.debugMessage("Residence", entityType, "isRPPainting", "return", "not enabled");
+                    ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventPainting", "return", "not enabled",
+                            new Throwable().getStackTrace()[0]);
                     return;
                 case "ITEM_FRAME":
-                    if (ConfigHandler.getConfigPath().isRPItemFrame()) {
+                    if (ConfigHandler.getConfigPath().isResPreventItemFrame()) {
                         if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false, player)) {
-                            ServerHandler.debugMessage("Residence", entityType, "isRPItemFrame", "return", "destroy=true");
+                            ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventItemFrame", "return", "destroy=true",
+                                    new Throwable().getStackTrace()[0]);
                             return;
                         }
                         break;
                     }
-                    ServerHandler.debugMessage("Residence", entityType, "isRPItemFrame", "return", "not enabled");
+                    ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventItemFrame", "return", "not enabled",
+                            new Throwable().getStackTrace()[0]);
                     return;
                 case "ARMOR_STAND":
-                    if (ConfigHandler.getConfigPath().isRPArmorStand()) {
+                    if (ConfigHandler.getConfigPath().isResPreventArmorStand()) {
                         if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false, player)) {
-                            ServerHandler.debugMessage("Residence", entityType, "isRPArmorStand", "return", "destroy=true");
+                            ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventArmorStand", "return", "destroy=true",
+                                    new Throwable().getStackTrace()[0]);
                             return;
                         }
                         break;
                     }
-                    ServerHandler.debugMessage("Residence", entityType, "isRPArmorStand", "return", "not enabled");
+                    ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventArmorStand", "return", "not enabled",
+                            new Throwable().getStackTrace()[0]);
                     return;
                 default:
-                    ServerHandler.debugMessage("Residence", entityType, "isRPPainting", "return", "not contains");
+                    ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventPainting", "return", "not contains",
+                            new Throwable().getStackTrace()[0]);
                     return;
             }
-            ServerHandler.debugMessage("Residence", entityType, "isRPPainting", "cancel", "final");
+            ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventPainting", "cancel", "final",
+                    new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
         }
     }
@@ -78,28 +86,31 @@ public class EntityDamageByEntity implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorDamageEntities(EntityDamageByEntityEvent e) {
-        if (ConfigHandler.getConfigPath().isVEnable()) {
-            if (ConfigHandler.getConfigPath().isVDamageEntities()) {
+        if (ConfigHandler.getConfigPath().isVisitor()) {
+            if (ConfigHandler.getConfigPath().isVisDamageEnt()) {
                 if (e.getDamager() instanceof Player) {
                     Player player = (Player) e.getDamager();
                     Entity entity = e.getEntity();
                     String entityType = entity.getType().name();
                     if (RegionUtils.bypassBorder(player, entity.getLocation())) {
-                        ServerHandler.debugMessage("Visitor", entityType, "Damage-Entities", "return", "border");
+                        ServerHandler.sendFeatureMessage("Visitor", entityType, "Damage-Entities", "return", "border",
+                                new Throwable().getStackTrace()[0]);
                         return;
                     }
                     // Allow-Player
-                    if (ConfigHandler.getConfigPath().isVDamageEntitiesPlayer()) {
+                    if (ConfigHandler.getConfigPath().isVisDamageEntPlayer()) {
                         if (entity instanceof Player) {
-                            ServerHandler.debugMessage("Visitor", entityType, "Damage-Entities", "bypass", "Allow-Player=true");
+                            ServerHandler.sendFeatureMessage("Visitor", entityType, "Damage-Entities", "bypass", "Allow-Player=true",
+                                    new Throwable().getStackTrace()[0]);
                             return;
                         }
                     }
                     // Cancel
-                    if (ConfigHandler.getConfigPath().isVDamageEntitiesMsg()) {
+                    if (ConfigHandler.getConfigPath().isVisDamageEntMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorDamageEntities", player);
                     }
-                    ServerHandler.debugMessage("Visitor", entityType, "Damage-Entities", "cancel");
+                    ServerHandler.sendFeatureMessage("Visitor", entityType, "Damage-Entities", "cancel",
+                            new Throwable().getStackTrace()[0]);
                     e.setCancelled(true);
                 }
             }

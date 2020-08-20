@@ -19,20 +19,22 @@ public class PlayerPickupItem implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorPickupItems(EntityPickupItemEvent e) {
-        if (ConfigHandler.getConfigPath().isVEnable()) {
-            if (ConfigHandler.getConfigPath().isVPickupItems()) {
+        if (ConfigHandler.getConfigPath().isVisitor()) {
+            if (ConfigHandler.getConfigPath().isVisPickupItems()) {
                 if (e.getEntity() instanceof Player) {
                     Player player = (Player) e.getEntity();
                     String itemType = e.getItem().getName();
                     if (RegionUtils.bypassBorder(player, player.getLocation())) {
-                        ServerHandler.debugMessage("Visitor", itemType, "Pickup-Items", "return", "border");
+                        ServerHandler.sendFeatureMessage("Visitor", itemType, "Pickup-Items", "return", "border",
+                                new Throwable().getStackTrace()[0]);
                         return;
                     }
                     // Cancel
-                    if (ConfigHandler.getConfigPath().isVPickupItemsMsg()) {
+                    if (ConfigHandler.getConfigPath().isVisPickupItemsMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorPickupItems", player);
                     }
-                    ServerHandler.debugMessage("Visitor", itemType, "Pickup-Items", "cancel");
+                    ServerHandler.sendFeatureMessage("Visitor", itemType, "Pickup-Items", "cancel",
+                            new Throwable().getStackTrace()[0]);
                     e.setCancelled(true);
                 }
             }

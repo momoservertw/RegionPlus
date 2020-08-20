@@ -19,15 +19,16 @@ public class EntityChangeBlock implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onResPreventEndermanPickup(EntityChangeBlockEvent e) {
-        if (ConfigHandler.getConfigPath().isRPEnable()) {
-            if (ConfigHandler.getConfigPath().isRPEndermanPickup()) {
-                if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-                    return;
-                }
+        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+            return;
+        }
+        if (ConfigHandler.getConfigPath().isResPrevent()) {
+            if (ConfigHandler.getConfigPath().isResPreventEndermanPick()) {
                 Entity entity = e.getEntity();
                 if (entity instanceof Enderman) {
                     if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false)) {
-                        ServerHandler.debugMessage("Residence", "Enderman", "isRPEndermanPickup", "cancel", "destroy=false");
+                        ServerHandler.sendFeatureMessage("Residence", "Enderman", "isResPreventEndermanPick", "cancel", "destroy=false",
+                                new Throwable().getStackTrace()[0]);
                         e.setCancelled(true);
                     }
                 }

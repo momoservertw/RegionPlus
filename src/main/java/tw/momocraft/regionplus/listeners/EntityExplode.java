@@ -5,12 +5,12 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityBreakDoorEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.handlers.ServerHandler;
 import tw.momocraft.regionplus.utils.ResidenceUtils;
 
-public class EntityBreakDoor implements Listener {
+public class EntityExplode implements Listener {
 
     /**
      * Residence-Prevent
@@ -18,17 +18,16 @@ public class EntityBreakDoor implements Listener {
      * @param e EntityBreakDoorEvent
      */
     @EventHandler(priority = EventPriority.HIGH)
-    private void onResPreventZombieDoor(EntityBreakDoorEvent e) {
+    private void onResPreventBlockDamage(EntityExplodeEvent e) {
         if (!ConfigHandler.getDepends().ResidenceEnabled()) {
             return;
         }
         if (ConfigHandler.getConfigPath().isResPrevent()) {
-            if (ConfigHandler.getConfigPath().isResPreventZombieDoor()) {
+            if (ConfigHandler.getConfigPath().isResPreventBlockDamage()) {
                 Entity entity = e.getEntity();
                 if (entity instanceof Zombie) {
                     if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false)) {
-                        ServerHandler.sendFeatureMessage("Residence", "Zombie", "isResPreventZombieDoor", "cancel", "destroy=false",
-                                new Throwable().getStackTrace()[0]);
+                        ServerHandler.sendFeatureMessage("Residence", "Zombie", "isResPreventZombieDoor", "cancel", "destroy=false");
                         e.setCancelled(true);
                     }
                 }
