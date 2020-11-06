@@ -3,10 +3,12 @@ package tw.momocraft.regionplus.utils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.handlers.PermissionsHandler;
 import tw.momocraft.regionplus.utils.locationutils.LocationUtils;
 import tw.momocraft.regionplus.utils.locationutils.LocationMap;
 
+import java.util.List;
 import java.util.Map;
 
 /*
@@ -33,11 +35,11 @@ Momocraft§f[§4container §4ignite §2mobkilling §4shear §4build §2use §4ve
 
 public class RegionUtils {
 
-    public static boolean bypassBorder(Player player, Location location, Map<String, LocationMap> locMaps) {
-        World world = location.getWorld();
+    public static boolean bypassBorder(Player player, Location loc, List<LocationMap> locMaps) {
+        World world = loc.getWorld();
         if (world != null) {
             String worldName = world.getName().toLowerCase();
-            if (LocationUtils.checkLocation(location, locMaps)) {
+            if (ConfigHandler.getConfigPath().getLocationUtils().checkLocation(loc, locMaps)) {
                 return PermissionsHandler.hasPermission(player, "regionplus.bypass.visitor.*") &&
                         PermissionsHandler.hasPermission(player, "regionplus.bypass.visitor." + worldName);
             }

@@ -155,7 +155,7 @@ public class Utils {
                 try {
                     return PlaceholderAPI.setPlaceholders(player, name);
                 } catch (NoSuchFieldError e) {
-                    ServerHandler.sendDebugMessage("Error has occured when setting the PlaceHolder " + e.getMessage() + ", if this issue persits contact the developer of PlaceholderAPI.");
+                    //ServerHandler.sendDebugMessage("Error has occured when setting the PlaceHolder " + e.getMessage() + ", if this issue persits contact the developer of PlaceholderAPI.");
                     return name;
                 }
             } catch (Exception e) {

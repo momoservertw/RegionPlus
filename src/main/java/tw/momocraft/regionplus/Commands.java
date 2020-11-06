@@ -1,7 +1,13 @@
 package tw.momocraft.regionplus;
 
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.api.ResidenceApi;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+import com.bekvon.bukkit.residence.protection.CuboidArea;
 import com.live.bemmamin.gps.api.GPSAPI;
 import com.live.bemmamin.gps.commands.gps.GPSCommand;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,6 +18,8 @@ import tw.momocraft.regionplus.handlers.PlayerHandler;
 import tw.momocraft.regionplus.handlers.ServerHandler;
 import tw.momocraft.regionplus.utils.Language;
 import tw.momocraft.regionplus.utils.ResidenceUtils;
+
+import java.util.UUID;
 
 public class Commands implements CommandExecutor {
 
@@ -128,6 +136,29 @@ public class Commands implements CommandExecutor {
                     Language.sendLangMessage("Message.RegionPlus.targetPoints", sender, ResidenceUtils.targetPointsPH(sender, player));
                 } else {
                     Language.sendLangMessage("Message.featureNotEnable", sender);
+                }
+            } else {
+                Language.sendLangMessage("Message.noPermission", sender);
+            }
+            return true;
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("return") && args[1].equalsIgnoreCase("ignoreyresidence")) {
+            if (PermissionsHandler.hasPermission(sender, "regionplus.command.return")) {
+                ClaimedResidence res;
+                CuboidArea area;
+                int price;
+                UUID playerUUID;
+                for (String resName : Residence.getInstance().getResidenceManager().getResidenceList()) {
+                    res = Residence.getInstance().getResidenceManager().getByName(resName);
+                    area = res.getMainArea();
+                    if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() >= 129) {
+                        continue;
+                    } else if (area.getYSize() >= 256) {
+                        continue;
+                    }
+                    price = res.getSellPrice();
+                    playerUUID = res.getOwnerUUID();
+                    ConfigHandler.getDepends().getVault().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(playerUUID), price);
+                    ServerHandler.sendConsoleMessage("Return residence value: " + resName + ", " + price + ", " + playerUUID);
                 }
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);

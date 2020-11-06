@@ -1,5 +1,6 @@
 package tw.momocraft.regionplus.listeners;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +12,9 @@ import tw.momocraft.regionplus.handlers.ServerHandler;
 import tw.momocraft.regionplus.utils.Language;
 import tw.momocraft.regionplus.utils.RegionUtils;
 import tw.momocraft.regionplus.utils.ResidenceUtils;
+import tw.momocraft.regionplus.utils.VisitorMap;
+
+import java.util.Map;
 
 public class EntityDamageByEntity implements Listener {
 
@@ -21,9 +25,6 @@ public class EntityDamageByEntity implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onResPreventEnable(EntityDamageByEntityEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResPrevent()) {
             Player player = null;
             if (e.getDamager() instanceof Player) {
@@ -87,31 +88,46 @@ public class EntityDamageByEntity implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorDamageEntities(EntityDamageByEntityEvent e) {
         if (ConfigHandler.getConfigPath().isVisitor()) {
-            if (ConfigHandler.getConfigPath().isVisDamageEnt()) {
-                if (e.getDamager() instanceof Player) {
-                    Player player = (Player) e.getDamager();
-                    Entity entity = e.getEntity();
-                    String entityType = entity.getType().name();
-                    if (RegionUtils.bypassBorder(player, entity.getLocation())) {
-                        ServerHandler.sendFeatureMessage("Visitor", entityType, "Damage-Entities", "return", "border",
-                                new Throwable().getStackTrace()[0]);
-                        return;
-                    }
-                    // Allow-Player
-                    if (ConfigHandler.getConfigPath().isVisDamageEntPlayer()) {
-                        if (entity instanceof Player) {
-                            ServerHandler.sendFeatureMessage("Visitor", entityType, "Damage-Entities", "bypass", "Allow-Player=true",
-                                    new Throwable().getStackTrace()[0]);
+            if (e.getDamager() instanceof Player) {
+                Player player = (Player) e.getDamager();
+                Entity entity = e.getEntity();
+                String entityType = entity.getType().name();
+                String worldName = player.getWorld().getName();
+                // To get properties.
+                Map<String, VisitorMap> visitorProp = ConfigHandler.getConfigPath().getVisitorProp().get(worldName);
+                VisitorMap visitorMap;
+                if (visitorProp != null) {
+                    Location loc;
+                    // Checking every groups.
+                    for (String groupName : visitorProp.keySet()) {
+                        visitorMap = visitorProp.get(groupName);
+                        if (!visitorMap.isDamageEnt()) {
                             return;
                         }
+                        // Location
+                        loc = player.getLocation();
+                        if (RegionUtils.bypassBorder(player, loc, visitorMap.getLocMaps())) {
+                            ServerHandler.sendFeatureMessage("Visitor", entityType, "Damage-Entities: Location", "return", groupName,
+                                    new Throwable().getStackTrace()[0]);
+                            continue;
+                        }
+                        // Allow-Player
+                        if (entity instanceof Player) {
+                            if (visitorMap.isDamageEntPlayer()) {
+                                ServerHandler.sendFeatureMessage("Visitor", entityType, "Damage-Entities: Player", "bypass", groupName,
+                                        new Throwable().getStackTrace()[0]);
+                                return;
+                            }
+                        }
+                        // Cancel
+                        if (visitorMap.isDamageEntMsg()) {
+                            Language.sendLangMessage("Message.RegionPlus.visitorDamageEntities", player);
+                        }
+                        ServerHandler.sendFeatureMessage("Visitor", entityType, "Damage-Entities: Final", "cancel", groupName,
+                                new Throwable().getStackTrace()[0]);
+                        e.setCancelled(true);
+                        return;
                     }
-                    // Cancel
-                    if (ConfigHandler.getConfigPath().isVisDamageEntMsg()) {
-                        Language.sendLangMessage("Message.RegionPlus.visitorDamageEntities", player);
-                    }
-                    ServerHandler.sendFeatureMessage("Visitor", entityType, "Damage-Entities", "cancel",
-                            new Throwable().getStackTrace()[0]);
-                    e.setCancelled(true);
                 }
             }
         }

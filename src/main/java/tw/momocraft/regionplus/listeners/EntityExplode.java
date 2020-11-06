@@ -19,15 +19,13 @@ public class EntityExplode implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onResPreventBlockDamage(EntityExplodeEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResPrevent()) {
             if (ConfigHandler.getConfigPath().isResPreventBlockDamage()) {
                 Entity entity = e.getEntity();
                 if (entity instanceof Zombie) {
                     if (ResidenceUtils.getBuildPerms(entity.getLocation(), "destroy", false)) {
-                        ServerHandler.sendFeatureMessage("Residence", "Zombie", "isResPreventZombieDoor", "cancel", "destroy=false");
+                        ServerHandler.sendFeatureMessage("Residence", "Zombie", "isResPreventZombieDoor", "cancel", "destroy=false",
+                                new Throwable().getStackTrace()[0]);
                         e.setCancelled(true);
                     }
                 }

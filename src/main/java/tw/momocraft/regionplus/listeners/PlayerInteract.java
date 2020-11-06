@@ -16,6 +16,9 @@ import tw.momocraft.regionplus.handlers.ServerHandler;
 import tw.momocraft.regionplus.utils.Language;
 import tw.momocraft.regionplus.utils.RegionUtils;
 import tw.momocraft.regionplus.utils.ResidenceUtils;
+import tw.momocraft.regionplus.utils.VisitorMap;
+
+import java.util.Map;
 
 public class PlayerInteract implements Listener {
 
@@ -68,78 +71,74 @@ public class PlayerInteract implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent e) {
         if (ConfigHandler.getConfigPath().isVisitor()) {
-            if (ConfigHandler.getConfigPath().isVisInteractBlock()) {
-                Player player = e.getPlayer();
-                String blockType = e.getMaterial().name();
-                if (e.getAction().equals(Action.PHYSICAL)) {
-                    // Allow-Use
-                    if (ConfigHandler.getConfigPath().isVisInteractBlockUse()) {
-                        if (RegionUtils.bypassBorder(player, player.getLocation())) {
-                            ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks", "return", "border",
-                                    new Throwable().getStackTrace()[0]);
-                            return;
-                        }
+            Player player = e.getPlayer();
+            String worldName = player.getWorld().getName();
+            String blockType = e.getMaterial().name();
+            // To get properties.
+            Map<String, VisitorMap> visitorProp = ConfigHandler.getConfigPath().getVisitorProp().get(worldName);
+            VisitorMap visitorMap;
+            if (visitorProp != null) {
+                Location loc;
+                // Checking every groups.
+                for (String groupName : visitorProp.keySet()) {
+                    visitorMap = visitorProp.get(groupName);
+                    // Location
+                    if (!visitorMap.isInterBlock()) {
+                        return;
+                    }
+                    loc = player.getLocation();
+                    if (RegionUtils.bypassBorder(player, loc, visitorMap.getLocMaps())) {
+                        ServerHandler.sendFeatureMessage("Visitor", blockType, "Use-Items: Location", "return", groupName,
+                                new Throwable().getStackTrace()[0]);
+                        continue;
+                    }
+                    if (e.getAction().equals(Action.PHYSICAL)) {
                         switch (blockType) {
                             case "TRIPWIRE":
                             case "ACACIA_PRESSURE_PLATE":
                             case "BIRCH_PRESSURE_PLATE":
-                                if (ConfigHandler.getConfigPath().isVisInteractBlockMsg()) {
-                                    Language.sendLangMessage("Message.RegionPlus.visitorInteractEntities", player);
+                                // Cancel
+                                if (visitorMap.isInterEntMsg()) {
+                                    Language.sendLangMessage("Message.RegionPlus.visitorInteractBlocks", player);
                                 }
-                                ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks", "cancel", "Physical",
+                                ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks: Physical", "cancel", groupName,
                                         new Throwable().getStackTrace()[0]);
                                 e.setCancelled(true);
                                 return;
                             default:
-                                ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks", "return", "Physical not contains",
+                                ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks: Physical", "return", groupName,
                                         new Throwable().getStackTrace()[0]);
                                 return;
                         }
                     }
-                    ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks", "return", "Physical, Use=false",
-                            new Throwable().getStackTrace()[0]);
-                    return;
-                }
-                Block block = e.getClickedBlock();
-                if (block != null) {
-                    if (RegionUtils.bypassBorder(player, block.getLocation())) {
-                        ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks", "return", "border",
-                                new Throwable().getStackTrace()[0]);
-                        return;
-                    }
-                    blockType = block.getType().name();
-                    // Allow-Use
-                    if (RegionUtils.isCanUseEntity(blockType)) {
-                        if (ConfigHandler.getConfigPath().isVisInteractBlockUse()) {
-                            // Allow-Container
-                            if (RegionUtils.isContainer(blockType)) {
-                                if (ConfigHandler.getConfigPath().isVisInteractBlockContainer()) {
-                                    ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks", "bypass", "Allow-Use=true, Allow-Container=true",
-                                            new Throwable().getStackTrace()[0]);
-                                    return;
-                                }
-                            } else {
-                                ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks", "bypass", "Allow-Use=true",
+                    Block block = e.getClickedBlock();
+                    if (block != null) {
+                        blockType = block.getType().name();
+                        // Allow-Use
+                        if (RegionUtils.isCanUseEntity(blockType)) {
+                            if (visitorMap.isInterBlockUse()) {
+                                // Allow-Container
+                                ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks: Use", "bypass", groupName,
                                         new Throwable().getStackTrace()[0]);
                                 return;
                             }
                         }
-                    }
-                    // Allow-Container
-                    if (RegionUtils.isContainer(blockType)) {
-                        if (ConfigHandler.getConfigPath().isVisInteractBlockContainer()) {
-                            ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks", "bypass", "Allow-Container=true",
-                                    new Throwable().getStackTrace()[0]);
-                            return;
+                        // Allow-Container
+                        if (RegionUtils.isContainer(blockType)) {
+                            if (visitorMap.isInterBlockCont()) {
+                                ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks: Container", "bypass", groupName,
+                                        new Throwable().getStackTrace()[0]);
+                                return;
+                            }
                         }
+                        // Cancel
+                        if (visitorMap.isInterBlockMsg()) {
+                            Language.sendLangMessage("Message.RegionPlus.visitorInteractBlocks", player);
+                        }
+                        ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks", "cancel", groupName,
+                                new Throwable().getStackTrace()[0]);
+                        e.setCancelled(true);
                     }
-                    // Cancel
-                    if (ConfigHandler.getConfigPath().isVisInteractBlockMsg()) {
-                        Language.sendLangMessage("Message.RegionPlus.visitorInteractBlocks", player);
-                    }
-                    ServerHandler.sendFeatureMessage("Visitor", blockType, "Interact-Blocks", "cancel",
-                            new Throwable().getStackTrace()[0]);
-                    e.setCancelled(true);
                 }
             }
         }

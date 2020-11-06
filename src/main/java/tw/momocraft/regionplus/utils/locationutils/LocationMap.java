@@ -2,6 +2,7 @@ package tw.momocraft.regionplus.utils.locationutils;
 
 import tw.momocraft.regionplus.handlers.ServerHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +10,19 @@ import java.util.Map;
 public class LocationMap {
 
     private List<String> worlds;
-    private Map<String, String> cord = new HashMap<>();
+    private final Map<String, String> cord;
+
+    public LocationMap() {
+        worlds = new ArrayList<>();
+        cord = new HashMap<>();
+    }
 
     public void setWorlds(List<String> worlds) {
         this.worlds = worlds;
+    }
+
+    public void addWorld(String world) {
+        this.worlds.add(world);
     }
 
     public void addCord(String type, String value) {
@@ -20,11 +30,11 @@ public class LocationMap {
             cord.put(type, value);
         } else {
             ServerHandler.sendConsoleMessage("&cThere is an error occurred. Please check the \"Location\" format.");
-            ServerHandler.sendConsoleMessage("&e" + type + ": " + value);
+            ServerHandler.sendConsoleMessage("&c" + type + ": " + value);
         }
     }
 
-    List<String> getWorlds() {
+    public List<String> getWorlds() {
         return worlds;
     }
 

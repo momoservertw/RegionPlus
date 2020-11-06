@@ -19,9 +19,6 @@ public class EntityChangeBlock implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onResPreventEndermanPickup(EntityChangeBlockEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResPrevent()) {
             if (ConfigHandler.getConfigPath().isResPreventEndermanPick()) {
                 Entity entity = e.getEntity();

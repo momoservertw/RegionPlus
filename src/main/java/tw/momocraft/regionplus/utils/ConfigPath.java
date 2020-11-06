@@ -7,15 +7,32 @@ import com.google.common.collect.Table;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
+import tw.momocraft.regionplus.handlers.ServerHandler;
 import tw.momocraft.regionplus.utils.locationutils.LocationMap;
+import tw.momocraft.regionplus.utils.locationutils.LocationUtils;
 
 import java.util.*;
 
 public class ConfigPath {
+    public ConfigPath() {
+        setUp();
+    }
 
+    //  ============================================== //
+    //         General Settings                        //
+    //  ============================================== //
+    private static LocationUtils locationUtils;
+
+
+    //  ============================================== //
+    //         Player Settings                         //
+    //  ============================================== //
     private boolean playerPreventFly;
     private String playerPreventFlyPerm;
 
+    //  ============================================== //
+    //         Residence Settings                      //
+    //  ============================================== //
     private boolean resAllAreas;
     private boolean resIgnoreWithin;
 
@@ -68,40 +85,53 @@ public class ConfigPath {
     private boolean resMsgMsg;
     private Table<String, String, List<String>> resMsgGroupTable;
 
+    //  ============================================== //
+    //         Visitor Settings                        //
+    //  ============================================== //
     private boolean visitor;
+
+    private boolean visResOwn;
+
     private boolean visResCreate;
     private boolean visResCreateMsg;
-    private boolean visInteractBlock;
-    private boolean visInteractBlockUse;
-    private boolean visInteractBlockContainer;
-    private boolean visInteractEnt;
-    private boolean visInteractEntNPC;
-    private boolean visDamageEnt;
-    private boolean visDamageEntPlayer;
-    private boolean visDropItems;
-    private boolean visPickupItems;
     private boolean visUseItems;
+    private boolean visUseItemsMsg;
     private boolean visItemsConsume;
     private boolean visItemsBucket;
     private boolean visItemsProjectile;
     private boolean visItemsFishing;
     private boolean visItemJoin;
-    private boolean visInteractBlockMsg;
-    private boolean visInteractEntMsg;
+    private boolean visInterBlock;
+    private boolean visInterBlockUse;
+    private boolean visInterBlockCont;
+    private boolean visInterEnt;
+    private boolean visInterEntNPC;
+    private boolean visInterBlockMsg;
+    private boolean visInterEntMsg;
+    private boolean visDamageEnt;
     private boolean visDamageEntMsg;
+    private boolean visDamageEntPlayer;
+    private boolean visDropItems;
     private boolean visDropItemsMsg;
+    private boolean visPickupItems;
     private boolean visPickupItemsMsg;
-    private boolean visUseItemsMsg;
-    private Map<String, LocationMap> visLocMaps;
 
-    public ConfigPath() {
-        setUp();
-    }
+    private Map<String, Map<String, VisitorMap>> visitorProp = new HashMap<>();
 
     private void setUp() {
+        locationUtils = new LocationUtils();
+
+        setPlayer();
+        setResidence();
+        setVisitor();
+    }
+
+    private void setPlayer() {
         playerPreventFly = ConfigHandler.getConfig("config.yml").getBoolean("Player.Prevent.Fly-Disable.Enable");
         playerPreventFlyPerm = ConfigHandler.getConfig("config.yml").getString("Player.Prevent.Fly-Disable.Permission");
+    }
 
+    private void setResidence() {
         resAllAreas = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.All-Areas.Enable");
         resIgnoreWithin = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.All-Areas.Ignore-Within-Area");
 
@@ -178,65 +208,128 @@ public class ConfigPath {
                 resMsgGroupTable.put(group, "leave", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups." + group + ".Leave"));
             }
         }
-
-        visitor = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
-        visResCreate = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Create-Residence.Enable");
-        visResCreateMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Create-Residence.Message");
-        visInteractBlock = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Enable");
-        visInteractBlockMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Message");
-        visInteractBlockUse = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Allow-Use");
-        visInteractBlockContainer = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Blocks.Allow-Container");
-        visInteractEnt = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entities.Enable");
-        visInteractEntMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entities.Message");
-        visInteractEntNPC = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Interact-Entities.Allow-NPC");
-        visDamageEnt = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Damage-Entities.Enable");
-        visDamageEntMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Damage-Entities.Message");
-        visDamageEntPlayer = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Damage-Entities.Allow-Player");
-        visDropItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Drop-Items.Enable");
-        visDropItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Drop-Items.Message");
-        visPickupItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Pickup-Items.Enable");
-        visPickupItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Pickup-Items.Message");
-        visUseItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Enable");
-        visUseItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Message");
-        visItemsConsume = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Consume");
-        visItemsBucket = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Bucket");
-        visItemsProjectile = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Projectile");
-        visItemsFishing = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-Fishing");
-        visItemJoin = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Prevent.List.Use-Items.Allow-ItemJoin");
-        visLocMaps = getLocationMaps("Visitor.Location");
     }
 
-    private Map<String, LocationMap> getLocationMaps(String path) {
-        Map<String, LocationMap> locMaps = new HashMap<>();
-        ConfigurationSection locConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection(path);
-        ConfigurationSection areaConfig;
-        LocationMap locMap;
-        LocationMap locWorldMap = new LocationMap();
-        List<String> worlds = new ArrayList<>();
-        if (locConfig != null) {
-            for (String group : locConfig.getKeys(false)) {
-                if (ConfigHandler.getConfig("config.yml").getConfigurationSection(path + "." + group) == null) {
-                    worlds.add(group);
-                    continue;
-                }
-                locMap = new LocationMap();
-                locMap.setWorlds(ConfigHandler.getConfig("config.yml").getStringList(path + "." + group + ".Worlds"));
-                areaConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection(path + "." + group + ".Area");
-                if (areaConfig != null) {
-                    for (String type : areaConfig.getKeys(false)) {
-                        locMap.addCord(type, ConfigHandler.getConfig("config.yml").getString(path + "." + group + ".Area." + type));
+    private void setVisitor() {
+        visitor = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
+        visResOwn = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Ignore.Has-Residence-Permissions");
+
+        visResCreate = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Create-Residence.Enable");
+        visResCreateMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Create-Residence.Message");
+
+        visUseItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Enable");
+        visUseItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Message");
+        visItemsConsume = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Consume");
+        visItemsBucket = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Bucket");
+        visItemsProjectile = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Projectile");
+        visItemsFishing = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Fishing");
+        visItemJoin = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-ItemJoin");
+
+        visInterBlock = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Enable");
+        visInterBlockMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Message");
+        visInterBlockUse = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Allow-Use");
+        visInterBlockCont = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Allow-Container");
+
+        visInterEnt = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Entities.Enable");
+        visInterEntMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Entities.Message");
+        visInterEntNPC = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Entities.Allow-NPC");
+
+        visDamageEnt = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Damage-Entities.Enable");
+        visDamageEntMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Damage-Entities.Message");
+        visDamageEntPlayer = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Damage-Entities.Allow-Player");
+
+        visDropItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Drop-Items.Enable");
+        visDropItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Drop-Items.Message");
+
+        visPickupItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Pickup-Items.Enable");
+        visPickupItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Pickup-Items.Message");
+
+
+        ConfigurationSection groupsConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Visitor.Groups");
+        if (groupsConfig != null) {
+            String groupEnable;
+            VisitorMap visitorMap;
+            List<LocationMap> locMaps;
+            for (String group : groupsConfig.getKeys(false)) {
+                groupEnable = ConfigHandler.getConfig("entities.yml").getString("Visitor.Groups." + group + ".Enable");
+                if (groupEnable == null || groupEnable.equals("true")) {
+                    visitorMap = new VisitorMap();
+                    visitorMap.setPriority(ConfigHandler.getConfig("config.yml").getLong("Visitor.Groups." + group + ".Priority"));
+                    visitorMap.setValue("resOwn", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Ignore.Has-Residence-Permissions"), visResOwn);
+
+                    visitorMap.setValue("resCreate", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Create-Residence.Enable"), visResCreate);
+                    visitorMap.setValue("resCreateMsg", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Create-Residence.Message"), visResCreateMsg);
+
+                    visitorMap.setValue("useItems", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Enable"), visUseItems);
+                    visitorMap.setValue("useItemsMsg", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Message"), visUseItemsMsg);
+                    visitorMap.setValue("itemsConsume", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Consume"), visItemsConsume);
+                    visitorMap.setValue("itemsBucket", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Bucket"), visItemsBucket);
+                    visitorMap.setValue("itemProjectile", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Projectile"), visItemsProjectile);
+                    visitorMap.setValue("itemFishing", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Fishing"), visItemsFishing);
+                    visitorMap.setValue("itemJoin", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-ItemJoin"), visItemJoin);
+
+                    visitorMap.setValue("interBlock", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Interact-Blocks.Enable"), visInterBlock);
+                    visitorMap.setValue("interBlockMsg", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Interact-Blocks.Message"), visInterBlockMsg);
+                    visitorMap.setValue("interBlockUse", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Interact-Blocks.Allow-Use"), visInterBlockUse);
+                    visitorMap.setValue("interBlockCont", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Interact-Blocks.Allow-Container"), visInterBlockCont);
+
+                    visitorMap.setValue("interEnt", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Interact-Entities.Enable"), visInterEnt);
+                    visitorMap.setValue("interEntMsg", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Interact-Entities.Message"), visInterEntMsg);
+                    visitorMap.setValue("interEntNPC", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Interact-Entities.Allow-NPC"), visInterEntNPC);
+
+                    visitorMap.setValue("dropItems", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Drop-Items.Enable"), visDropItems);
+                    visitorMap.setValue("dropItems", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Drop-Items.Message"), visDropItemsMsg);
+
+                    visitorMap.setValue("pickupItems", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Pickup-Items.Enable"), visPickupItems);
+                    visitorMap.setValue("pickupItems", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Pickup-Items.Message"), visPickupItemsMsg);
+
+                    locMaps = locationUtils.getSpeLocMaps("config.yml", "Visitor.Groups." + group + ".Location");
+                    if (!locMaps.isEmpty()) {
+                        visitorMap.setLocMaps(locMaps);
+                    }
+                    // Add properties to all Worolds.
+                    for (LocationMap locationMap : visitorMap.getLocMaps()) {
+                        for (String worldName : locationMap.getWorlds()) {
+                            try {
+                                visitorProp.get(worldName).put(group, visitorMap);
+                            } catch (Exception ex) {
+                                visitorProp.put(worldName, new HashMap<>());
+                                visitorProp.get(worldName).put(group, visitorMap);
+                            }
+                        }
                     }
                 }
-                locMaps.put(group, locMap);
             }
-        } else {
-            worlds.addAll(ConfigHandler.getConfig("config.yml").getStringList(path));
+            Map<String, Long> sortMap;
+            Map<String, VisitorMap> newMap;
+            Iterator<String> i = visitorProp.keySet().iterator();
+            String worldName;
+            while (i.hasNext()) {
+                worldName = i.next();
+                sortMap = new HashMap<>();
+                newMap = new LinkedHashMap<>();
+                for (String group : visitorProp.get(worldName).keySet()) {
+                    sortMap.put(group, visitorProp.get(worldName).get(group).getPriority());
+                }
+                sortMap = Utils.sortByValue(sortMap);
+                for (String group : sortMap.keySet()) {
+                    ServerHandler.sendFeatureMessage("Visitor", worldName, "setup", "continue", group,
+                            new Throwable().getStackTrace()[0]);
+                    newMap.put(group, visitorProp.get(worldName).get(group));
+                }
+                visitorProp.replace(worldName, newMap);
+            }
         }
-        locWorldMap.setWorlds(worlds);
-        locMaps.put("worldList", locWorldMap);
-        return locMaps;
     }
 
+    public Map<String, Map<String, VisitorMap>> getVisitorProp() {
+        return visitorProp;
+    }
+
+
+    public LocationUtils getLocationUtils() {
+        return locationUtils;
+    }
 
     public boolean isPlayerPreventFly() {
         return playerPreventFly;
@@ -291,7 +384,6 @@ public class ConfigPath {
     public boolean isResPreventBlockDamage() {
         return resPreventBlockDamage;
     }
-
 
     public boolean isResSMClimb() {
         return resSMClimb;
@@ -446,101 +538,5 @@ public class ConfigPath {
 
     public boolean isVisitor() {
         return visitor;
-    }
-
-    public boolean isVisResCreate() {
-        return visResCreate;
-    }
-
-    public boolean isVisResCreateMsg() {
-        return visResCreateMsg;
-    }
-
-    public boolean isVisInteractBlock() {
-        return visInteractBlock;
-    }
-
-    public boolean isVisInteractEnt() {
-        return visInteractEnt;
-    }
-
-    public boolean isVisInteractBlockContainer() {
-        return visInteractBlockContainer;
-    }
-
-    public boolean isVisInteractBlockUse() {
-        return visInteractBlockUse;
-    }
-
-    public boolean isVisInteractEntNPC() {
-        return visInteractEntNPC;
-    }
-
-    public boolean isVisDamageEnt() {
-        return visDamageEnt;
-    }
-
-    public boolean isVisDamageEntPlayer() {
-        return visDamageEntPlayer;
-    }
-
-    public boolean isVisDropItems() {
-        return visDropItems;
-    }
-
-    public boolean isVisItemsBucket() {
-        return visItemsBucket;
-    }
-
-    public boolean isVisItemsConsume() {
-        return visItemsConsume;
-    }
-
-    public boolean isVisItemsFishing() {
-        return visItemsFishing;
-    }
-
-    public boolean isVisItemJoin() {
-        return visItemJoin;
-    }
-
-    public boolean isVisItemsProjectile() {
-        return visItemsProjectile;
-    }
-
-    public boolean isVisPickupItems() {
-        return visPickupItems;
-    }
-
-    public boolean isVisUseItems() {
-        return visUseItems;
-    }
-
-    public boolean isVisDamageEntMsg() {
-        return visDamageEntMsg;
-    }
-
-    public boolean isVisDropItemsMsg() {
-        return visDropItemsMsg;
-    }
-
-    public boolean isVisInteractBlockMsg() {
-        return visInteractBlockMsg;
-    }
-
-    public boolean isVisInteractEntMsg() {
-        return visInteractEntMsg;
-    }
-
-    public boolean isVisPickupItemsMsg() {
-        return visPickupItemsMsg;
-    }
-
-    public boolean isVisUseItemsMsg() {
-        return visUseItemsMsg;
-    }
-
-    public Map<String, LocationMap> getVisLocMaps() {
-        return visLocMaps;
     }
 }

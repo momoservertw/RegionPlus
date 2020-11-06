@@ -40,19 +40,4 @@ public class PlayerToggleFlight implements Listener {
             }
         }
     }
-        /*
-        if (e.isFlying()) {
-            if (ConfigHandler.getConfigPath().isPlayerPreventFly()) {
-                String flyPerm = ConfigHandler.getConfigPath().getPlayerPreventFlyPerm();
-                if (PermissionsHandler.hasPermission(e.getPlayer(), flyPerm)) {
-                    ServerHandler.sendFeatureMessage("Residence", "Fly-Disable", "Permission", "bypass");
-                    return;
-                }
-                if (LocationUtils.getLocation(e.getPlayer().getLocation(), "Player.Prevent.Fly-Disable.Location")) {
-                    e.setCancelled(true);
-                }
-            }
-        }
-         */
-
 }

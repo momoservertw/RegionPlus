@@ -5,10 +5,9 @@ tw\momocraft\regionplus\RegionPlus.class
 tw\momocraft\regionplus\utils\VaultAPI.class
 tw\momocraft\regionplus\utils\FlagsEditor.class
 tw\momocraft\regionplus\listeners\EntityDamage.class
-tw\momocraft\regionplus\utils\LocationAPI.class
 tw\momocraft\regionplus\handlers\UpdateHandler.class
-tw\momocraft\regionplus\listeners\ResidenceFlagCheck.class
 tw\momocraft\regionplus\listeners\EntityChangeBlock.class
+tw\momocraft\regionplus\handlers\ConfigHandler.class
 tw\momocraft\regionplus\listeners\ResidenceOwnerChange.class
 tw\momocraft\regionplus\listeners\ResidenceCreation.class
 tw\momocraft\regionplus\listeners\PlayerItemConsume.class
@@ -20,12 +19,15 @@ tw\momocraft\regionplus\utils\ResidenceUtils.class
 tw\momocraft\regionplus\handlers\ServerHandler.class
 tw\momocraft\regionplus\utils\ResidenceUtils$1.class
 tw\momocraft\regionplus\listeners\PlayerInteractEntity.class
+tw\momocraft\regionplus\listeners\PlayerDropItem.class
+tw\momocraft\regionplus\utils\locationutils\LocationUtils.class
 tw\momocraft\regionplus\handlers\PermissionsHandler.class
 tw\momocraft\regionplus\utils\ConfigPath.class
 tw\momocraft\regionplus\listeners\SurvivalMechanics.class
 tw\momocraft\regionplus\utils\RegionUtils.class
 tw\momocraft\regionplus\listeners\ResidenceDelete$1.class
 tw\momocraft\regionplus\listeners\ResidenceOwnerChange$3.class
+tw\momocraft\regionplus\utils\VisitorMap.class
 tw\momocraft\regionplus\listeners\ResidenceSizeChange$1.class
 tw\momocraft\regionplus\listeners\PlayerPickupItem.class
 tw\momocraft\regionplus\listeners\EntityBreakDoor.class
@@ -37,7 +39,9 @@ tw\momocraft\regionplus\listeners\ProjectileLaunch.class
 tw\momocraft\regionplus\listeners\PlayerInteract.class
 tw\momocraft\regionplus\listeners\ResidenceSizeChange.class
 tw\momocraft\regionplus\utils\Language$Lang.class
+tw\momocraft\regionplus\utils\locationutils\LocationMap.class
 tw\momocraft\regionplus\listeners\ResidenceCreation$1.class
+tw\momocraft\regionplus\utils\DependAPI.class
 tw\momocraft\regionplus\utils\Utils.class
 tw\momocraft\regionplus\listeners\ResidenceOwnerChange$1.class
 tw\momocraft\regionplus\listeners\PlayerBucketFill.class

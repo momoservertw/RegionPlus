@@ -19,9 +19,6 @@ public class EntityBreakDoor implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     private void onResPreventZombieDoor(EntityBreakDoorEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResPrevent()) {
             if (ConfigHandler.getConfigPath().isResPreventZombieDoor()) {
                 Entity entity = e.getEntity();

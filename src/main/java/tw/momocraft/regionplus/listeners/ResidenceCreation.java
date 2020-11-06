@@ -1,6 +1,8 @@
 package tw.momocraft.regionplus.listeners;
 
 import com.bekvon.bukkit.residence.event.ResidenceCreationEvent;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,9 +12,9 @@ import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.handlers.PermissionsHandler;
 import tw.momocraft.regionplus.handlers.ServerHandler;
-import tw.momocraft.regionplus.utils.Language;
-import tw.momocraft.regionplus.utils.RegionUtils;
-import tw.momocraft.regionplus.utils.ResidenceUtils;
+import tw.momocraft.regionplus.utils.*;
+
+import java.util.Map;
 
 public class ResidenceCreation implements Listener {
 
@@ -62,17 +64,34 @@ public class ResidenceCreation implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     private void onVisitorCreateRes(ResidenceCreationEvent e) {
         if (ConfigHandler.getConfigPath().isVisitor()) {
-            if (ConfigHandler.getConfigPath().isVisResCreate()) {
-                Player player = e.getPlayer();
-                String playerName = player.getName();
-                if (!RegionUtils.bypassBorder(player, player.getLocation())) {
+            Player player = e.getPlayer();
+            String worldName = player.getWorld().getName();
+            // To get properties.
+            Map<String, VisitorMap> visitorProp = ConfigHandler.getConfigPath().getVisitorProp().get(worldName);
+            VisitorMap visitorMap;
+            if (visitorProp != null) {
+                Location loc;
+                // Checking every groups.
+                for (String groupName : visitorProp.keySet()) {
+                    visitorMap = visitorProp.get(groupName);
+                    if (!visitorMap.isResCreate()) {
+                        return;
+                    }
+                    // Location
+                    loc = player.getLocation();
+                    if (RegionUtils.bypassBorder(player, loc, visitorMap.getLocMaps())) {
+                        ServerHandler.sendFeatureMessage("Visitor", worldName, "Create-Residence: Location", "return", groupName,
+                                new Throwable().getStackTrace()[0]);
+                        continue;
+                    }
                     // Cancel
-                    if (ConfigHandler.getConfigPath().isVisResCreateMsg()) {
+                    if (visitorMap.isResCreateMsg()) {
                         Language.sendLangMessage("Message.RegionPlus.visitorCreateResidence", player);
                     }
-                    ServerHandler.sendFeatureMessage("Visitor", playerName, "Create-Residence", "cancel", "border",
+                    ServerHandler.sendFeatureMessage("Visitor", worldName, "Create-Residence: Final", "cancel", groupName,
                             new Throwable().getStackTrace()[0]);
                     e.setCancelled(true);
+                    return;
                 }
             }
         }

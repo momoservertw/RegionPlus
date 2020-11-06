@@ -21,9 +21,6 @@ public class EntityDamage implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onResPreventPotionDamage(EntityDamageEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResPrevent()) {
             if (ConfigHandler.getConfigPath().isResPreventPotion()) {
                 Entity entity = e.getEntity();

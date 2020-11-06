@@ -10,13 +10,13 @@ import tw.momocraft.regionplus.utils.ResidenceUtils;
 public class SurvivalMechanics implements Listener {
 
     private void PlayerToggleClimb(PlayerToggleClimbEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResSMClimb()) {
+            if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+                return;
+            }
             Player player = e.getPlayer();
             if (!ResidenceUtils.getPerms(player.getLocation(), "climb", true, player)) {
-                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMClimb", "cancel", "climb=false",
+                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMClimb", "cancel",
                         new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
             }
@@ -24,13 +24,13 @@ public class SurvivalMechanics implements Listener {
     }
 
     private void onPlayerToggleCrawl(PlayerToggleCrawlEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResSMCrawl()) {
+            if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+                return;
+            }
             Player player = e.getPlayer();
             if (!ResidenceUtils.getPerms(player.getLocation(), "crawl", true, player)) {
-                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMCrawl", "cancel", "crawl=false",
+                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMCrawl", "cancel",
                         new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
             }
@@ -38,13 +38,13 @@ public class SurvivalMechanics implements Listener {
     }
 
     private void onPlayerToggleMobkick(PlayerToggleMobkickEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResSMMobkick()) {
+            if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+                return;
+            }
             Player player = e.getPlayer();
             if (!ResidenceUtils.getPerms(player.getLocation(), "mobkick", true, player)) {
-                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMMobkick", "cancel", "mobkick=false",
+                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMMobkick", "cancel",
                         new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
             }
@@ -52,13 +52,13 @@ public class SurvivalMechanics implements Listener {
     }
 
     private void onPlayerToggleRoofhang(PlayerToggleRoofhangEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResSMRoofhang()) {
+            if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+                return;
+            }
             Player player = e.getPlayer();
             if (!ResidenceUtils.getPerms(player.getLocation(), "roofhang", true, player)) {
-                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMRoofhang", "cancel", "roofhang=false",
+                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMRoofhang", "cancel",
                         new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
             }
@@ -66,13 +66,13 @@ public class SurvivalMechanics implements Listener {
     }
 
     private void onPlayerToggleSlide(PlayerToggleSlideEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResSMClimb()) {
+            if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+                return;
+            }
             Player player = e.getPlayer();
             if (!ResidenceUtils.getPerms(player.getLocation(), "slide", true, player)) {
-                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMClimb", "cancel", "slide=false",
+                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMClimb", "cancel",
                         new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
             }
@@ -80,13 +80,13 @@ public class SurvivalMechanics implements Listener {
     }
 
     private void onPlayerToggleSwim(PlayerToggleSwimEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResSMSwim()) {
+            if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+                return;
+            }
             Player player = e.getPlayer();
             if (!ResidenceUtils.getPerms(player.getLocation(), "swim", true, player)) {
-                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMSwim", "cancel", "swim=false",
+                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMSwim", "cancel",
                         new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
             }
@@ -94,13 +94,13 @@ public class SurvivalMechanics implements Listener {
     }
 
     private void onPlayerToggleWallkick(PlayerToggleWallkickEvent e) {
-        if (!ConfigHandler.getDepends().ResidenceEnabled()) {
-            return;
-        }
         if (ConfigHandler.getConfigPath().isResSMWallkick()) {
+            if (!ConfigHandler.getDepends().ResidenceEnabled()) {
+                return;
+            }
             Player player = e.getPlayer();
             if (!ResidenceUtils.getPerms(player.getLocation(), "wallkick", true, player)) {
-                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMWallkick", "cancel", "wallkick=false",
+                ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResSMWallkick", "cancel",
                         new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
             }
