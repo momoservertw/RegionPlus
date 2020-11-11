@@ -39,6 +39,7 @@ permissions:
       regionplus.command.messageedit: true
       regionplus.command.points: true
       regionplus.command.points.other: true
+      regionplus.command.return: true
   regionplus.command.reload:
     description: Allows use of command /regionplus reload.
     default: op
@@ -56,6 +57,9 @@ permissions:
     default: op
   regionplus.command.points.other:
     description: Allows use of command /regionplus points <player>.
+    default: op
+  regionplus.command.return:
+    description: To return the value of all residences.
     default: op
   regionplus.bypass.*:
     description: Allows player to bypass all features.

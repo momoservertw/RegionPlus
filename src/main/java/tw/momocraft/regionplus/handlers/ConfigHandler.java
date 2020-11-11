@@ -71,7 +71,6 @@ public class ConfigHandler {
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerItemConsume(), RegionPlus.getInstance());
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerPickupItem(), RegionPlus.getInstance());
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ProjectileLaunch(), RegionPlus.getInstance());
-        //RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerToggleFlight(), RegionPlus.getInstance());
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceSizeChange(), RegionPlus.getInstance());
@@ -125,7 +124,7 @@ public class ConfigHandler {
     private static void configFile() {
         getConfigData("config.yml");
         File File = new File(RegionPlus.getInstance().getDataFolder(), "config.yml");
-        if (File.exists() && getConfig("config.yml").getInt("Config-Version") != 3) {
+        if (File.exists() && getConfig("config.yml").getInt("Config-Version") != 4) {
             if (RegionPlus.getInstance().getResource("config.yml") != null) {
                 LocalDateTime currentDate = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");

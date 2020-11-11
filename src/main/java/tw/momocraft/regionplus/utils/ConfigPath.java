@@ -90,32 +90,6 @@ public class ConfigPath {
     //  ============================================== //
     private boolean visitor;
 
-    private boolean visResOwn;
-
-    private boolean visResCreate;
-    private boolean visResCreateMsg;
-    private boolean visUseItems;
-    private boolean visUseItemsMsg;
-    private boolean visItemsConsume;
-    private boolean visItemsBucket;
-    private boolean visItemsProjectile;
-    private boolean visItemsFishing;
-    private boolean visItemJoin;
-    private boolean visInterBlock;
-    private boolean visInterBlockUse;
-    private boolean visInterBlockCont;
-    private boolean visInterEnt;
-    private boolean visInterEntNPC;
-    private boolean visInterBlockMsg;
-    private boolean visInterEntMsg;
-    private boolean visDamageEnt;
-    private boolean visDamageEntMsg;
-    private boolean visDamageEntPlayer;
-    private boolean visDropItems;
-    private boolean visDropItemsMsg;
-    private boolean visPickupItems;
-    private boolean visPickupItemsMsg;
-
     private Map<String, Map<String, VisitorMap>> visitorProp = new HashMap<>();
 
     private void setUp() {
@@ -170,7 +144,6 @@ public class ConfigPath {
             pointsMap = Utils.sortByValue(pointsMap);
         }
 
-
         resIgnoreYPoints = ConfigHandler.getConfig("config.yml").getBoolean("Residence.IgnoreY-Changed.Points");
         resIgnoreYExpand = ConfigHandler.getConfig("config.yml").getBoolean("Residence.IgnoreY-Changed.Expand");
 
@@ -212,37 +185,37 @@ public class ConfigPath {
 
     private void setVisitor() {
         visitor = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
-        visResOwn = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Ignore.Has-Residence-Permissions");
+        boolean resOwn = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Ignore.Has-Residence-Permissions");
 
-        visResCreate = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Create-Residence.Enable");
-        visResCreateMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Create-Residence.Message");
+        boolean resCreate = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Create-Residence.Enable");
+        boolean resCreateMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Create-Residence.Message");
 
-        visUseItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Enable");
-        visUseItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Message");
-        visItemsConsume = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Consume");
-        visItemsBucket = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Bucket");
-        visItemsProjectile = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Projectile");
-        visItemsFishing = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Fishing");
-        visItemJoin = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-ItemJoin");
+        boolean useItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Enable");
+        boolean useItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Message");
+        boolean itemsConsume = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Consume");
+        boolean itemsBucket = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Bucket");
+        boolean itemsProjectile = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Projectile");
+        boolean itemsFishing = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-Fishing");
+        boolean visItemJoin = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Use-Items.Allow-ItemJoin");
 
-        visInterBlock = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Enable");
-        visInterBlockMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Message");
-        visInterBlockUse = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Allow-Use");
-        visInterBlockCont = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Allow-Container");
+        boolean visInterBlock = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Enable");
+        boolean visInterBlockMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Message");
+        boolean visInterBlockUse = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Allow-Use");
+        boolean visInterBlockCont = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Blocks.Allow-Container");
 
-        visInterEnt = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Entities.Enable");
-        visInterEntMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Entities.Message");
-        visInterEntNPC = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Entities.Allow-NPC");
+        boolean visInterEnt = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Entities.Enable");
+        boolean visInterEntMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Entities.Message");
+        boolean visInterEntNPC = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Interact-Entities.Allow-NPC");
 
-        visDamageEnt = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Damage-Entities.Enable");
-        visDamageEntMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Damage-Entities.Message");
-        visDamageEntPlayer = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Damage-Entities.Allow-Player");
+        boolean visDamageEnt = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Damage-Entities.Enable");
+        boolean visDamageEntMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Damage-Entities.Message");
+        boolean visDamageEntPlayer = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Damage-Entities.Allow-Player");
 
-        visDropItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Drop-Items.Enable");
-        visDropItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Drop-Items.Message");
+        boolean visDropItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Drop-Items.Enable");
+        boolean visDropItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Drop-Items.Message");
 
-        visPickupItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Pickup-Items.Enable");
-        visPickupItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Pickup-Items.Message");
+        boolean visPickupItems = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Pickup-Items.Enable");
+        boolean visPickupItemsMsg = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Prevent.Pickup-Items.Message");
 
 
         ConfigurationSection groupsConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Visitor.Groups");
@@ -251,21 +224,21 @@ public class ConfigPath {
             VisitorMap visitorMap;
             List<LocationMap> locMaps;
             for (String group : groupsConfig.getKeys(false)) {
-                groupEnable = ConfigHandler.getConfig("entities.yml").getString("Visitor.Groups." + group + ".Enable");
+                groupEnable = ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Enable");
                 if (groupEnable == null || groupEnable.equals("true")) {
                     visitorMap = new VisitorMap();
                     visitorMap.setPriority(ConfigHandler.getConfig("config.yml").getLong("Visitor.Groups." + group + ".Priority"));
-                    visitorMap.setValue("resOwn", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Ignore.Has-Residence-Permissions"), visResOwn);
+                    visitorMap.setValue("resOwn", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Ignore.Has-Residence-Permissions"), resOwn);
 
-                    visitorMap.setValue("resCreate", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Create-Residence.Enable"), visResCreate);
-                    visitorMap.setValue("resCreateMsg", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Create-Residence.Message"), visResCreateMsg);
+                    visitorMap.setValue("resCreate", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Create-Residence.Enable"), resCreate);
+                    visitorMap.setValue("resCreateMsg", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Create-Residence.Message"), resCreateMsg);
 
-                    visitorMap.setValue("useItems", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Enable"), visUseItems);
-                    visitorMap.setValue("useItemsMsg", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Message"), visUseItemsMsg);
-                    visitorMap.setValue("itemsConsume", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Consume"), visItemsConsume);
-                    visitorMap.setValue("itemsBucket", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Bucket"), visItemsBucket);
-                    visitorMap.setValue("itemProjectile", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Projectile"), visItemsProjectile);
-                    visitorMap.setValue("itemFishing", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Fishing"), visItemsFishing);
+                    visitorMap.setValue("useItems", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Enable"), useItems);
+                    visitorMap.setValue("useItemsMsg", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Message"), useItemsMsg);
+                    visitorMap.setValue("itemsConsume", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Consume"), itemsConsume);
+                    visitorMap.setValue("itemsBucket", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Bucket"), itemsBucket);
+                    visitorMap.setValue("itemProjectile", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Projectile"), itemsProjectile);
+                    visitorMap.setValue("itemFishing", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-Fishing"), itemsFishing);
                     visitorMap.setValue("itemJoin", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Use-Items.Allow-ItemJoin"), visItemJoin);
 
                     visitorMap.setValue("interBlock", ConfigHandler.getConfig("config.yml").getString("Visitor.Groups." + group + ".Prevent.Interact-Blocks.Enable"), visInterBlock);

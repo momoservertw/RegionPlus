@@ -1,13 +1,9 @@
 package tw.momocraft.regionplus;
 
 import com.bekvon.bukkit.residence.Residence;
-import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.CuboidArea;
-import com.live.bemmamin.gps.api.GPSAPI;
-import com.live.bemmamin.gps.commands.gps.GPSCommand;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -164,10 +160,25 @@ public class Commands implements CommandExecutor {
                 Language.sendLangMessage("Message.noPermission", sender);
             }
             return true;
-        } else if (args.length == 1 && args[0].equalsIgnoreCase("tp")) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.tp")) {
-                //GPSAPI gpsapi = new GPSAPI(RegionPlus.getInstance());
-                //gpsapi.startCompass();
+        } else if (args.length == 1 && args[0].equalsIgnoreCase("mycmd")) {
+            if (PermissionsHandler.hasPermission(sender, "regionplus.command.mycmd")) {
+                ClaimedResidence res;
+                CuboidArea area;
+                int price;
+                UUID playerUUID;
+                for (String resName : Residence.getInstance().getResidenceManager().getResidenceList()) {
+                    res = Residence.getInstance().getResidenceManager().getByName(resName);
+                    area = res.getMainArea();
+                    if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() >= 129) {
+                        continue;
+                    } else if (area.getYSize() >= 256) {
+                        continue;
+                    }
+                    price = res.getSellPrice();
+                    playerUUID = res.getOwnerUUID();
+                    ConfigHandler.getDepends().getVault().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(playerUUID), price);
+                    ServerHandler.sendConsoleMessage("Return residence value: " + resName + ", " + price + ", " + playerUUID);
+                }
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);
             }
