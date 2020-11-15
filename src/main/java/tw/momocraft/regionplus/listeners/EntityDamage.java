@@ -4,6 +4,7 @@ import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import me.NoChance.PvPManager.PvPManager;
+import me.NoChance.PvPManager.PvPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -44,7 +45,7 @@ public class EntityDamage implements Listener {
                         } else if (entity instanceof Player) {
                             Player player = (Player) entity;
                             if (ConfigHandler.getDepends().PvPManagerEnabled()) {
-                                if (PvPManager.getInstance().getPlayerHandler().get(player).hasPvPEnabled()) {
+                                if (PvPlayer.get(player).hasPvPEnabled()) {
                                     ServerHandler.sendFeatureMessage("Residence", entityType, "isResPreventPotion", "return", "PvPManager=true",
                                             new Throwable().getStackTrace()[0]);
                                     return;

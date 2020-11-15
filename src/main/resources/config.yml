@@ -15,6 +15,24 @@ Residence:
       Enable: false
       # Ignore the area which is in another area.
       Ignore-Within-Area: false
+    Features:
+      # Toggle the feature of SurvivalMechanics.
+      SurvivalMechanics:
+        Enable: true
+        # Adding more flags for residence.
+        Custom-Flags:
+          Climb: true
+          Crawl: true
+          Mobkick: true
+          Roofhang: true
+          Slide: true
+          Swim: true
+          Wallkick: true
+      # Pickup vehicles: build
+      # Place vehicles: build
+      # Ride vehicles: use
+      Vehicles:
+        Enable: true
   # Fixed some bugs and improved the player's gaming experience.
   Prevent:
     Enable: false
@@ -25,17 +43,6 @@ Residence:
     Zombie-Door-Destruction: true
     Enderman-Pickup-Block: true
     Block-Damage: true
-  # Adding more flags for residence.
-  Custom-Flags:
-    # Toggle the feature of SurvivalMechanics.
-    SurvivalMechanics:
-      Climb: true
-      Crawl: true
-      Mobkick: true
-      Roofhang: true
-      Slide: true
-      Swim: true
-      Wallkick: true
   # Avoid the bugs after you changed the option"IgnoreY" false to true in Residence config.yml.
   IgnoreY-Changed:
     Enable: false

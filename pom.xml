@@ -109,12 +109,12 @@
             </systemPath>
             <version>LEGACY</version>
         </dependency>
-        <!--GPS API-->
+        <!-- Vehicles -->
         <dependency>
-            <groupId>me.GPS</groupId>
-            <artifactId>GPS</artifactId>
+            <groupId>me.Vehicles</groupId>
+            <artifactId>Vehicles</artifactId>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/GPS.jar
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/Vehicles(11.0)-API.jar
             </systemPath>
             <version>LEGACY</version>
         </dependency>

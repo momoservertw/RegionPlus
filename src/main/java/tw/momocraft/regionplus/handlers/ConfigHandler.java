@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import tw.momocraft.regionplus.Commands;
 import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.listeners.*;
@@ -15,6 +16,8 @@ import tw.momocraft.regionplus.utils.*;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConfigHandler {
 
@@ -27,7 +30,7 @@ public class ConfigHandler {
 
 
     public static void generateData(boolean reload) {
-        configFile();
+        genConfigFile("config.yml");
         setDepends(new DependAPI());
         sendUtilityDepends();
         setRegionConfig(new ConfigPath());
@@ -59,26 +62,62 @@ public class ConfigHandler {
         RegionPlus.getInstance().getCommand("regionplus").setExecutor(new Commands());
         RegionPlus.getInstance().getCommand("regionplus").setTabCompleter(new TabComplete());
 
+        List<String> flagsList = new ArrayList<>();
+
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityBreakDoor(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Residence", "EntityBreakDoor", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityChangeBlock(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Residence", "EntityChangeBlock", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityDamage(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Residence", "EntityDamage", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new EntityDamageByEntity(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Visitor", "EntityDamageByEntity", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerBucketFill(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Visitor", "PlayerBucketFill", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerDropItem(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Visitor", "PlayerDropItem", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerFish(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Visitor", "PlayerFish", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerInteract(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Visitor", "PlayerInteract", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerInteractEntity(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Visitor", "PlayerInteractEntity", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerItemConsume(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Visitor", "PlayerItemConsume", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new PlayerPickupItem(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Visitor", "PlayerPickupItem", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ProjectileLaunch(), RegionPlus.getInstance());
+        ServerHandler.sendFeatureMessage("Register-Event", "Visitor", "ProjectileLaunch", "continue",
+                new Throwable().getStackTrace()[0]);
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceCreation(), RegionPlus.getInstance());
+            ServerHandler.sendFeatureMessage("Register-Event", "Residence", "ProjectileLaunch", "continue",
+                    new Throwable().getStackTrace()[0]);
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceSizeChange(), RegionPlus.getInstance());
+            ServerHandler.sendFeatureMessage("Register-Event", "Residence", "ProjectileLaunch", "continue",
+                    new Throwable().getStackTrace()[0]);
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceOwnerChange(), RegionPlus.getInstance());
+            ServerHandler.sendFeatureMessage("Register-Event", "Residence", "ProjectileLaunch", "continue",
+                    new Throwable().getStackTrace()[0]);
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceDelete(), RegionPlus.getInstance());
+            ServerHandler.sendFeatureMessage("Register-Event", "Residence", "ProjectileLaunch", "continue",
+                    new Throwable().getStackTrace()[0]);
 
             if (ConfigHandler.getDepends().SurvivalMechanicsEnabled()) {
                 RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new SurvivalMechanics(), RegionPlus.getInstance());
+                ServerHandler.sendFeatureMessage("Register-Event", "Residence", "SurvivalMechanics", "continue",
+                        new Throwable().getStackTrace()[0]);
                 FlagPermissions.addFlag("climb");
                 FlagPermissions.addFlag("crawl");
                 FlagPermissions.addFlag("mobkick");
@@ -87,89 +126,94 @@ public class ConfigHandler {
                 FlagPermissions.addFlag("swim");
                 FlagPermissions.addFlag("wallkick");
             }
+            if (ConfigHandler.getDepends().VehiclesEnabled()) {
+                RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new Vehicles(), RegionPlus.getInstance());
+                ServerHandler.sendFeatureMessage("Register-Event", "Residence", "Vehicles", "continue",
+                        new Throwable().getStackTrace()[0]);
+            }
         }
     }
 
-    public static FileConfiguration getConfig(String path) {
-        File file = new File(RegionPlus.getInstance().getDataFolder(), path);
-        if (configYAML == null) {
-            getConfigData(path);
+    public static FileConfiguration getConfig(String fileName) {
+        File filePath = RegionPlus.getInstance().getDataFolder();
+        File file;
+        switch (fileName) {
+            case "config.yml":
+                filePath = Bukkit.getWorldContainer();
+                if (configYAML == null) {
+                    getConfigData(filePath, fileName);
+                }
+                break;
+            case "spigot.yml":
+                filePath = Bukkit.getServer().getWorldContainer();
+                if (spigotYAML == null) {
+                    getConfigData(filePath, fileName);
+                }
+                break;
+            default:
+                break;
         }
-        return getPath(path, file, false);
+        file = new File(filePath, fileName);
+        return getPath(fileName, file, false);
     }
 
-    private static FileConfiguration getConfigData(String path) {
-        File file = new File(RegionPlus.getInstance().getDataFolder(), path);
+    private static FileConfiguration getConfigData(File filePath, String fileName) {
+        File file = new File(filePath, fileName);
         if (!(file).exists()) {
             try {
-                RegionPlus.getInstance().saveResource(path, false);
+                RegionPlus.getInstance().saveResource(fileName, false);
             } catch (Exception e) {
-                RegionPlus.getInstance().getLogger().warning("Cannot save " + path + " to disk!");
+                ServerHandler.sendErrorMessage("&cCannot save " + fileName + " to disk!");
                 return null;
             }
         }
-        return getPath(path, file, true);
+        return getPath(fileName, file, true);
     }
 
-    private static YamlConfiguration getPath(String path, File file, boolean saveData) {
-        if (path.contains("config.yml")) {
-            if (saveData) {
-                configYAML = YamlConfiguration.loadConfiguration(file);
-            }
-            return configYAML;
+    private static YamlConfiguration getPath(String fileName, File file, boolean saveData) {
+        switch (fileName) {
+            case "config.yml":
+                if (saveData) {
+                    configYAML = YamlConfiguration.loadConfiguration(file);
+                }
+                return configYAML;
+            case "spigot.yml":
+                if (saveData) {
+                    spigotYAML = YamlConfiguration.loadConfiguration(file);
+                }
+                return spigotYAML;
         }
         return null;
     }
 
-    private static void configFile() {
-        getConfigData("config.yml");
-        File File = new File(RegionPlus.getInstance().getDataFolder(), "config.yml");
-        if (File.exists() && getConfig("config.yml").getInt("Config-Version") != 4) {
-            if (RegionPlus.getInstance().getResource("config.yml") != null) {
+    private static void genConfigFile(String fileName) {
+        String[] fileNameSlit = fileName.split("\\.(?=[^\\.]+$)");
+        int configVersion = 0;
+        File filePath = RegionPlus.getInstance().getDataFolder();
+        switch (fileName) {
+            case "config.yml":
+                configVersion = 4;
+                break;
+        }
+        getConfigData(filePath, fileName);
+        File File = new File(filePath, fileName);
+        if (File.exists() && getConfig(fileName).getInt("Config-Version") != configVersion) {
+            if (RegionPlus.getInstance().getResource(fileName) != null) {
                 LocalDateTime currentDate = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH-mm-ss");
                 String currentTime = currentDate.format(formatter);
-                String newGen = "config " + currentTime + ".yml";
-                File newFile = new File(RegionPlus.getInstance().getDataFolder(), newGen);
+                String newGen = fileNameSlit[0] + " " + currentTime + "." + fileNameSlit[0];
+                File newFile = new File(filePath, newGen);
                 if (!newFile.exists()) {
                     File.renameTo(newFile);
-                    File configFile = new File(RegionPlus.getInstance().getDataFolder(), "config.yml");
+                    File configFile = new File(filePath, fileName);
                     configFile.delete();
-                    getConfigData("config.yml");
-                    ServerHandler.sendConsoleMessage("&e*            *            *");
-                    ServerHandler.sendConsoleMessage("&e *            *            *");
-                    ServerHandler.sendConsoleMessage("&e  *            *            *");
-                    ServerHandler.sendConsoleMessage("&cYour config.yml is out of date, generating a new one!");
-                    ServerHandler.sendConsoleMessage("&e    *            *            *");
-                    ServerHandler.sendConsoleMessage("&e     *            *            *");
-                    ServerHandler.sendConsoleMessage("&e      *            *            *");
+                    getConfigData(filePath, fileName);
+                    ServerHandler.sendConsoleMessage("&4The file \"" + fileName + "\" is out of date, generating a new one!");
                 }
             }
         }
-        getConfig("config.yml").options().copyDefaults(false);
-    }
-
-    public static FileConfiguration getServerConfig(String path) {
-        File file = new File(Bukkit.getWorldContainer(), path);
-        if (spigotYAML == null) {
-            getServerConfigData(path);
-        }
-        return getServerPath(path, file, false);
-    }
-
-    private static FileConfiguration getServerConfigData(String path) {
-        File file = new File(Bukkit.getWorldContainer(), path);
-        return getServerPath(path, file, true);
-    }
-
-    private static YamlConfiguration getServerPath(String path, File file, boolean saveData) {
-        if (path.contains("spigot.yml")) {
-            if (saveData) {
-                spigotYAML = YamlConfiguration.loadConfiguration(file);
-            }
-            return spigotYAML;
-        }
-        return null;
+        getConfig(fileName).options().copyDefaults(false);
     }
 
     private static void sendUtilityDepends() {
@@ -182,8 +226,19 @@ public class ConfigHandler {
                 + (getDepends().MultiverseCoreEnabled() ? "Multiverse-Core, " : "")
                 + (getDepends().LuckPermsEnabled() ? "LuckPerms, " : "")
                 + (getDepends().SurvivalMechanicsEnabled() ? "SurvivalMechanics, " : "")
-                + (getDepends().GPSEnabled() ? "GPS, " : "")
+                + (getDepends().VehiclesEnabled() ? "GPS, " : "")
         );
+        if (getDepends().ResidenceEnabled()) {
+            ServerHandler.sendConsoleMessage("&fAdd Residence flags: "
+                    + (FlagPermissions.getPosibleAreaFlags().contains("climb") ? "climb, " : "")
+                    + (FlagPermissions.getPosibleAreaFlags().contains("crawl") ? "crawl, " : "")
+                    + (FlagPermissions.getPosibleAreaFlags().contains("mobkick") ? "mobkick, " : "")
+                    + (FlagPermissions.getPosibleAreaFlags().contains("roofhang") ? "roofhang, " : "")
+                    + (FlagPermissions.getPosibleAreaFlags().contains("slide") ? "slide, " : "")
+                    + (FlagPermissions.getPosibleAreaFlags().contains("swim") ? "swim, " : "")
+                    + (FlagPermissions.getPosibleAreaFlags().contains("wallkick") ? "wallkick, " : "")
+            );
+        }
     }
 
     public static DependAPI getDepends() {

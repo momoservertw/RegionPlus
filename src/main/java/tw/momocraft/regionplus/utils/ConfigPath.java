@@ -46,14 +46,16 @@ public class ConfigPath {
     private boolean resPreventEndermanPick;
     private boolean resPreventBlockDamage;
 
+    private boolean resSM;
     private boolean resSMClimb;
     private boolean resSMCrawl;
-    private boolean resSMFlight;
     private boolean resSMMobkick;
     private boolean resSMRoofhang;
     private boolean resSMSlide;
     private boolean resSMSwim;
     private boolean resSMWallkick;
+
+    private boolean resVehicles;
 
     private boolean points;
     private boolean pointsSelectInfo;
@@ -109,14 +111,16 @@ public class ConfigPath {
         resAllAreas = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.All-Areas.Enable");
         resIgnoreWithin = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.All-Areas.Ignore-Within-Area");
 
-        resSMClimb = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Climb");
-        resSMCrawl = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Crawl");
-        resSMFlight = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Flight");
-        resSMMobkick = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Mobkick");
-        resSMRoofhang = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Roofhang");
-        resSMSlide = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Slide");
-        resSMSwim = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Swim");
-        resSMWallkick = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Custom-Flags.SurvivalMechanics.Wallkick");
+        resSM = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.Features.SurvivalMechanics.Enable");
+        resSMClimb = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.Features.SurvivalMechanics.Custom-Flags.Climb");
+        resSMCrawl = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.Features.SurvivalMechanics.Custom-Flags.Crawl");
+        resSMMobkick = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.Features.SurvivalMechanics.Custom-Flags.Mobkick");
+        resSMRoofhang = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.Features.SurvivalMechanics.Custom-Flags.Roofhang");
+        resSMSlide = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.Features.SurvivalMechanics.Custom-Flags.Slide");
+        resSMSwim = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.Features.SurvivalMechanics.Custom-Flags.Swim");
+        resSMWallkick = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.Features.SurvivalMechanics.Custom-Flags.Wallkick");
+
+        resVehicles = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Settings.Features.Vehicles.Enable");
 
         resPrevent = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Enable");
         resPreventFly = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Fly-Disable");
@@ -358,16 +362,16 @@ public class ConfigPath {
         return resPreventBlockDamage;
     }
 
+    public boolean isResSM() {
+        return resSM;
+    }
+
     public boolean isResSMClimb() {
         return resSMClimb;
     }
 
     public boolean isResSMCrawl() {
         return resSMCrawl;
-    }
-
-    public boolean isResSMFlight() {
-        return resSMFlight;
     }
 
     public boolean isResSMMobkick() {
@@ -390,6 +394,7 @@ public class ConfigPath {
         return resSMWallkick;
     }
 
+    public boolean isResVehicles() { return resVehicles; }
 
     public boolean isPoints() {
         return points;
