@@ -160,29 +160,6 @@ public class Commands implements CommandExecutor {
                 Language.sendLangMessage("Message.noPermission", sender);
             }
             return true;
-        } else if (args.length == 1 && args[0].equalsIgnoreCase("mycmd")) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.mycmd")) {
-                ClaimedResidence res;
-                CuboidArea area;
-                int price;
-                UUID playerUUID;
-                for (String resName : Residence.getInstance().getResidenceManager().getResidenceList()) {
-                    res = Residence.getInstance().getResidenceManager().getByName(resName);
-                    area = res.getMainArea();
-                    if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() >= 129) {
-                        continue;
-                    } else if (area.getYSize() >= 256) {
-                        continue;
-                    }
-                    price = res.getSellPrice();
-                    playerUUID = res.getOwnerUUID();
-                    ConfigHandler.getDepends().getVault().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(playerUUID), price);
-                    ServerHandler.sendConsoleMessage("Return residence value: " + resName + ", " + price + ", " + playerUUID);
-                }
-            } else {
-                Language.sendLangMessage("Message.noPermission", sender);
-            }
-            return true;
         } else {
             Language.sendLangMessage("Message.unknownCommand", sender);
             return true;

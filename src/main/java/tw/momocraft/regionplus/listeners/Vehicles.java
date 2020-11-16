@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.handlers.ServerHandler;
+import tw.momocraft.regionplus.utils.Language;
 import tw.momocraft.regionplus.utils.ResidenceUtils;
 
 public class Vehicles implements Listener {
@@ -23,6 +24,7 @@ public class Vehicles implements Listener {
             if (!ResidenceUtils.getBuildPerms(player.getLocation(), "destroy", true, player)) {
                 ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResVehicles", "bypass",
                         new Throwable().getStackTrace()[0]);
+                Language.sendLangMessage("Message.BarrierPlus.noPermDestroy", player);
                 e.setCancelled(true);
             }
         }
@@ -38,11 +40,11 @@ public class Vehicles implements Listener {
             if (!ResidenceUtils.getBuildPerms(player.getLocation(), "place", true, player)) {
                 ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResVehicles", "cancel",
                         new Throwable().getStackTrace()[0]);
+                Language.sendLangMessage("Message.BarrierPlus.noPermPlace", player);
                 e.setCancelled(true);
             }
         }
     }
-
 
     @EventHandler(priority = EventPriority.HIGH)
     private void onVehicleEnterEvent(VehicleEnterEvent e) {
@@ -54,6 +56,7 @@ public class Vehicles implements Listener {
             if (!ResidenceUtils.getPerms(player.getLocation(), "use", true, player)) {
                 ServerHandler.sendFeatureMessage("Residence", player.getName(), "isResVehicles", "cancel",
                         new Throwable().getStackTrace()[0]);
+                Language.sendLangMessage("Message.BarrierPlus.noPermUse", player);
                 e.setCancelled(true);
             }
         }

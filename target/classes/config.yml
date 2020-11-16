@@ -226,3 +226,6 @@ Message:
     visitorDamageEntities: '&cVisitor can''t damage entities here!'
     visitorDropItems: '&cVisitor can''t drop items here!'
     visitorPickupItems: '&cVisitor can''t pickup items here!'
+    noPermDestroy: '&cYou dont have &6destroy &cpermission<s> here.'
+    noPermPlace: '&cYou dont have &6place &cpermission<s> here.'
+    noPermUse: '&cYou dont have &6use &cpermission<s> here.'
