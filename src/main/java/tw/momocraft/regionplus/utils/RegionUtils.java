@@ -1,85 +1,25 @@
 package tw.momocraft.regionplus.utils;
 
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import tw.momocraft.regionplus.handlers.ConfigHandler;
-import tw.momocraft.regionplus.handlers.PermissionsHandler;
-import tw.momocraft.regionplus.utils.locationutils.LocationUtils;
-import tw.momocraft.regionplus.utils.locationutils.LocationMap;
-
-import java.util.List;
-import java.util.Map;
-
-/*
-clainmedResidence.getName() => simon04
-claimedResidence.getPermissions();
-claimedResidence.getOwner();
-claimedResidence.getName();
-
-for (String flag : perms.getFlags().keySet()) {
-    ServerHandler.sendConsoleMessage(flag + "=" + perms.getFlags().get(flag));
-}
-
-perms.getPlayerFlags("Momocraft");
-for (String key : permsPlayerFlags.keySet()) {
-    ServerHandler.sendConsoleMessage(permsPlayerFlags.get(key).toString());
-}
-
-ServerHandler.sendConsoleMessage(perms.listPlayersFlags());
-cola001§f[§2mobkilling §2tp §2usef]
-Darren_houng§f[§2container §2hook §2shear §2mobkilling §2build §2use §2vehicledestroy §2tp §2leash §2animalkilling§f]
-Momocraft§f[§4container §4ignite §2mobkilling §4shear §4build §2use §4vehicledestroy §2tp §4leash §2animalkilling§f]
-
- */
-
 public class RegionUtils {
 
-    public static boolean bypassBorder(Player player, Location loc, List<LocationMap> locMaps) {
-        World world = loc.getWorld();
-        if (world != null) {
-            String worldName = world.getName().toLowerCase();
-            if (ConfigHandler.getConfigPath().getLocationUtils().checkLocation(loc, locMaps)) {
-                return PermissionsHandler.hasPermission(player, "regionplus.bypass.visitor.*") &&
-                        PermissionsHandler.hasPermission(player, "regionplus.bypass.visitor." + worldName);
-            }
+    public static boolean isCanUse(String blockType) {
+        if (blockType.endsWith("PRESSURE_PLATE")) {
+            return true;
         }
-        return true;
-    }
-
-    public static boolean isCanUseEntity(String blockType) {
+        if (blockType.equals("TRIPWIRE")) {
+            return true;
+        }
+        if (blockType.endsWith("DOOR")) {
+            return true;
+        }
+        if (blockType.endsWith("FENCE_GATE")) {
+            return true;
+        }
+        if (blockType.endsWith("BUTTON")) {
+            return true;
+        }
         switch (blockType) {
-            // DOOR
-            case "ACACIA_DOOR":
-            case "BIRCH_DOOR":
-            case "DARK_OAK_DOOR":
-            case "JUNGLE_DOOR":
-            case "OAK_DOOR":
-            case "SPRUCE_DOOR":
-                // TRAPDOOR
-            case "ACACIA_TRAPDOOR":
-            case "BIRCH_TRAPDOOR":
-            case "DARK_OAK_TRAPDOOR":
-            case "JUNGLE_TRAPDOOR":
-            case "OAK_TRAPDOOR":
-            case "SPRUCE_TRAPDOOR":
-                // TRAPDOOR
-            case "ACACIA_FENCE_GATE":
-            case "BIRCH_FENCE_GATE":
-            case "DARK_OAK_FENCE_GATE":
-            case "JUNGLE_FENCE_GATE":
-            case "OAK_FENCE_GATE":
-            case "SPRUCE_FENCE_GATE":
-                // LEVER & BUTTON
-            case "LEVER":
-            case "ACACIA_BUTTON":
-            case "BIRCH_BUTTON":
-            case "DARK_OAK_BUTTON":
-            case "JUNGLE_BUTTON":
-            case "OAK_BUTTON":
-            case "SPRUCE_BUTTON":
-            case "STONE_BUTTON":
-                // CRAFTING
+            // Crafting
             case "CRAFTING_TABLE":
             case "ENCHANTING_TABLE":
             case "FLETCHING_TABLE":
@@ -87,13 +27,14 @@ public class RegionUtils {
             case "NOTE_BLOCK":
             case "ANVIL":
             case "BREWING_STAND":
-                // REDSTONE MACHINE
+                // Redstone Machine
+            case "LEVER":
             case "DIODE":
             case "COMPARATOR":
             case "REPEATER":
             case "REDSTONE_COMPARATOR":
             case "DAYLIGHT_DETECTOR":
-                // OTHER
+                // Other
             case "BEACON":
             case "ITEM_FRAME":
             case "FLOWER_POT":
@@ -107,29 +48,14 @@ public class RegionUtils {
     }
 
     public static boolean isContainer(String blockType) {
+        if (blockType.endsWith("CHEST")) {
+            return true;
+        }
+        if (blockType.endsWith("SHULKER_BOX")) {
+            return true;
+        }
         switch (blockType) {
-            // CHEST
-            case "CHEST":
-            case "TRAPPED_CHEST":
-                // SHULKER_BOX
-            case "SHULKER_BOX":
-            case "BLACK_SHULKER_BOX":
-            case "BROWN_SHULKER_BOX":
-            case "BLUE_SHULKER_BOX":
-            case "CYAN_SHULKER_BOX":
-            case "GRAY_SHULKER_BOX":
-            case "GREEN_SHULKER_BOX":
-            case "LIGHT_BLUE_SHULKER_BOX":
-            case "LIGHT_GRAY_SHULKER_BOX":
-            case "LIME_SHULKER_BOX":
-            case "MAGENTA_SHULKER_BOX":
-            case "ORANGE_SHULKER_BOX":
-            case "PINK_SHULKER_BOX":
-            case "PURPLE_SHULKER_BOX":
-            case "RED_SHULKER_BOX":
-            case "WHITE_SHULKER_BOX":
-            case "YELLOW_SHULKER_BOX":
-                // CRAFTING
+            // Crafting
             case "BREWING_STAND":
             case "DISPENSER":
             case "DROPPER":
@@ -139,7 +65,7 @@ public class RegionUtils {
             case "BARREL":
             case "BLAST_FURNACE":
             case "LOOM":
-                // OTHER
+                // Other
             case "ITEM_FRAME":
             case "JUKEBOX":
             case "ARMOR_STAND":

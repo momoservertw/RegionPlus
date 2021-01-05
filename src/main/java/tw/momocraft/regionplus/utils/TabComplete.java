@@ -6,8 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
-import tw.momocraft.regionplus.handlers.PermissionsHandler;
-import tw.momocraft.regionplus.handlers.ServerHandler;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,12 +20,12 @@ public class TabComplete implements TabCompleter {
         final List<String> commands = new ArrayList<>();
         Collection<?> playersOnlineNew = null;
         Player[] playersOnlineOld;
-        if (args.length == 2 && args[0].equalsIgnoreCase("help") && PermissionsHandler.hasPermission(sender, "regionplus.use")) {
+        if (args.length == 2 && args[0].equalsIgnoreCase("help") && CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.use")) {
             commands.add("2");
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("flagsedit") && PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("flagsedit") && CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.flagsedit")) {
             commands.add("stop");
         } else if ((args.length == 3) && (args[0].equalsIgnoreCase("points"))) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.points.other")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.points.other")) {
                 try {
                     if (Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).getReturnType() == Collection.class) {
                         if (Bukkit.class.getMethod("getOnlinePlayers", new Class<?>[0]).getReturnType() == Collection.class) {
@@ -47,22 +45,22 @@ public class TabComplete implements TabCompleter {
                 }
             }
         } else if (args.length == 1) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.use")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.use")) {
                 commands.add("help");
             }
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.reload")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.reload")) {
                 commands.add("reload");
             }
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.version")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.version")) {
                 commands.add("version");
             }
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.flagsedit")) {
                 commands.add("flagsedit");
             }
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.messageedit")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.messageedit")) {
                 commands.add("messageedit");
             }
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.points")) {
                 commands.add("points");
             }
         }

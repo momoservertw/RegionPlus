@@ -14,86 +14,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.Location;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
+import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
-import tw.momocraft.regionplus.handlers.PermissionsHandler;
-import tw.momocraft.regionplus.handlers.ServerHandler;
 
 import java.util.*;
 
 public class ResidenceUtils {
-
-    public static boolean getBuildPerms(ResidencePermissions perms, String flag, boolean def, Player player) {
-        if (player != null) {
-            if (perms.playerHas(player, Flags.build, false)) {
-                return perms.playerHas(player, Flags.getFlag(flag), true);
-            }
-        }
-        if (perms.has(Flags.build, false)) {
-            return perms.has(Flags.getFlag(flag), true);
-        }
-        return perms.has(Flags.getFlag(flag), def);
-    }
-
-    public static boolean getBuildPerms(ResidencePermissions perms, String flag, boolean def) {
-        if (perms.has(Flags.build, false)) {
-            return perms.has(Flags.getFlag(flag), true);
-        }
-        return perms.has(Flags.getFlag(flag), def);
-    }
-
-    public static boolean getBuildPerms(Location location, String flag, boolean def, Player player) {
-        ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(location);
-        if (res != null) {
-            ResidencePermissions perms = res.getPermissions();
-            if (player != null) {
-                if (perms.playerHas(player, Flags.build, false)) {
-                    return perms.playerHas(player, Flags.getFlag(flag), true);
-                }
-            }
-            if (perms.has(Flags.build, false)) {
-                return perms.has(Flags.getFlag(flag), true);
-            }
-            return perms.has(Flags.getFlag(flag), def);
-        }
-        return true;
-    }
-
-    public static boolean getBuildPerms(Location location, String flag, boolean def) {
-        ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(location);
-        if (res != null) {
-            ResidencePermissions perms = res.getPermissions();
-            if (perms.has(Flags.build, false)) {
-                return perms.has(Flags.getFlag(flag), true);
-            }
-            return perms.has(Flags.getFlag(flag), def);
-        }
-        return true;
-    }
-
-    public static boolean getPerms(Location location, String flag, boolean def, Player player) {
-        ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(location);
-        if (res != null) {
-            ResidencePermissions perms = res.getPermissions();
-            if (player != null) {
-                return perms.playerHas(player, Flags.getFlag(flag), def);
-            }
-            return perms.has(Flags.getFlag(flag), def);
-        }
-        return true;
-    }
-
-    public static boolean getPerms(Location location, String flag, boolean def) {
-        ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(location);
-        if (res != null) {
-            ResidencePermissions perms = res.getPermissions();
-            return perms.has(Flags.getFlag(flag), def);
-        }
-        return true;
-    }
 
     public static long getLimit(Player player) {
         Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
@@ -237,13 +166,13 @@ public class ResidenceUtils {
             if (message) {
                 i--;
                 if (i % 300 == 0 && i != 0) {
-                    ServerHandler.sendConsoleMessage("&eMessage-Edit process has not finished yet! &8- &6Player: " + i + "/" + playerSize);
+                    CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&eMessage-Edit process has not finished yet! &8- &6Player: " + i + "/" + playerSize);
                 }
             }
             playerName = offlinePlayer.getName();
             if (bypassPerm) {
-                if (PermissionsHandler.hasPermissionOffline(offlinePlayer, "regionplus.bypass.messageedit")) {
-                    ServerHandler.sendFeatureMessage("Message-Flags-Editor", playerName, "permission", "bypass",
+                if (CorePlusAPI.getPlayerManager().hasPermissionOffline(offlinePlayer, "regionplus.bypass.messageedit")) {
+                    CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence", "Message-Flags-Editor", playerName, "permission", "bypass",
                             new Throwable().getStackTrace()[0]);
                     continue;
                 }
@@ -263,18 +192,18 @@ public class ResidenceUtils {
                     res.getEnterMessage();
                     if (enter.isEmpty() || enter.contains(res.getEnterMessage())) {
                         res.setEnterMessage(groupTable.get(groupName, "enter"));
-                        ServerHandler.sendFeatureMessage("Residence.Message-Editor", resName, "enter", "change", "Owner: " + playerName + ", Group: " + groupName,
+                        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence.Message-Editor", resName, "enter", "change", "Owner: " + playerName + ", Group: " + groupName,
                                 new Throwable().getStackTrace()[0]);
                     }
                     if (leave.isEmpty() || leave.contains(res.getLeaveMessage())) {
                         res.setLeaveMessage(groupTable.get(groupName, "leave"));
-                        ServerHandler.sendFeatureMessage("Residence.Message-Editor", resName, "leave", "change", "Owner: " + playerName + ", Group: " + groupName,
+                        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence.Message-Editor", resName, "leave", "change", "Owner: " + playerName + ", Group: " + groupName,
                                 new Throwable().getStackTrace()[0]);
                     }
                 }
             }
         }
-        ServerHandler.sendConsoleMessage("&6Message-Edit process has ended.");
+        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6Message-Edit process has ended.");
     }
 
     public static void editFlags() {
@@ -291,31 +220,31 @@ public class ResidenceUtils {
                         flagsEditor.resetUp();
                         startEditFlags(flagsEditor.getEditList());
                     } catch (Exception e) {
-                        ServerHandler.sendConsoleMessage("&cThere is an error occur while starting to edit residence flags.");
-                        ServerHandler.sendConsoleMessage("&cPlease turn on the debug mode and send the error messages to plugin author.");
-                        ServerHandler.sendConsoleMessage("&ehttps://github.com/momoservertw/RegionPlus/issues");
-                        ServerHandler.sendConsoleMessage("&6Flags-Edit process has ended.");
-                        ServerHandler.sendDebugTrace(e);
+                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&cThere is an error occur while starting to edit residence flags.");
+                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&cPlease turn on the debug mode and send the error messages to plugin author.");
+                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&ehttps://github.com/momoservertw/RegionPlus/issues");
+                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6Flags-Edit process has ended.");
+                        CorePlusAPI.getLangManager().sendDebugTrace(ConfigHandler.getPlugin(), e);
                         flagsEditor.setRun(false);
                         cancel();
                         return;
                     }
                     if (!flagsEditor.isRun()) {
-                        ServerHandler.sendConsoleMessage("&6Flags-Edit process has ended.");
+                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6Flags-Edit process has ended.");
                         flagsEditor.setRun(false);
                         cancel();
                         return;
                     }
                     if (!flagsEditor.isRestart()) {
-                        ServerHandler.sendConsoleMessage("&6Flags-Edit process has ended.");
+                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6Flags-Edit process has ended.");
                         flagsEditor.setRun(false);
                         cancel();
                         return;
                     }
                     if (restartMsg) {
-                        ServerHandler.sendConsoleMessage("&eFlags-Edit process has not finished yet! &8- &6Player: " + flagsEditor.getLast() + "/" + flagsEditor.getPlayerSize());
-                        ServerHandler.sendConsoleMessage("&fIt will restart after few seconds. &8(Stop process: /rp flagsedit stop)");
-                        ServerHandler.sendConsoleMessage("");
+                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&eFlags-Edit process has not finished yet! &8- &6Player: " + flagsEditor.getLast() + "/" + flagsEditor.getPlayerSize());
+                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&fIt will restart after few seconds. &8(Stop process: /rp flagsedit stop)");
+                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "");
                     }
                 }
             }
@@ -352,8 +281,8 @@ public class ResidenceUtils {
         for (OfflinePlayer offlinePlayer : editList) {
             playerName = offlinePlayer.getName();
             if (bypassPerm) {
-                if (PermissionsHandler.hasPermissionOffline(offlinePlayer, "regionplus.bypass.flagsedit")) {
-                    ServerHandler.sendFeatureMessage("Residence.Flags-Editor", playerName, "permission", "bypass",
+                if (CorePlusAPI.getPlayerManager().hasPermissionOffline(offlinePlayer, "regionplus.bypass.flagsedit")) {
+                    CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence", "Residence.Flags-Editor", playerName, "permission", "bypass",
                             new Throwable().getStackTrace()[0]);
                     break;
                 }
@@ -374,7 +303,7 @@ public class ResidenceUtils {
                             if (!defaultFlags.contains(flagEntry)) {
                                 flag = flagEntry.getKey();
                                 if (defaultRemoveIgnore.contains(flag)) {
-                                    ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "default flags", "bypass", "Flag: " + flag + "Owner: " + playerName + ", Group: " + groupName,
+                                    CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence.Flags-Editor", resName, "default flags", "bypass", "Flag: " + flag + "Owner: " + playerName + ", Group: " + groupName,
                                             new Throwable().getStackTrace()[0]);
                                     break;
                                 }
@@ -387,7 +316,7 @@ public class ResidenceUtils {
                                     removeFlagList.add(flag);
                                 } catch (Exception e) {
                                     if (bypassCustom) {
-                                        ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "default flags", "bypass", "Flag: " + flag + ", Owner: " + playerName + ", Group: " + groupName,
+                                        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence.Flags-Editor", resName, "default flags", "bypass", "Flag: " + flag + ", Owner: " + playerName + ", Group: " + groupName,
                                                 new Throwable().getStackTrace()[0]);
                                     } else {
                                         removeFlagList.add(flag);
@@ -397,7 +326,7 @@ public class ResidenceUtils {
                         }
                         for (String removeFlag : removeFlagList) {
                             resPerm.setFlag(removeFlag, FlagPermissions.FlagState.NEITHER);
-                            ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "default flags", "remove", "Flag: " + removeFlag + ", Owner: " + playerName + ", Group: " + groupName,
+                            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence.Flags-Editor", resName, "default flags", "remove", "Flag: " + removeFlag + ", Owner: " + playerName + ", Group: " + groupName,
                                     new Throwable().getStackTrace()[0]);
                         }
                     }
@@ -407,7 +336,7 @@ public class ResidenceUtils {
                             if (!flagSet.contains(resFlagEntry)) {
                                 flag = resFlagEntry.getKey();
                                 if (defaultUpdateIgnore.contains(flag)) {
-                                    ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "update flags", "bypass", "Flag: " + flag + ", Owner: " + playerName + ", Group: " + groupName,
+                                    CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence.Flags-Editor", resName, "update flags", "bypass", "Flag: " + flag + ", Owner: " + playerName + ", Group: " + groupName,
                                             new Throwable().getStackTrace()[0]);
                                     break;
                                 }
@@ -419,7 +348,7 @@ public class ResidenceUtils {
                         for (String addFlagKey : addFlagMap.keySet()) {
                             flag = addFlagMap.get(addFlagKey);
                             resPerm.setFlag(addFlagKey, FlagPermissions.FlagState.valueOf(flag.toUpperCase()));
-                            ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "update flags", "change", "Flag: " + addFlagKey + "=" + flag + ", Owner: " + playerName + ", Group: " + groupName,
+                            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence.Flags-Editor", resName, "update flags", "change", "Flag: " + addFlagKey + "=" + flag + ", Owner: " + playerName + ", Group: " + groupName,
                                     new Throwable().getStackTrace()[0]);
                         }
                     }
@@ -442,7 +371,7 @@ public class ResidenceUtils {
                             if (permsPlayerFlags != null) {
                                 for (String permsPlayerFlag : permsPlayerFlags.keySet()) {
                                     if (permsRemoveIgnore.contains(permsPlayerFlag)) {
-                                        ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "player flags", "bypass", "Flag: " + permsPlayerFlag + ", Owner: " + playerName + ", Group: " + groupName,
+                                        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence.Flags-Editor", resName, "player flags", "bypass", "Flag: " + permsPlayerFlag + ", Owner: " + playerName + ", Group: " + groupName,
                                                 new Throwable().getStackTrace()[0]);
                                         break;
                                     }
@@ -452,7 +381,7 @@ public class ResidenceUtils {
                                         }
                                     } catch (Exception e) {
                                         if (bypassCustom) {
-                                            ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "player flags", "bypass", "Flag: " + permsPlayerFlag + ", Owner: " + playerName + ", Group: " + groupName,
+                                            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence.Flags-Editor", resName, "player flags", "bypass", "Flag: " + permsPlayerFlag + ", Owner: " + playerName + ", Group: " + groupName,
                                                     new Throwable().getStackTrace()[0]);
                                         } else {
                                             removeFlagPlayerList.add(permsPlayerFlag);
@@ -461,7 +390,7 @@ public class ResidenceUtils {
                                 }
                                 for (String removePlayerFlag : removeFlagPlayerList) {
                                     resPerm.setPlayerFlag(permsPlayer, removePlayerFlag, FlagPermissions.FlagState.NEITHER);
-                                    ServerHandler.sendFeatureMessage("Residence.Flags-Editor", resName, "player flags", "remove", "Flag: " + removePlayerFlag + ", Player: " + permsPlayer + ", Owner: " + playerName + ", Group: " + groupName,
+                                    CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence.Flags-Editor", resName, "player flags", "remove", "Flag: " + removePlayerFlag + ", Player: " + permsPlayer + ", Owner: " + playerName + ", Group: " + groupName,
                                             new Throwable().getStackTrace()[0]);
                                 }
                             }
@@ -481,89 +410,31 @@ public class ResidenceUtils {
 
     private static String getUserGroup(OfflinePlayer offlinePlayer, List<String> groups) {
         for (String group : groups) {
-            if (PermissionsHandler.hasPermissionOffline(offlinePlayer, "residence.group." + group)) {
+            if (CorePlusAPI.getPlayerManager().hasPermissionOffline(offlinePlayer, "residence.group." + group)) {
                 return group;
             }
         }
         return "default";
     }
 
-    public static String[] pointsPH(Player player) {
+    public static String[] pointsValues(Player player) {
         Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
         Map<String, String> groupDisplayMap = ConfigHandler.getConfigPath().getPointsDisplayMap();
-        Map<String, Long> groupMap = ConfigHandler.getConfigPath().getPointsMap();
-        List<String> groupList = new ArrayList<>(groupMap.keySet());
 
         String group = userGroupMap.keySet().iterator().next();
         long limit = userGroupMap.get(group);
-        String nextGroup;
-        long nextLimit;
-        if (groupList.indexOf(group) > 0) {
-            nextGroup = groupList.get(groupList.indexOf(group) - 1);
-            nextLimit = groupMap.get(nextGroup);
-        } else {
-            nextGroup = group;
-            nextLimit = limit;
-        }
         long used = ResidenceUtils.getUsed(player);
-        String[] placeHolders = Language.newString();
-
+        String[] placeHolders = CorePlusAPI.getLangManager().newString();
         // %player%
-        placeHolders[1] = player.getName();
-        // %points_group%
-        placeHolders[21] = groupDisplayMap.get(group);
-        // %points_limit%
-        placeHolders[22] = String.valueOf(limit);
-        // %points_used%
-        placeHolders[23] = String.valueOf(used);
-        // %points_last%
-        placeHolders[24] = String.valueOf(limit - used);
-        // %points_nextgroup%
-        placeHolders[27] = groupDisplayMap.get(nextGroup);
-        // %points_nextlimit%
-        placeHolders[28] = String.valueOf(nextLimit);
-        // %points_nextbonus%
-        placeHolders[29] = String.valueOf(nextLimit - limit);
-        return placeHolders;
-    }
-
-    public static String[] targetPointsPH(CommandSender sender, Player player) {
-        Map<String, Long> userGroupMap = ResidenceUtils.getUserGroupMap(player);
-        Map<String, Long> groupMap = ConfigHandler.getConfigPath().getPointsMap();
-        Map<String, String> groupDisplayMap = ConfigHandler.getConfigPath().getPointsDisplayMap();
-        List<String> groupList = new ArrayList<>(groupMap.keySet());
-        String group = userGroupMap.keySet().iterator().next();
-        String nextGroup;
-        long limit = userGroupMap.get(group);
-        long nextLimit;
-        if (groupList.indexOf(group) > 0) {
-            nextGroup = groupList.get(groupList.indexOf(group) - 1);
-            nextLimit = groupMap.get(nextGroup);
-        } else {
-            nextGroup = group;
-            nextLimit = limit;
-        }
-        long used = ResidenceUtils.getUsed(player);
-        String[] placeHolders = Language.newString();
-
-        // %player%
-        placeHolders[1] = sender.getName();
-        // %target%
-        placeHolders[2] = player.getName();
-        // %points_group%
-        placeHolders[21] = groupDisplayMap.get(group);
-        // %points_limit%
-        placeHolders[22] = String.valueOf(limit);
-        // %points_used%
-        placeHolders[23] = String.valueOf(used);
-        // %points_last%
-        placeHolders[24] = String.valueOf(limit - used);
-        // %points_nextgroup%
-        placeHolders[27] = groupDisplayMap.get(nextGroup);
-        // %points_nextlimit%
-        placeHolders[28] = String.valueOf(nextLimit);
-        // %points_nextbonus%
-        placeHolders[29] = String.valueOf(nextLimit - limit);
+        placeHolders[0] = player.getName();
+        // %group%
+        placeHolders[5] = groupDisplayMap.get(group);
+        // %limit%
+        placeHolders[23] = String.valueOf(limit);
+        // %amount%
+        placeHolders[6] = String.valueOf(used);
+        // %balance%
+        placeHolders[11] = String.valueOf(limit - used);
         return placeHolders;
     }
 

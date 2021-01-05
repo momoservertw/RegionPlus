@@ -8,11 +8,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
-import tw.momocraft.regionplus.handlers.PermissionsHandler;
-import tw.momocraft.regionplus.handlers.PlayerHandler;
-import tw.momocraft.regionplus.handlers.ServerHandler;
-import tw.momocraft.regionplus.utils.Language;
 import tw.momocraft.regionplus.utils.ResidenceUtils;
 
 import java.util.UUID;
@@ -21,7 +18,7 @@ public class Commands implements CommandExecutor {
 
     public boolean onCommand(final CommandSender sender, Command c, String l, String[] args) {
         if (args.length == 0) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.use")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.use")) {
                 Language.dispatchMessage(sender, "");
                 Language.sendLangMessage("Message.RegionPlus.Commands.title", sender, false);
                 Language.sendLangMessage("Message.RegionPlus.Commands.help", sender, false);
@@ -31,21 +28,21 @@ public class Commands implements CommandExecutor {
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
             Language.dispatchMessage(sender, "");
-            if (PermissionsHandler.hasPermission(sender, "regionplus.use")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.use")) {
                 Language.sendLangMessage("Message.RegionPlus.Commands.title", sender, false);
                 Language.sendLangMessage("Message.RegionPlus.Commands.help", sender, false);
-                if (PermissionsHandler.hasPermission(sender, "regionplus.command.version")) {
+                if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.version")) {
                     Language.sendLangMessage("Message.RegionPlus.Commands.version", sender, false);
                 }
-                if (PermissionsHandler.hasPermission(sender, "regionplus.command.reload")) {
+                if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.reload")) {
                     Language.sendLangMessage("Message.RegionPlus.Commands.reload", sender, false);
                 }
-                if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
+                if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.flagsedit")) {
                     Language.sendLangMessage("Message.RegionPlus.Commands.flagsedit", sender, false);
                 }
-                if (PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
+                if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.points")) {
                     Language.sendLangMessage("Message.RegionPlus.Commands.points", sender, false);
-                    if (PermissionsHandler.hasPermission(sender, "regionplus.command.points.other")) {
+                    if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.points.other")) {
                         Language.sendLangMessage("Message.RegionPlus.Commands.targetPoints", sender, false);
                     }
                 }
@@ -54,7 +51,7 @@ public class Commands implements CommandExecutor {
             }
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.reload")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.reload")) {
                 ConfigHandler.generateData(true);
                 Language.sendLangMessage("Message.configReload", sender);
             } else {
@@ -62,7 +59,7 @@ public class Commands implements CommandExecutor {
             }
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("version")) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.version")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.version")) {
                 Language.dispatchMessage(sender, "&d&lRegionPlus &ev" + RegionPlus.getInstance().getDescription().getVersion() + "&8 - &fby Momocraft");
                 ConfigHandler.getUpdater().checkUpdates(sender);
             } else {
@@ -70,49 +67,49 @@ public class Commands implements CommandExecutor {
             }
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("flagsedit")) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.flagsedit")) {
                 if (ConfigHandler.getConfigPath().isResFlag()) {
                     if (ConfigHandler.getEditor().isRun()) {
-                        ServerHandler.sendConsoleMessage("&cThe process of Flags-Edit is still running! &8(Stop process: /rp flagsedit stop)");
+                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&cThe process of Flags-Edit is still running! &8(Stop process: /rp flagsedit stop)");
                         return true;
                     }
-                    ServerHandler.sendConsoleMessage("&6Starting to check residence flags...");
+                    CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6Starting to check residence flags...");
                     ResidenceUtils.editFlags();
                     return true;
                 }
-                ServerHandler.sendConsoleMessage("&cYou don't enable the residence Flags-Edit feature in config.yml.");
+                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&cYou don't enable the residence Flags-Edit feature in config.yml.");
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);
             }
             return true;
         } else if (args.length == 2 && args[0].equalsIgnoreCase("flagsedit") && args[1].equalsIgnoreCase("stop")) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.flagsedit")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.flagsedit")) {
                 if (!ConfigHandler.getEditor().isRun()) {
-                    ServerHandler.sendConsoleMessage("&cThe process of Flags-Edit isn't running now.");
+                    CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&cThe process of Flags-Edit isn't running now.");
                     return true;
                 }
-                ServerHandler.sendConsoleMessage("&6Stops the Flags-Edit process after finished this editing.");
+                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6Stops the Flags-Edit process after finished this editing.");
                 ConfigHandler.getEditor().setRun(false);
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);
             }
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("messageedit")) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.messageedit")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.messageedit")) {
                 if (ConfigHandler.getConfigPath().isResMsg()) {
-                    ServerHandler.sendConsoleMessage("&6Starting to check residence message...");
+                    CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6Starting to check residence message...");
                     ResidenceUtils.editMessage();
                     return true;
                 }
-                ServerHandler.sendConsoleMessage("&cYou don't enable the residence Message-Edit feature in config.yml.");
+                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&cYou don't enable the residence Message-Edit feature in config.yml.");
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);
             }
             return true;
         } else if (args.length == 1 && args[0].equalsIgnoreCase("points")) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.points")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.points")) {
                 if (ConfigHandler.getConfigPath().isPoints()) {
-                    Language.sendLangMessage("Message.RegionPlus.points", sender, ResidenceUtils.pointsPH((Player) sender));
+                    Language.sendLangMessage("Message.RegionPlus.points", sender, ResidenceUtils.pointsValues((Player) sender));
                 } else {
                     Language.sendLangMessage("Message.featureNotEnable", sender);
                 }
@@ -120,7 +117,7 @@ public class Commands implements CommandExecutor {
                 Language.sendLangMessage("Message.noPermission", sender);
             }
         } else if (args.length == 2 && args[0].equalsIgnoreCase("points")) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.points.other")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.points.other")) {
                 if (ConfigHandler.getConfigPath().isPoints()) {
                     Player player = PlayerHandler.getPlayerString(args[1]);
                     if (player == null) {
@@ -138,7 +135,7 @@ public class Commands implements CommandExecutor {
             }
             return true;
         } else if (args.length == 2 && args[0].equalsIgnoreCase("return") && args[1].equalsIgnoreCase("ignoreyresidence")) {
-            if (PermissionsHandler.hasPermission(sender, "regionplus.command.return")) {
+            if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.command.return")) {
                 ClaimedResidence res;
                 CuboidArea area;
                 int price;
@@ -154,7 +151,7 @@ public class Commands implements CommandExecutor {
                     price = res.getSellPrice();
                     playerUUID = res.getOwnerUUID();
                     ConfigHandler.getDepends().getVault().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(playerUUID), price);
-                    ServerHandler.sendConsoleMessage("Return residence value: " + resName + ", " + price + ", " + playerUUID);
+                    CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "Return residence value: " + resName + ", " + price + ", " + playerUUID);
                 }
             } else {
                 Language.sendLangMessage("Message.noPermission", sender);

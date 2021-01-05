@@ -6,7 +6,7 @@
 
     <groupId>momocraft.tw</groupId>
     <artifactId>RegionPlus</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
     <build>
         <plugins>
             <plugin>
@@ -26,31 +26,28 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <!--Residence API-->
-        <repository>
-            <id>lumine-repo</id>
-            <url>http://mvn.lumine.io/repository/maven-snapshots/</url>
-        </repository>
-        <!--PlaceholderAPI Repo-->
-        <repository>
-            <id>placeholderapi</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
     </repositories>
     <dependencies>
         <!--Spigot API-->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.3-R0.1-SNAPSHOT</version>
+            <version>1.16.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!--Vault API-->
+        <!--CraftBukkit API-->
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
-            <artifactId>Vault</artifactId>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>LATEST</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--CorePlus API-->
+        <dependency>
+            <groupId>tw.momocraft</groupId>
+            <artifactId>CorePlus</artifactId>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/VaultAPI.jar</systemPath>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/CorePlus-1.0.0.jar</systemPath>
             <version>LEGACY</version>
         </dependency>
         <!--Residence API-->
@@ -58,30 +55,7 @@
             <groupId>me.Residence</groupId>
             <artifactId>Residnec</artifactId>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/Residence4.9.1.9.jar</systemPath>
-            <version>LEGACY</version>
-        </dependency>
-        <!--PlaceholderAPI API-->
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>LATEST</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--ItemJoin API-->
-        <dependency>
-            <groupId>me.ItemJoin</groupId>
-            <artifactId>ItemJoin</artifactId>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/ItemJoin.jar</systemPath>
-            <version>LEGACY</version>
-        </dependency>
-        <!--PvPManager API-->
-        <dependency>
-            <groupId>me.PvPManager</groupId>
-            <artifactId>PvPManager</artifactId>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/PvPManager.jar</systemPath>
+            <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/Residence4.9.2.1.jar</systemPath>
             <version>LEGACY</version>
         </dependency>
         <!--Multiverse-Core API-->
@@ -92,13 +66,6 @@
             <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/Multiverse-Core-4.0.0.jar
             </systemPath>
             <version>LEGACY</version>
-        </dependency>
-        <!--LuckPerms API-->
-        <dependency>
-            <groupId>net.luckperms</groupId>
-            <artifactId>api</artifactId>
-            <version>5.0</version>
-            <scope>provided</scope>
         </dependency>
         <!--SurvivalMechanics API-->
         <dependency>

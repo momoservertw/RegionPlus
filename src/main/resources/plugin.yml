@@ -2,15 +2,16 @@ name: RegionPlus
 main: tw.momocraft.regionplus.RegionPlus
 author: Momocraft
 api-version: 1.13
-version: 1.0.2
+version: 1.1.0
 description: Visitor system and adding more features for Residence.
-softdepend: [Vault, Residence, PlaceHolderAPI, ItemJoin, PvPManager, LuckPerms, SurvivalMechanics]
+depend: [ CorePlus ]
+softdepend: [ Vault, Residence, PlaceHolderAPI, ItemJoin, PvPManager, LuckPerms, SurvivalMechanics ]
 
 commands:
   regionplus:
     description: Displays main command menu.
     permission: regionplus.use
-    aliases: [rp]
+    aliases: [ rp ]
     usage: |
       /regionplus
 
