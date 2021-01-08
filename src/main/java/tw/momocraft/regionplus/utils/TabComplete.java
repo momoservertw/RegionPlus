@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+import tw.momocraft.coreplus.api.CorePlusAPI;
+import tw.momocraft.regionplus.handlers.ConfigHandler;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +43,7 @@ public class TabComplete implements TabCompleter {
                         }
                     }
                 } catch (Exception e) {
-                    ServerHandler.sendDebugTrace(e);
+                    CorePlusAPI.getLangManager().sendDebugTrace(ConfigHandler.getPlugin(), e);
                 }
             }
         } else if (args.length == 1) {

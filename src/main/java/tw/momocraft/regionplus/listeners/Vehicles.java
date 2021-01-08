@@ -14,40 +14,49 @@ public class Vehicles implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     private void onVehiclePickupEvent(VehiclePickupEvent e) {
-        if (ConfigHandler.getConfigPath().isResVehicles()) {
-            Player player = e.getPlayer();
-            if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "destroy", false)) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence", "Residence", player.getName(), "isResVehicles", "bypass",
-                        new Throwable().getStackTrace()[0]);
-                Language.sendLangMessage("Message.RegionPlus.noPermDestroy", player);
-                e.setCancelled(true);
-            }
+        if (!ConfigHandler.getConfigPath().isResVehicles()) {
+            return;
+        }
+        Player player = e.getPlayer();
+        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "destroy", false)) {
+            String[] placeHolders = CorePlusAPI.getLangManager().newString();
+            placeHolders[13] = "destroy"; // %flag%
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence", player.getName(), "VehiclePickupEvent", "bypass",
+                    new Throwable().getStackTrace()[0]);
+            e.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     private void onVehiclePlaceEvent(VehiclePlaceEvent e) {
-        if (ConfigHandler.getConfigPath().isResVehicles()) {
-            Player player = e.getOwner();
-            if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "destroy", false)) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence", "Residence", player.getName(), "isResVehicles", "cancel",
-                        new Throwable().getStackTrace()[0]);
-                Language.sendLangMessage("Message.RegionPlus.noPermPlace", player);
-                e.setCancelled(true);
-            }
+        if (!ConfigHandler.getConfigPath().isResVehicles()) {
+            return;
+        }
+        Player player = e.getOwner();
+        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "place", false)) {
+            String[] placeHolders = CorePlusAPI.getLangManager().newString();
+            placeHolders[13] = "place"; // %flag%
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence", player.getName(), "VehiclePlaceEvent", "cancel",
+                    new Throwable().getStackTrace()[0]);
+            e.setCancelled(true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     private void onVehicleEnterEvent(VehicleEnterEvent e) {
-        if (ConfigHandler.getConfigPath().isResVehicles()) {
-            Player player = e.getPlayer();
-            if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "destroy", false)) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence", "Residence", player.getName(), "isResVehicles", "cancel",
-                        new Throwable().getStackTrace()[0]);
-                Language.sendLangMessage("Message.RegionPlus.noPermUse", player);
-                e.setCancelled(true);
-            }
+        if (!ConfigHandler.getConfigPath().isResVehicles()) {
+            return;
+        }
+        Player player = e.getPlayer();
+        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "use", false)) {
+            String[] placeHolders = CorePlusAPI.getLangManager().newString();
+            placeHolders[13] = "use"; // %flag%
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence", player.getName(), "VehicleEnterEvent", "cancel",
+                    new Throwable().getStackTrace()[0]);
+            e.setCancelled(true);
         }
     }
 }

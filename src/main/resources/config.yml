@@ -1,21 +1,23 @@
-# --{ =-=-=-=-=-=-=-=-=-= RegionPlus's Configuration Settings, by Momocraft =-=-=-=-=-=-=-=-=-= }--
-# Wiki: https://github.com/momoservertw/RegionPlus/wiki
+# ░░░░░░░░░░░░░░░   RegionPlus, By Momocraft♥   ░░░░░░░░░░░░░░░
+#  Spigot: https://www.spigotmc.org/resources/regionplus.76878/
+#  Wiki: https://github.com/momoservertw/RegionPlus/wiki
+# ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 Config-Version: 4
-Check-Updates: true
-Debugging: false
+
+General:
+  Settings:
+    Features:
+      # Changed these options need to restart the server.
+      Hook:
+        Residence: true
+        MultiverseCore: true
+        SurvivalMechanics: true
+        Vehicles: true
 
 # Adding more features for Residence.
 # More information: https://github.com/momoservertw/RegionPlus/wiki/Residence
 Residence:
   Enable: false
-  Settings:
-    # It will check every areas in one residence. Because of two area may in the same location, I'm not recommend using multiple areas.
-    # You can set the "MaxAreasPerResidence: 0" in residence groups.yml  to prevent players creating multiple areas.
-    # And only use subzone to allow players to set different residence permissions.
-    All-Areas:
-      Enable: false
-      # Ignore the area which is in another area.
-      Ignore-Within-Area: false
   # Fixed some bugs and improved the player's gaming experience.
   Prevent:
     Enable: true
@@ -26,34 +28,36 @@ Residence:
     Zombie-Door-Destruction: true
     Enderman-Pickup-Block: true
     Block-Damage: true
-  # Limit the total size of player's residences.
+  # To limit the total size of player's residences.
+  # The physical area may be at the same location, this feature will only check the main area size.
   Points:
     Enable: false
     Settings:
       Select-Info: true
-      # For the server who changed the Residence "IgnoreY" from false to true.
-      Not-Ignore-Y-Residences:
-        Enable: false
-        Points-Calculate: false
-        Prevent-Add-Area: false
-        Prevent-Change-Size: false
+      # To ignore calculation of the residences which "Y size" is limited. It will disable if the selection "IgnoreY" is false.
+      Ignore-Y-Residences: true
+      Prevent:
+        # Prevent player creating multiple areas. It does not affect subzones.
+        Add-Area: true
+        # Prevent the residence with areas to change its size.
+        Multiple-Areas-Size-Change: true
     # Permission: regionplus.points.group.GROUP
     Groups:
       # The default group. You shouldn't remove it.
       Default:
-        Display: "&a&lDefault"
+        Display: "&aDefault"
         Limit: 10000
       MB:
-        Display: "&a&lMB"
+        Display: "&aMB"
         Limit: 14400
       VIP:
-        Display: "&b&lVIP"
+        Display: "&bVIP"
         Limit: 25000
       MVP:
-        Display: "&d&lMVP"
+        Display: "&dMVP"
         Limit: 115200
       GOD:
-        Display: "&e&lGOD"
+        Display: "&eGOD"
         Limit: 270000
   # Changing all old residence flags to new one.
   Flags-Editor:
@@ -127,55 +131,60 @@ Residence:
         Slide: true
         Swim: true
         Wallkick: true
-    # Pickup vehicles: build
-    # Place vehicles: build
+    # Pickup vehicles: destroy
+    # Place vehicles: place
     # Ride vehicles: use
     Vehicles:
       Enable: true
 
-# Prevent players activating outside a location like visitors.
+# Prevent players activating outside a border like visitors.
 # More information: https://github.com/momoservertw/RegionPlus/wiki/Visitor
 Visitor:
   Enable: false
   Settings:
-    # Sending the prevent message to visitors.
-    Message: true
     Residence:
       Enable: true
-      # Allow to do something if player has that permission flag.
-      Allow-Has-Permission: true
-      # Allow to create new Residence.
+      # Allow visitor to do anything in the residences.
+      Bypass: true
+      # Allow visitor to create a new Residence.
       Allow-Create: false
-      # Allow to expand or contract the Residence.
-      Allow-Change-Size: true
+      # Allow visitor to get a Residence from other players.
+      Allow-Get: false
     Use-Item:
       Enable: true
+      Message: true
       Allow-Consume: true
       Allow-Bucket: false
       Allow-Fishing: false
-      # Allow to use bow or potion.
+      # Allow visitor to use bow or potion.
       Allow-Projectile: false
-      # Allow to use ItemJoin's custom items.
+      # Allow visitor to use ItemJoin's custom items.
       Allow-ItemJoin: true
     Interact-Block:
       Enable: true
-      # Allow to use the Blocks like open a door.
+      Message: true
+      # Allow visitor to interact the Blocks like doors.
       Allow-Use: false
-      # Allow to use the Blocks like open a chest.
+      # Allow visitor to interact the Blocks like chests.
       Allow-Container: false
     Interact-Entity:
       Enable: true
+      Message: true
       Allow-NPC: true
     Damage-Entity:
       Enable: true
-      # Allow to damage other player.
+      Message: true
+      # Allow visitor to damage other player.
       Allow-Player: true
     Drop-Item:
       Enable: true
+      Message: true
     Pickup-Item:
       Enable: true
-    # Disabled dropping items when they died.
+      Message: false
+    # Prevent visitor dropping items when they died.
     Death-Drop:
+      Message: true
       Enable: true
   Location:
     - VisitorWorlds
@@ -194,13 +203,15 @@ Message:
   pointsGroupList: "&8▩▩▩▩▩▩▩▩▩ &cResidence Points &8▩▩▩▩▩▩▩▩▩"
   targetPoints: "&c%targetplayer% Points: &f%amount% - %group% limit: %limit%"
   pointsSelect: "&7Selection size: %size%, Cost: %price%, Remaining points: %balance%"
+  sizeChangeFailed: "&cThe residence with multiple areas can not change its size."
   sellFailed: "&8(Returned the money)"
-  sizeChangeFailed: "&cYou can not change this residence size."
   visitorResidenceCreate: "&cVisitor can't create residence!"
-  visitorResidenceSize: "&cVisitor can't change residence size!"
+  visitorResidenceGet: "&cVisitor can't get a residence!"
+  visitorResidenceGetTarget: "&cYou can't give the residence to Visitor!"
   visitorUseItems: "&cVisitor can't use this item!"
   visitorInteractBlocks: "&cVisitor can't interact blocks!"
   visitorInteractEntities: "&cVisitor can't interact entities!"
   visitorDamageEntities: "&cVisitor can't damage entities!"
   visitorDropItems: "&cVisitor can't drop items!"
   visitorPickupItems: "&cVisitor can't pickup items!"
+  visitorDeathDrop: "&7Visitors will not drop items after death!"

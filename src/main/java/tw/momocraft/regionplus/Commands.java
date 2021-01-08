@@ -17,6 +17,7 @@ import java.util.UUID;
 public class Commands implements CommandExecutor {
 
     public boolean onCommand(final CommandSender sender, Command c, String l, String[] args) {
+        /*
         if (args.length == 0) {
             if (CorePlusAPI.getPlayerManager().hasPermission(sender, "regionplus.use")) {
                 Language.dispatchMessage(sender, "");
@@ -161,6 +162,9 @@ public class Commands implements CommandExecutor {
             Language.sendLangMessage("Message.unknownCommand", sender);
             return true;
         }
+        return true;
+
+         */
         return true;
     }
 }

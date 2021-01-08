@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 public class ConfigHandler {
 
     private static YamlConfiguration configYAML;
-    private static YamlConfiguration spigotYAML;
     private static Dependence depends;
     private static ConfigPath region;
     private static FlagsEditor editor;
@@ -23,30 +22,15 @@ public class ConfigHandler {
     public static void generateData(boolean reload) {
         genConfigFile("config.yml");
         setDepends(new Dependence());
-        sendUtilityDepends();
         setRegionConfig(new ConfigPath());
-        setUpdater(new UpdateHandler());
         setEditor(new FlagsEditor());
 
-        if (getDepends().LuckPermsEnabled()) {
+        if (CorePlusAPI.getDependManager().LuckPermsEnabled()) {
             if (getConfigPath().isResFlagRemove()) {
                 CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6Flags-Edit need to check the permissions of offline players.");
                 CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
             }
         }
-        /*
-        if (getDepends().ResidenceEnabled()) {
-            if (!reload && getConfigPath().isRFAutoCheck()) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6Starting to check residence flags...");
-                        ResidenceUtils.editFlags();
-                    }
-                }.runTaskLater(RegionPlus.getInstance(), getConfigPath().getRFAutoCheckDelay());
-            }
-        }
-         */
     }
 
     public static FileConfiguration getConfig(String fileName) {
@@ -56,12 +40,6 @@ public class ConfigHandler {
             case "config.yml":
                 filePath = Bukkit.getWorldContainer();
                 if (configYAML == null) {
-                    getConfigData(filePath, fileName);
-                }
-                break;
-            case "spigot.yml":
-                filePath = Bukkit.getServer().getWorldContainer();
-                if (spigotYAML == null) {
                     getConfigData(filePath, fileName);
                 }
                 break;
@@ -92,11 +70,6 @@ public class ConfigHandler {
                     configYAML = YamlConfiguration.loadConfiguration(file);
                 }
                 return configYAML;
-            case "spigot.yml":
-                if (saveData) {
-                    spigotYAML = YamlConfiguration.loadConfiguration(file);
-                }
-                return spigotYAML;
         }
         return null;
     }
