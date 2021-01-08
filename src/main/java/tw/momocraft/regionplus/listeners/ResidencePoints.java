@@ -179,7 +179,7 @@ public class ResidencePoints implements Listener {
         if (e.isCancelled()) {
             return;
         }
-        if 
+        if
         e.getCommand()
         Player newOwner = Bukkit.getPlayer(e.getNewOwnerUuid());
         String newOwnerName = e.getNewOwner();
