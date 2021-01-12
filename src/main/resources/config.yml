@@ -14,6 +14,17 @@ General:
         SurvivalMechanics: true
         Vehicles: true
 
+# Some normal features to improve CMI and Residence.
+# More information: https://github.com/momoservertw/RegionPlus/wiki/World
+World:
+  Enable: false
+  Prevent:
+    Enable: true
+    Creeper-Block-Damage: true
+    Enderdragon-Block-Damage: true
+    Explode-Block-Damage: false
+    Fire-Spread: true
+
 # Adding more features for Residence.
 # More information: https://github.com/momoservertw/RegionPlus/wiki/Residence
 Residence:
@@ -22,11 +33,12 @@ Residence:
   Prevent:
     Enable: true
     Potion-Damage: true
+    Zombie-Door-Destruction: true
+    Enderman-Pickup-Block: true
     Painting-Destroy: true
     Item-Frame-Destroy: true
     Armor-Stand-Destroy: true
-    Zombie-Door-Destruction: true
-    Enderman-Pickup-Block: true
+    Ender-Crystal-Destroy: true
     Block-Damage: true
   # To limit the total size of player's residences.
   # The physical area may be at the same location, this feature will only check the main area size.
@@ -34,7 +46,7 @@ Residence:
     Enable: false
     Settings:
       Select-Info: true
-      # To ignore calculation of the residences which "Y size" is limited. It will disable if the selection "IgnoreY" is false.
+      # To ignore calculation of the residences which "Y" size is limited. It will disable if the selection "IgnoreY" is false.
       Ignore-Y-Residences: true
       Prevent:
         # Prevent player creating multiple areas. It does not affect subzones.
@@ -45,53 +57,50 @@ Residence:
     Groups:
       # The default group. You shouldn't remove it.
       Default:
-        Display: "&aDefault"
+        Display: "Default"
         Limit: 10000
       MB:
-        Display: "&aMB"
+        Display: "MB"
         Limit: 14400
       VIP:
-        Display: "&bVIP"
+        Display: "VIP"
         Limit: 25000
       MVP:
-        Display: "&dMVP"
+        Display: "MVP"
         Limit: 115200
       GOD:
-        Display: "&eGOD"
+        Display: "GOD"
         Limit: 270000
   # Changing all old residence flags to new one.
   Flags-Editor:
-    Enable: true
+    Enable: false
     Settings:
       Bypass:
         # Bypass permission: regionplus.bypass.flagsedit
         Permission: true
         # Bypass to remove the missing custom flags.
         Missing-Custom-Flags: true
-      # It will delay few seconds and restart editing flags to prevent the server restart while editing flags.
-      Max-Edit-Players:
-        # Set "0" to disable this feature.
-        Limit: 30
-        # The delay seconds of restart editing flags.
-        Interval: 1
-        Message: true
-    # Checking the "Flags.Default" in groups.yml.
-    Default:
-      # Remove the flags that doesn't exist.
+        # The list of bypass residences.
+        Residence-List:
+          - lobby
+          - spawn
+          - server
+        # The owner list of bypass residences.
+        Residence-Owners:
+          - Momocraft
+    Environment:
+      # To remove the flags that the residence owner doesn't have permission to change.
       Remove:
         Enable: true
-        # Only remove the flags that residence owner doesn't have permission to change.
-        Only-No-Perms: true
         Ignore-List: []
-      # Add the flags that does exist but the residence doesn't have.
+      # To add the default flag witch doesn't exist.
       Update:
         Enable: true
         Ignore-List: []
-    # Checking the "Flags.Permission" in groups.yml.
-    Permissions:
-      # Remove the flags that the residence owner doesn't have permission to change.
+    Player:
       Remove:
         Enable: true
+        Only-No-Perms: true
         Ignore-List: []
   # Resetting all old residences' enter/leave messages to default.
   # It will be cool to show title bar when players enter residences.
@@ -104,6 +113,14 @@ Residence:
       Bypass:
         # Bypass permission: regionplus.bypass.messageedit
         Permission: true
+        # The list of bypass residences.
+        Residence-List:
+          - lobby
+          - spawn
+          - server
+        # The owner list of bypass residences.
+        Residence-Owners:
+          - Momocraft
       # Showing the editing progress.
       Message: true
     # By default, it will only change the matching messages.
@@ -121,21 +138,10 @@ Residence:
         Leave:
           - "Now leaving %residence."
     # Toggle the feature of SurvivalMechanics.
-    SurvivalMechanics:
-      Enable: true
-      Custom-Flags:
-        Climb: true
-        Crawl: true
-        Mobkick: true
-        Roofhang: true
-        Slide: true
-        Swim: true
-        Wallkick: true
-    # Pickup vehicles: destroy
-    # Place vehicles: place
-    # Ride vehicles: use
-    Vehicles:
-      Enable: true
+  SurvivalMechanics:
+    Enable: true
+  Vehicles:
+    Enable: true
 
 # Prevent players activating outside a border like visitors.
 # More information: https://github.com/momoservertw/RegionPlus/wiki/Visitor

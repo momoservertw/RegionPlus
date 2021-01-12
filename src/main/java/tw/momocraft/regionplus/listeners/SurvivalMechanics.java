@@ -8,12 +8,12 @@ import tw.momocraft.regionplus.handlers.ConfigHandler;
 
 public class SurvivalMechanics implements Listener {
 
-    private void PlayerToggleClimb(PlayerToggleClimbEvent e) {
-        if (!ConfigHandler.getConfigPath().isResSMClimb()) {
+    public void PlayerToggleClimb(PlayerToggleClimbEvent e) {
+        if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }
         Player player = e.getPlayer();
-        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "climb", false)) {
+        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "climb", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "climb"; // %flag%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
@@ -23,12 +23,12 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    private void onPlayerToggleCrawl(PlayerToggleCrawlEvent e) {
-        if (!ConfigHandler.getConfigPath().isResSMCrawl()) {
+    public void onPlayerToggleCrawl(PlayerToggleCrawlEvent e) {
+        if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }
         Player player = e.getPlayer();
-        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "crawl", false)) {
+        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "crawl", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "crawl"; // %flag%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
@@ -38,12 +38,12 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    private void onPlayerToggleMobkick(PlayerToggleMobkickEvent e) {
-        if (!ConfigHandler.getConfigPath().isResSMMobkick()) {
+    public void onPlayerToggleMobkick(PlayerToggleMobkickEvent e) {
+        if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }
         Player player = e.getPlayer();
-        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "mobkick", false)) {
+        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "mobkick", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "mobkick"; // %flag%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
@@ -53,12 +53,12 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    private void onPlayerToggleRoofhang(PlayerToggleRoofhangEvent e) {
-        if (!ConfigHandler.getConfigPath().isResSMRoofhang()) {
+    public void onPlayerToggleRoofhang(PlayerToggleRoofhangEvent e) {
+        if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }
         Player player = e.getPlayer();
-        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "roofhang", false)) {
+        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "roofhang", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "roofhang"; // %flag%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
@@ -68,12 +68,12 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    private void onPlayerToggleSlide(PlayerToggleSlideEvent e) {
-        if (!ConfigHandler.getConfigPath().isResSMSlide()) {
+    public void onPlayerToggleSlide(PlayerToggleSlideEvent e) {
+        if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }
         Player player = e.getPlayer();
-        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "slide", false)) {
+        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "slide", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "slide"; // %flag%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
@@ -83,13 +83,13 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    private void onPlayerToggleSwim(PlayerToggleSwimEvent e) {
-        if (!ConfigHandler.getConfigPath().isResSMSwim()) {
+    public void onPlayerToggleSwim(PlayerToggleSwimEvent e) {
+        if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
 
             return;
         }
         Player player = e.getPlayer();
-        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "swim", false)) {
+        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "swim", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "swim"; // %flag%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
@@ -99,12 +99,12 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    private void onPlayerToggleWallkick(PlayerToggleWallkickEvent e) {
-        if (!ConfigHandler.getConfigPath().isResSMWallkick()) {
+    public void onPlayerToggleWallkick(PlayerToggleWallkickEvent e) {
+        if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }
         Player player = e.getPlayer();
-        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "wallkick", false)) {
+        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "wallkick", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "wallkick"; // %flag%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);

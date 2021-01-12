@@ -13,8 +13,11 @@ public class RegisterHandler {
         RegionPlus.getInstance().getCommand("regionplus").setExecutor(new Commands());
         RegionPlus.getInstance().getCommand("regionplus").setTabCompleter(new TabComplete());
 
+        RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new WorldControl(), RegionPlus.getInstance());
+        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Register-Event", "World", "WorldControl", "continue",
+                new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new Visitor(), RegionPlus.getInstance());
-        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Register-Event", "Spawn", "CreatureSpawn", "continue",
+        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Register-Event", "Visitor", "Visitor", "continue",
                 new Throwable().getStackTrace()[0]);
 
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
@@ -27,11 +30,6 @@ public class RegisterHandler {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidencePoints(), RegionPlus.getInstance());
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Register-Event", "Residence-Points", "ResidencePoints", "continue",
                     new Throwable().getStackTrace()[0]);
-            /*
-            RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new TestEvent(), RegionPlus.getInstance());
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Register-Event", "Residence-Test", "TestEvent", "continue",
-                    new Throwable().getStackTrace()[0]);
-             */
             if (ConfigHandler.getDepends().SurvivalMechanicsEnabled()) {
                 RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new SurvivalMechanics(), RegionPlus.getInstance());
                 CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Register-Event", "Residence", "SurvivalMechanics", "continue",

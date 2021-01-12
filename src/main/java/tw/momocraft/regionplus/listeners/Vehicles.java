@@ -13,12 +13,13 @@ import tw.momocraft.regionplus.handlers.ConfigHandler;
 public class Vehicles implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
-    private void onVehiclePickupEvent(VehiclePickupEvent e) {
+    public void onVehiclePickupEvent(VehiclePickupEvent e) {
         if (!ConfigHandler.getConfigPath().isResVehicles()) {
             return;
         }
         Player player = e.getPlayer();
-        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "destroy", false)) {
+        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "destroy", false) &&
+                !e.getOwner().equals(player.getName())) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "destroy"; // %flag%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
@@ -29,7 +30,7 @@ public class Vehicles implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    private void onVehiclePlaceEvent(VehiclePlaceEvent e) {
+    public void onVehiclePlaceEvent(VehiclePlaceEvent e) {
         if (!ConfigHandler.getConfigPath().isResVehicles()) {
             return;
         }
@@ -45,7 +46,7 @@ public class Vehicles implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    private void onVehicleEnterEvent(VehicleEnterEvent e) {
+    public void onVehicleEnterEvent(VehicleEnterEvent e) {
         if (!ConfigHandler.getConfigPath().isResVehicles()) {
             return;
         }

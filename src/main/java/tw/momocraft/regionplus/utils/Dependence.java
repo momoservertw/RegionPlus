@@ -24,6 +24,7 @@ public class Dependence {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Vehicles")) {
             Vehicles = Bukkit.getServer().getPluginManager().getPlugin("Vehicles") != null;
         }
+        sendUtilityDepends();
     }
 
     private void sendUtilityDepends() {
@@ -31,6 +32,7 @@ public class Dependence {
                 + (ResidenceEnabled() ? "Residence, " : "")
                 + (MultiverseCoreEnabled() ? "Multiverse-Core, " : "")
                 + (SurvivalMechanicsEnabled() ? "SurvivalMechanics, " : "")
+                + (CorePlusAPI.getDependManager().PvPManagerEnabled() ? "PvPManager, " : "")
                 + (VehiclesEnabled() ? "Vehicles, " : "");
         try {
             CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + "]");
