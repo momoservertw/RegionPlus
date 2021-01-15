@@ -30,7 +30,7 @@ public class Dependence {
     private void sendUtilityDepends() {
         String hookMsg = "&fHooked: ["
                 + (ResidenceEnabled() ? "Residence, " : "")
-                + (MultiverseCoreEnabled() ? "Multiverse-Core, " : "")
+                + (MultiverseCoreEnabled() ? "MultiverseCore, " : "")
                 + (SurvivalMechanicsEnabled() ? "SurvivalMechanics, " : "")
                 + (CorePlusAPI.getDependManager().PvPManagerEnabled() ? "PvPManager, " : "")
                 + (VehiclesEnabled() ? "Vehicles, " : "");

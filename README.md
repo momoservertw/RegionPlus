@@ -24,7 +24,7 @@ Return the difference money between IgnoreY "false" to "true" if you has changed
 **3. Block-Size limit system for Residence.**  
 Using the blocks size to limit players' residence size just like GriefPrevention.  
   
-**4. Flags-Editor for Residence.**  
+**4. Reset-Flags for Residence.**  
 Changing all old residence flags to new one.    
 \# You should backup your residence data before using "Flag-Editor".  
 Editing data has certain risks, and the author is not responsible for any loss of data.  

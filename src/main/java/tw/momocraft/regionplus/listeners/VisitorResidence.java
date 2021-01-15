@@ -2,6 +2,7 @@ package tw.momocraft.regionplus.listeners;
 
 import com.bekvon.bukkit.residence.event.ResidenceCreationEvent;
 import com.bekvon.bukkit.residence.event.ResidenceOwnerChangeEvent;
+import com.bekvon.bukkit.residence.event.ResidenceSizeChangeEvent;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,7 +18,7 @@ public class VisitorResidence implements Listener {
 
     // Residence: Get
     @EventHandler(priority = EventPriority.HIGH)
-    public void onVisitorResSize(ResidenceOwnerChangeEvent e) {
+    public void onResidenceOwnerChangeEvent(ResidenceOwnerChangeEvent e) {
         if (!ConfigHandler.getConfigPath().isVisResGet()) {
             return;
         }
@@ -33,19 +34,19 @@ public class VisitorResidence implements Listener {
             placeHolders[1] = newOwnerName; // %targetplayer%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.targetNotFound", owner, placeHolders);
             e.setCancelled(true);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "cancel", "newOwner=null, " + resName,
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "cancel", "newOwner=null, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Location
         if (!CorePlusAPI.getConditionManager().checkLocation(player.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "return", "Location, " + resName,
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "return", "Location, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Bypass Permission
-        if (CorePlusAPI.getPlayerManager().hasPermission(player, "regionplus.bypass.visitor")) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "bypass", "Permission, " + resName,
+        if (CorePlusAPI.getPlayerManager().hasPerm(ConfigHandler.getPluginName(), player, "regionplus.bypass.visitor")) {
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "bypass", "Permission, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
         }
@@ -58,7 +59,7 @@ public class VisitorResidence implements Listener {
             CorePlusAPI.getPlayerManager().takeTypeMoney(e.getNewOwnerUuid(), "money", price);
             CorePlusAPI.getPlayerManager().giveTypeMoney(res.getOwnerUUID(), "money", price);
         }
-        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "cancel", "Final, " + resName,
+        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "cancel", "Final, " + resName,
                 new Throwable().getStackTrace()[0]);
         e.setCancelled(true);
     }
@@ -74,23 +75,21 @@ public class VisitorResidence implements Listener {
         Location loc = player.getLocation();
         // Location
         if (!CorePlusAPI.getConditionManager().checkLocation(loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Create", "return", "Location",
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Create", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Bypass Permission
-        if (CorePlusAPI.getPlayerManager().hasPermission(player, "regionplus.bypass.visitor")) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Create", "bypass", "Permission",
+        if (CorePlusAPI.getPlayerManager().hasPerm(ConfigHandler.getPluginName(), player, "regionplus.bypass.visitor")) {
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Create", "bypass", "Permission",
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Cancel
         String ownerName = e.getResidence().getOwner();
         Player owner = Bukkit.getPlayer(ownerName);
-        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResGet(), owner);
-        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResGetTarget(), player);
-        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResGetTarget(), Bukkit.getConsoleSender());
-        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Create", "cancel", "Final",
+        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResCreate(), owner);
+        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Create", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
         e.setCancelled(true);
     }

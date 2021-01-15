@@ -23,7 +23,7 @@ public class Vehicles implements Listener {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "destroy"; // %flag%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence", player.getName(), "VehiclePickupEvent", "bypass",
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence", player.getName(), "VehiclePickupEvent", "bypass",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
         }
@@ -39,7 +39,7 @@ public class Vehicles implements Listener {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "place"; // %flag%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence", player.getName(), "VehiclePlaceEvent", "cancel",
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence", player.getName(), "VehiclePlaceEvent", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
         }
@@ -55,7 +55,7 @@ public class Vehicles implements Listener {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "use"; // %flag%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.getPlugin(), "Residence", player.getName(), "VehicleEnterEvent", "cancel",
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence", player.getName(), "VehicleEnterEvent", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
         }

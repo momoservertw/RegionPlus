@@ -58,7 +58,7 @@
             <systemPath>${pom.basedir}/src/main/java/tw/momocraft/regionplus/extra/Residence4.9.2.1.jar</systemPath>
             <version>LEGACY</version>
         </dependency>
-        <!--Multiverse-Core API-->
+        <!--MultiverseCore API-->
         <dependency>
             <groupId>me.MultiverseCore</groupId>
             <artifactId>MultiverseCore</artifactId>

@@ -2,8 +2,6 @@ package tw.momocraft.regionplus.utils;
 
 
 import com.bekvon.bukkit.residence.Residence;
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import tw.momocraft.coreplus.api.CorePlusAPI;
@@ -67,7 +65,6 @@ public class ConfigPath {
     //  ============================================== //
     private boolean resPrevent;
     private boolean resPreventPotion;
-    private boolean resPreventFly;
     private boolean resPreventPainting;
     private boolean resPreventItemFrame;
     private boolean resPreventArmorStand;
@@ -89,24 +86,24 @@ public class ConfigPath {
     private Map<String, Integer> pointsMap = new HashMap<>();
     private Map<String, String> pointsDisplayMap = new HashMap<>();
 
-    private boolean resFlag;
-    private boolean resFlagBypassCustom;
-    private boolean resFlagBypassPerms;
-    private List<String> resFlagByPassRes;
-    private List<String> resFlagByPassResOwners;
-    private boolean resFlagRemove;
-    private List<String> resFlagRemoveIgnore;
-    private boolean resFlagUpdate;
-    private List<String> resFlagUpdateIgnore;
-    private boolean resFlagPlayerRemove;
-    private List<String> resFlagPlayerRemoveIgnore;
+    private boolean resResetAll;
+    private List<String> resResetAllBypassRes;
+    private List<String> resResetAllBypassResOwners;
 
-    private boolean resMsg;
-    private boolean resMsgBypassPerm;
-    private List<String> resMsgByPassRes;
-    private List<String> resMsgByPassResOwners;
-    private boolean resMsgMsg;
-    private Table<String, String, List<String>> resMsgGroupTable;
+    private boolean resResetFlags;
+    private boolean resResetFlagsBypassCustom;
+    private List<String> resResetFlagsByPassRes;
+    private List<String> resResetFlagsByPassResOwners;
+    private boolean resResetFlagsRemove;
+    private List<String> resResetFlagsRemoveIgnore;
+    private boolean resResetFlagsUpdate;
+    private List<String> resResetFlagsUpdateIgnore;
+    private boolean resResetFlagsPlayerRemove;
+    private List<String> resResetFlagsPlayerRemoveIgnore;
+
+    private boolean resResetMsg;
+    private List<String> resResetMsgBypassRes;
+    private List<String> resResetMsgBypassResOwners;
 
     //  ============================================== //
     //         Visitor Variables                       //
@@ -218,7 +215,6 @@ public class ConfigPath {
 
         resPrevent = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Enable");
         if (resPrevent) {
-            resPreventFly = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Fly-Disable");
             resPreventPotion = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Potion-Damage");
             resPreventZombieDoor = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent. Zombie-Door-Destruction");
             resPreventEndermanPick = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Enderman-Pickup-Block");
@@ -246,39 +242,30 @@ public class ConfigPath {
                 pointsMap = CorePlusAPI.getUtilsManager().sortByValue(pointsMap);
             }
         }
-        resFlag = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Enable");
-        if (resFlag) {
-            resFlagBypassPerms = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Bypass.Permission");
-            resFlagBypassCustom = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Settings.Bypass.Missing-Custom-Flags");
-            resFlagByPassRes = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Settings.Bypass.Residence-List");
-            resFlagByPassResOwners = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Settings.Bypass.Residence-Owners");
-            resFlagRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Environment.Remove.Enable");
-            resFlagRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Environment.Remove.Ignore-List");
-            resFlagUpdate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Environment.Update.Enable");
-            resFlagUpdateIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Environment.Update.Ignore-List");
-            resFlagPlayerRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Flags-Editor.Player.Remove.Enable");
-            resFlagPlayerRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Flags-Editor.Player.Remove.Ignore-List");
+
+        resResetAll = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Message.Enable");
+        if (resResetAll) {
+            resResetAllBypassRes = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Message.Settings.Bypass.Residence-List");
+            resResetAllBypassResOwners = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Message.Settings.Bypass.Residence-Owners");
         }
 
-        resMsg = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Enable");
-        if (resMsg) {
-            resMsgBypassPerm = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Settings.Bypass.Permission");
-            resMsgByPassRes = ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Settings.Bypass.Residence-List");
-            resMsgByPassResOwners = ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Settings.Bypass.Residence-Owners");
-            resMsgMsg = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Message-Editor.Settings.Message");
-            ConfigurationSection resMsgOldEnterConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Message-Editor.Groups");
-            ConfigurationSection resMsgOldLeaveConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Message-Editor.Groups");
-            resMsgGroupTable = HashBasedTable.create();
-            if (resMsgOldEnterConfig != null) {
-                for (String group : resMsgOldEnterConfig.getKeys(false)) {
-                    resMsgGroupTable.put(group, "enter", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups." + group + ".Enter"));
-                }
-            }
-            if (resMsgOldLeaveConfig != null) {
-                for (String group : resMsgOldLeaveConfig.getKeys(false)) {
-                    resMsgGroupTable.put(group, "leave", ConfigHandler.getConfig("config.yml").getStringList("Residence.Message-Editor.Groups." + group + ".Leave"));
-                }
-            }
+        resResetFlags = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Flags.Enable");
+        if (resResetFlags) {
+            resResetFlagsBypassCustom = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Flags.Settings.Bypass.Missing-Custom-Flags");
+            resResetFlagsByPassRes = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Flags.Settings.Bypass.Residence-List");
+            resResetFlagsByPassResOwners = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Flags.Settings.Bypass.Residence-Owners");
+            resResetFlagsRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Flags.Environment.Remove.Enable");
+            resResetFlagsRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Flags.Environment.Remove.Ignore-List");
+            resResetFlagsUpdate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Flags.Environment.Update.Enable");
+            resResetFlagsUpdateIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Flags.Environment.Update.Ignore-List");
+            resResetFlagsPlayerRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Flags.Player.Remove.Enable");
+            resResetFlagsPlayerRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Flags.Player.Remove.Ignore-List");
+        }
+
+        resResetMsg = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Messages.Enable");
+        if (resResetMsg) {
+            resResetMsgBypassRes = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Messages.Settings.Bypass.Residence-List");
+            resResetMsgBypassResOwners = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Messages.Settings.Bypass.Residence-Owners");
         }
     }
 
@@ -387,7 +374,7 @@ public class ConfigPath {
     }
 
     public String getMsgVisResGetTarget() {
-        return msgVisResGet;
+        return msgVisResGetTarget;
     }
 
     public String getMsgVisItemUse() {
@@ -461,10 +448,6 @@ public class ConfigPath {
         return resPrevent;
     }
 
-    public boolean isResPreventFly() {
-        return resPreventFly;
-    }
-
     public boolean isResPreventPotion() {
         return resPreventPotion;
     }
@@ -496,6 +479,7 @@ public class ConfigPath {
     public boolean isResPreventBlockDamage() {
         return resPreventBlockDamage;
     }
+
 
     public boolean isResSurvivalMechanics() {
         return resSurvivalMechanics;
@@ -542,73 +526,70 @@ public class ConfigPath {
         return pointsDisplayMap;
     }
 
-    public boolean isResFlag() {
-        return resFlag;
+
+    public boolean isResResetAll() {
+        return resResetAll;
     }
 
-    public boolean isResFlagBypassCustom() {
-        return resFlagBypassCustom;
+    public List<String> getResResetAllBypassRes() {
+        return resResetAllBypassRes;
     }
 
-    public boolean isResFlagBypassPerms() {
-        return resFlagBypassPerms;
+    public List<String> getResResetAllBypassResOwners() {
+        return resResetAllBypassResOwners;
     }
 
-    public List<String> getResFlagByPassRes() {
-        return resFlagByPassRes;
+    public boolean isResResetFlags() {
+        return resResetFlags;
     }
 
-    public List<String> getResFlagByPassResOwners() {
-        return resFlagByPassResOwners;
+    public boolean isResResetFlagsBypassCustom() {
+        return resResetFlagsBypassCustom;
     }
 
-    public boolean isResFlagUpdate() {
-        return resFlagUpdate;
+    public List<String> getResResetFlagsByPassRes() {
+        return resResetFlagsByPassRes;
     }
 
-    public List<String> getResFlagUpdateIgnore() {
-        return resFlagUpdateIgnore;
+    public List<String> getResResetFlagsByPassResOwners() {
+        return resResetFlagsByPassResOwners;
     }
 
-    public boolean isResFlagRemove() {
-        return resFlagRemove;
+    public boolean isResResetFlagsUpdate() {
+        return resResetFlagsUpdate;
     }
 
-    public List<String> getResFlagRemoveIgnore() {
-        return resFlagRemoveIgnore;
+    public List<String> getResResetFlagsUpdateIgnore() {
+        return resResetFlagsUpdateIgnore;
     }
 
-    public List<String> getResFlagPlayerRemoveIgnore() {
-        return resFlagPlayerRemoveIgnore;
+    public boolean isResResetFlagsRemove() {
+        return resResetFlagsRemove;
     }
 
-    public boolean isResFlagPlayerRemove() {
-        return resFlagPlayerRemove;
+    public List<String> getResResetFlagsRemoveIgnore() {
+        return resResetFlagsRemoveIgnore;
+    }
+
+    public List<String> getResResetFlagsPlayerRemoveIgnore() {
+        return resResetFlagsPlayerRemoveIgnore;
+    }
+
+    public boolean isResResetFlagsPlayerRemove() {
+        return resResetFlagsPlayerRemove;
     }
 
 
-    public boolean isResMsg() {
-        return resMsg;
+    public boolean isResResetMsg() {
+        return resResetMsg;
     }
 
-    public boolean isResMsgBypassPerm() {
-        return resMsgBypassPerm;
+    public List<String> getResResetMsgBypassRes() {
+        return resResetMsgBypassRes;
     }
 
-    public List<String> getResMsgByPassRes() {
-        return resMsgByPassRes;
-    }
-
-    public List<String> getResMsgByPassResOwners() {
-        return resMsgByPassResOwners;
-    }
-
-    public boolean isResMsgMsg() {
-        return resMsgMsg;
-    }
-
-    public Table<String, String, List<String>> getResMsgGroupTable() {
-        return resMsgGroupTable;
+    public List<String> getResResetMsgBypassResOwners() {
+        return resResetMsgBypassResOwners;
     }
 
 

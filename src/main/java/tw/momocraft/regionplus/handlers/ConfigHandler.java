@@ -3,6 +3,7 @@ package tw.momocraft.regionplus.handlers;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.utils.*;
@@ -16,17 +17,15 @@ public class ConfigHandler {
     private static YamlConfiguration configYAML;
     private static Dependence depends;
     private static ConfigPath region;
-    private static FlagsEditor editor;
 
 
     public static void generateData(boolean reload) {
         genConfigFile("config.yml");
         setDepends(new Dependence());
         setRegionConfig(new ConfigPath());
-        setEditor(new FlagsEditor());
 
         if (CorePlusAPI.getDependManager().LuckPermsEnabled()) {
-            if (getConfigPath().isResFlagRemove()) {
+            if (getConfigPath().isResResetFlagsRemove()) {
                 CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6Flags-Edit need to check the permissions of offline players.");
                 CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
             }
@@ -120,20 +119,19 @@ public class ConfigHandler {
         region = regionConfig;
     }
 
-    public static FlagsEditor getEditor() {
-        return editor;
-    }
-
-    public static void setEditor(FlagsEditor flagsEditor) {
-        editor = flagsEditor;
-    }
-
-
     public static String getPlugin() {
         return "[" + RegionPlus.getInstance().getDescription().getName() + "] ";
     }
 
     public static String getPrefix() {
         return getConfig("config.yml").getString("Message.prefix");
+    }
+
+    public static String getPluginName() {
+        return CorePlus.getInstance().getDescription().getName();
+    }
+
+    public static boolean isDebugging() {
+        return ConfigHandler.getConfig("config.yml").getBoolean("Debugging");
     }
 }

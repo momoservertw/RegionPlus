@@ -9,12 +9,15 @@ tw\momocraft\regionplus\listeners\ResidencePoints.class
 tw\momocraft\regionplus\listeners\WorldControl.class
 tw\momocraft\regionplus\RegionPlus.class
 tw\momocraft\regionplus\listeners\ResidencePoints$3.class
-tw\momocraft\regionplus\utils\FlagsEditor.class
+tw\momocraft\regionplus\utils\RegionUtils$1.class
 tw\momocraft\regionplus\listeners\ResidencePoints$4.class
+tw\momocraft\regionplus\utils\RegionUtils$3.class
 tw\momocraft\regionplus\listeners\ResidencePoints$1.class
 tw\momocraft\regionplus\handlers\ConfigHandler.class
+tw\momocraft\regionplus\utils\RegionUtils$4.class
 tw\momocraft\regionplus\utils\Dependence.class
 tw\momocraft\regionplus\listeners\VisitorResidence.class
 tw\momocraft\regionplus\Commands.class
 tw\momocraft\regionplus\listeners\Visitor.class
+tw\momocraft\regionplus\utils\RegionUtils$2.class
 tw\momocraft\regionplus\listeners\ResidencePoints$2.class

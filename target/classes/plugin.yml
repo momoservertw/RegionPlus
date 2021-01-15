@@ -5,7 +5,7 @@ api-version: 1.13
 version: 1.1.0
 description: Visitor system and adding more features for Residence.
 depend: [ CorePlus ]
-softdepend: [ Vault, Residence, PlaceHolderAPI, SurvivalMechanics, Vehicles ]
+softdepend: [ Residence, SurvivalMechanics, Vehicles, MultiverseCore ]
 
 commands:
   regionplus:
@@ -36,8 +36,8 @@ permissions:
     children:
       regionplus.command.reload: true
       regionplus.command.version: true
-      regionplus.command.flagsedit: true
-      regionplus.command.messageedit: true
+      regionplus.command.residence.reset: true
+      regionplus.command.residence.returnignorey: true
       regionplus.command.points: true
       regionplus.command.points.other: true
       regionplus.command.return: true
@@ -47,11 +47,11 @@ permissions:
   regionplus.command.version:
     description: Allows use of command /regionplus version.
     default: op
-  regionplus.command.flagsedit:
-    description: Allows use of command /regionplus flagsedit.
+  regionplus.command.residence.reset:
+    description: Allows use of command /regionplus residence <resetall/resetflags/ressetmessage>.
     default: op
-  regionplus.command.messageedit:
-    description: Allows use of command /regionplus messageedit.
+  regionplus.command.residence.returnignorey:
+    description: Allows use of command /regionplus residence returnignorey.
     default: op
   regionplus.command.points:
     description: Allows use of command /regionplus points.
@@ -68,8 +68,7 @@ permissions:
     children:
       regionplus.bypass.points.limit: true
       regionplus.bypass.visitor.*: true
-      regionplus.bypass.flagsedit: true
-      regionplus.bypass.messageedit: true
+      regionplus.bypass.residence.reset: true
   regionplus.bypass.points.limit:
     description: Allows player to bypass points limit.
     default: op
@@ -89,11 +88,8 @@ permissions:
   regionplus.bypass.visitor.world_the_end:
     description: Allows player to bypass the world of visitor limits.
     default: op
-  regionplus.bypass.flagsedit:
-    description: Allows player to bypass the residence flags editor.
-    default: op
-  regionplus.bypass.messageedit:
-    description: Allows player to bypass the residence message editor.
+  regionplus.bypass.res.reset:
+    description: Allows player to bypass reseting residence.
     default: op
   regionplus.points.group.default:
     description: Sets player's points group to default.

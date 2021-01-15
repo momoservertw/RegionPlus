@@ -3,6 +3,7 @@
 #  Wiki: https://github.com/momoservertw/RegionPlus/wiki
 # ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 Config-Version: 4
+Debugging: false
 
 General:
   Settings:
@@ -71,21 +72,30 @@ Residence:
       GOD:
         Display: "GOD"
         Limit: 270000
-  # Changing all old residence flags to new one.
-  Flags-Editor:
-    Enable: false
+  # Reset all residences.
+  # Bypass permission: regionplus.bypass.residence.reset
+  # Command: /rgp residence resetall
+  Reset-All:
     Settings:
       Bypass:
-        # Bypass permission: regionplus.bypass.flagsedit
-        Permission: true
-        # Bypass to remove the missing custom flags.
-        Missing-Custom-Flags: true
-        # The list of bypass residences.
         Residence-List:
           - lobby
           - spawn
           - server
-        # The owner list of bypass residences.
+        Residence-Owners:
+          - Momocraft
+  # Reset all old residence flags to new one.
+  # Bypass permission: regionplus.bypass.residence.reset
+  # Command: /rgp residence resetflags
+  Reset-Flags:
+    Settings:
+      Bypass:
+        # Bypass to remove the missing custom flags.
+        Missing-Custom-Flags: true
+        Residence-List:
+          - lobby
+          - spawn
+          - server
         Residence-Owners:
           - Momocraft
     Environment:
@@ -98,48 +108,28 @@ Residence:
         Enable: true
         Ignore-List: []
     Player:
+      # To remove the flags that the residence owner doesn't have permission to change.
       Remove:
         Enable: true
-        Only-No-Perms: true
         Ignore-List: []
-  # Resetting all old residences' enter/leave messages to default.
-  # It will be cool to show title bar when players enter residences.
-  # TitleBar Example
-  # Enter: "&e&lEnter &f%residence %subtitle% &6&lOwner &6%owner"
-  # Leave: "&7Left..."
-  Message-Editor:
-    Enable: true
+  # Resetting all residences' enter/leave messages to default if the owners can not change it.
+  # Bypass permission: regionplus.bypass.residence.reset
+  # Command: /rgp residence resetmessages
+  Reset-Messages:
     Settings:
       Bypass:
-        # Bypass permission: regionplus.bypass.messageedit
-        Permission: true
-        # The list of bypass residences.
         Residence-List:
           - lobby
           - spawn
           - server
-        # The owner list of bypass residences.
         Residence-Owners:
           - Momocraft
-      # Showing the editing progress.
-      Message: true
-    # By default, it will only change the matching messages.
-    Groups:
-      # Changing messages for difference groups
-      # Support multiple lines and if you set the message to "[]", it will force to reset every messages in that group.
-      default:
-        Enter:
-          - "Welcome %player to %residence, owned by %owner."
-        Leave:
-          - "Now leaving %residence."
-      vip:
-        Enter:
-          - "Welcome %player to %residence, owned by %owner."
-        Leave:
-          - "Now leaving %residence."
-    # Toggle the feature of SurvivalMechanics.
+  # Toggle the feature of SurvivalMechanics.
+  # Flags: climb, crawl, mobkick, roofhang, slide, swim, wallkick
   SurvivalMechanics:
     Enable: true
+  # Prevent players placing the vehicles in other player's residence.
+  # Prevent players picking up the vehicles if they aren't the vehicle's owner and don't have destroy permission.
   Vehicles:
     Enable: true
 
