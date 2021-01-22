@@ -55,7 +55,7 @@ public class ConfigHandler {
             try {
                 RegionPlus.getInstance().saveResource(fileName, false);
             } catch (Exception e) {
-                CorePlusAPI.getLangManager().sendErrorMsg(ConfigHandler.getPlugin(), "&cCannot save " + fileName + " to disk!");
+                CorePlusAPI.getLangManager().sendErrorMsg(ConfigHandler.getPluginName(), "&cCannot save " + fileName + " to disk!");
                 return null;
             }
         }
