@@ -23,14 +23,10 @@ public class RegionUtils {
 
     private static final Map<String, Long> buyingMap = new HashMap<>();
 
-    public static boolean ignoreYBypass(CuboidArea area) {
-        if (Residence.getInstance().getConfigManager().isSelectionIgnoreY() &&
-                !ConfigHandler.getConfigPath().isPointsIgnoreY()) {
-            if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() < 129) {
-                return false;
-            } else return area.getYSize() >= 256;
-        }
-        return true;
+    public static boolean ignoreY(CuboidArea area) {
+        if (area.getWorld().getEnvironment().name().equals("NETHER") && area.getYSize() < 129) {
+            return false;
+        } else return area.getYSize() >= 256;
     }
 
     public static int getLimit(Player player) {
@@ -39,7 +35,7 @@ public class RegionUtils {
 
     public static int getAreaSize(CuboidArea area) {
         int size = 0;
-        if (ConfigHandler.getConfigPath().isPointsMode()) {
+        if (ConfigHandler.getConfigPath().isPointsResIgnoreYSetting()) {
             size += area.getXSize() * area.getZSize();
         } else {
             size += area.getXSize() * area.getZSize() * area.getYSize();
@@ -52,8 +48,11 @@ public class RegionUtils {
         CuboidArea area;
         for (ClaimedResidence res : ResidenceApi.getPlayerManager().getResidencePlayer(playerName).getResList()) {
             area = res.getMainArea();
-            if (ignoreYBypass(area)) {
-                continue;
+            if (Residence.getInstance().getConfigManager().isSelectionIgnoreY() &&
+                    !ConfigHandler.getConfigPath().isPointsIgnoreYCalculate()) {
+                if (ignoreY(area)) {
+                    continue;
+                }
             }
             used += getAreaSize(area);
         }
@@ -78,16 +77,21 @@ public class RegionUtils {
         CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPlugin(), sender, "&6Starting to return money...");
         ClaimedResidence res;
         double price;
+        CuboidArea area;
         Map<String, ClaimedResidence> resMap = Residence.getInstance().getResidenceManager().getResidences();
         for (String resName : resMap.keySet()) {
             res = resMap.get(resName);
-            if (!ignoreYBypass(res.getMainArea())) {
-                continue;
+            area = res.getMainArea();
+            if (Residence.getInstance().getConfigManager().isSelectionIgnoreY() &&
+                    !ConfigHandler.getConfigPath().isPointsIgnoreYCalculate()) {
+                if (ignoreY(area)) {
+                    continue;
+                }
             }
             if (res.getBlockSellPrice() == 0) {
                 continue;
             }
-            price = res.getMainArea().getXSize() * res.getMainArea().getZSize() * (res.getMainArea().getYSize() - 1) * res.getBlockSellPrice();
+            price = area.getXSize() * area.getZSize() * (area.getYSize() - 1) * res.getBlockSellPrice();
             CorePlusAPI.getPlayerManager().giveTypeMoney(res.getOwnerUUID(), "money", price);
             CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(), "Return - &6" + resName + ": &e" + price + ", &a" + res.getOwner());
         }
@@ -359,80 +363,30 @@ public class RegionUtils {
         return playerFlagMap;
     }
 
-    public static String translatePlaceholders(String input, Player player, long size) {
-        Map<String, Integer> groupMap = ConfigHandler.getConfigPath().getPointsMap();
-        Map<String, String> groupDisplayMap = ConfigHandler.getConfigPath().getPointsDisplayMap();
-        List<String> groupList = new ArrayList<>(groupMap.keySet());
+    public static String[] getPointsPlaceholders(Player player, long size, String[] langHolders) {
         Pair<String, Integer> userGroup = getUserGroup(player);
-        String group = userGroup.getKey();
         int limit = userGroup.getValue();
-        String nextGroup;
-        long nextLimit;
-        if (groupList.indexOf(group) > 0) {
-            nextGroup = groupList.get(groupList.indexOf(group) - 1);
-            nextLimit = groupMap.get(nextGroup);
-        } else {
-            nextGroup = group;
-            nextLimit = limit;
-        }
-        long used = getUsed(player.getName());
-        long last = limit - used;
-        return input.replace("%points_group%", groupDisplayMap.get(group))
-                .replace("%points_limit%", String.valueOf(limit))
-                .replace("%points_used%", String.valueOf(used))
-                .replace("%points_last%", String.valueOf(last))
-                .replace("%points_size%", String.valueOf(size))
-                .replace("%points_newlast%", String.valueOf(last - size))
-                .replace("%points_nextgroup%", groupDisplayMap.get(nextGroup))
-                .replace("%points_nextlimit%", String.valueOf(nextLimit))
-                .replace("%points_nextbonus%", String.valueOf(nextLimit - limit))
-                ;
-    }
-
-    public static String[] getPointsPlaceholders(Player player, long size) {
-        Map<String, Integer> groupMap = ConfigHandler.getConfigPath().getPointsMap();
-        Map<String, String> groupDisplayMap = ConfigHandler.getConfigPath().getPointsDisplayMap();
-        List<String> groupList = new ArrayList<>(groupMap.keySet());
-        Pair<String, Integer> userGroup = getUserGroup(player);
-        String group = userGroup.getKey();
-        int limit = userGroup.getValue();
-        String nextGroup;
-        long nextLimit;
-        if (groupList.indexOf(group) > 0) {
-            nextGroup = groupList.get(groupList.indexOf(group) - 1);
-            nextLimit = groupMap.get(nextGroup);
-        } else {
-            nextGroup = group;
-            nextLimit = limit;
-        }
         String playerName = player.getName();
         long used = getUsed(playerName);
-        long last = limit - used;
-        String[] placeHolders = CorePlusAPI.getLangManager().newString();
-        // %player%
-        placeHolders[1] = playerName;
-        // %target%
-        // %points_group%
-        placeHolders[21] = groupDisplayMap.get(group);
-        // %points_limit%
-        placeHolders[22] = String.valueOf(limit);
-        // %points_used%
-        placeHolders[23] = String.valueOf(used);
-        // %points_last%
-        placeHolders[24] = String.valueOf(last);
-        // %points_need%
-        placeHolders[25] = String.valueOf(size);
-        // %points_newlast%
-        placeHolders[26] = String.valueOf(last - size);
-        // %points_nextgroup%
-        placeHolders[27] = groupDisplayMap.get(nextGroup);
-        // %points_nextlimit%
-        placeHolders[28] = String.valueOf(nextLimit);
-        // %points_nextbonus%
-        placeHolders[29] = String.valueOf(nextLimit - limit);
-        // %points_nextbonus%
-        placeHolders[30] = String.valueOf(
+        String[] placeHolders;
+        if (langHolders != null) {
+            placeHolders = langHolders;
+        } else {
+            placeHolders = CorePlusAPI.getLangManager().newString();
+        }
+        // %group%
+        placeHolders[5] = ConfigHandler.getConfigPath().getPointsDisplayMap().get(userGroup.getKey());
+        // %size%
+        placeHolders[15] = String.valueOf(size);
+        // %price%
+        placeHolders[10] = String.valueOf(
                 Residence.getInstance().getPlayerManager().getGroup(player.getName()).getCostPerBlock() * size);
+        // %amount%
+        placeHolders[6] = String.valueOf(used);
+        // %limit%
+        placeHolders[23] = String.valueOf(limit);
+        // %balance%
+        placeHolders[11] = String.valueOf(limit - used);
         return placeHolders;
     }
 

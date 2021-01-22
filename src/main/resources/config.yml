@@ -23,6 +23,7 @@ World:
     Enable: true
     Creeper-Block-Damage: true
     Enderdragon-Block-Damage: true
+    Wither-Block-Damage: true
     Explode-Block-Damage: false
     Fire-Spread: true
 
@@ -54,6 +55,8 @@ Residence:
         Add-Area: true
         # Prevent the residence with areas to change its size.
         Multiple-Areas-Size-Change: true
+        # Prevent the residence with limit Y to change its size.
+        Ignore-Y-Size-Change: true
     # Permission: regionplus.points.group.GROUP
     Groups:
       # The default group. You shouldn't remove it.
@@ -195,12 +198,13 @@ Message:
     flagsedit: "&f/rp flagsedit &8- &7Checks the flags of residences and edits it"
     points: "&f/rp points &8- &7Check your points limit."
     pointsOther: "&f/rp points limit <player> &8- &7Check the player's points limit."
-  points: "&cPoints: &f%amount% - %group% limit: %limit%"
-  pointsGroupList: "&8▩▩▩▩▩▩▩▩▩ &cResidence Points &8▩▩▩▩▩▩▩▩▩"
-  targetPoints: "&c%targetplayer% Points: &f%amount% - %group% limit: %limit%"
+  points: "&cPoints: &f%balance% - %group% limit: %amount%/%limit%"
+  targetPoints: "&c%targetplayer% Points: &f%amount% - %group% limit: %amount%/%limit%"
+  pointsGroupListTitle: "&8▩▩▩▩▩▩▩▩▩ &cResidence Points &8▩▩▩▩▩▩▩▩▩"
+  pointsGroupList: "%group% limit: %limit%"
   pointsSelect: "&7Selection size: %size%, Cost: %price%, Remaining points: %balance%"
   sizeChangeFailed: "&cThe residence with multiple areas can not change its size."
-  sellFailed: "&8(Returned the money)"
+  resReturnMoney: "&7(Returned %pricetype%: %price%)"
   visitorResidenceCreate: "&cVisitor can't create residence!"
   visitorResidenceGet: "&cVisitor can't get a residence!"
   visitorResidenceGetTarget: "&cYou can't give the residence to Visitor!"

@@ -22,9 +22,6 @@ public class Visitor implements Listener {
     // Use-Item: Allow-Consume
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorItemsConsume(PlayerItemConsumeEvent e) {
-        if (!ConfigHandler.getConfigPath().isVisitor()) {
-            return;
-        }
         if (!ConfigHandler.getConfigPath().isVisUseItem()) {
             return;
         }
@@ -131,9 +128,6 @@ public class Visitor implements Listener {
     // Use-Item: Fishing
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorItemsFishing(PlayerFishEvent e) {
-        if (!ConfigHandler.getConfigPath().isVisitor()) {
-            return;
-        }
         if (!ConfigHandler.getConfigPath().isVisUseItem()) {
             return;
         }
@@ -187,9 +181,6 @@ public class Visitor implements Listener {
     // Use-Item: Allow-Projectile
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorItemsProjectile(ProjectileLaunchEvent e) {
-        if (!ConfigHandler.getConfigPath().isVisitor()) {
-            return;
-        }
         if (!ConfigHandler.getConfigPath().isVisUseItem()) {
             return;
         }
@@ -246,9 +237,6 @@ public class Visitor implements Listener {
     // Interact-Entity
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorInteractEntities(PlayerInteractEntityEvent e) {
-        if (!ConfigHandler.getConfigPath().isVisitor()) {
-            return;
-        }
         if (!ConfigHandler.getConfigPath().isVisInterEnt()) {
             return;
         }
@@ -297,9 +285,6 @@ public class Visitor implements Listener {
     // Interact-Block
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (!ConfigHandler.getConfigPath().isVisitor()) {
-            return;
-        }
         if (!ConfigHandler.getConfigPath().isVisInterBlock()) {
             return;
         }
@@ -403,9 +388,6 @@ public class Visitor implements Listener {
     // Drop-Item
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onVisitorDropItems(PlayerDropItemEvent e) {
-        if (!ConfigHandler.getConfigPath().isVisitor()) {
-            return;
-        }
         if (!ConfigHandler.getConfigPath().isVisDropItem()) {
             return;
         }

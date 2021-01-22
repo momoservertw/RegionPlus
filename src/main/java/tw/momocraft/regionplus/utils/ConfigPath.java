@@ -30,6 +30,7 @@ public class ConfigPath {
     private String msgPointsSelect;
     private String msgSizeChangeFailed;
     private String msgAreaAddFailed;
+    private String msgResReturnMoney;
 
     private String msgVisResCreate;
     private String msgVisResGet;
@@ -52,6 +53,7 @@ public class ConfigPath {
     private boolean worldPreventCreeper;
     private boolean worldPreventExplode;
     private boolean worldPreventEnderdrangon;
+    private boolean worldPreventWither;
     private boolean worldPreventFireSpread;
 
     //  ============================================== //
@@ -79,12 +81,13 @@ public class ConfigPath {
     private boolean points;
     private boolean pointsSelectInfo;
     private Material pointsSelectTool;
-    private boolean pointsIgnoreY;
-    private boolean pointsAddArea;
-    private boolean pointsAreasSize;
-    private boolean pointsMode;
+    private boolean pointsIgnoreYCalculate;
+    private boolean pointsPreventAddArea;
+    private boolean pointsPreventAreasSize;
+    private boolean pointsPreventIgnoreYSize;
+    private boolean pointsResIgnoreYSetting;
     private Map<String, Integer> pointsMap = new HashMap<>();
-    private Map<String, String> pointsDisplayMap = new HashMap<>();
+    private final Map<String, String> pointsDisplayMap = new HashMap<>();
 
     private boolean resResetAll;
     private List<String> resResetAllBypassRes;
@@ -166,6 +169,7 @@ public class ConfigPath {
         msgPointsSelect = ConfigHandler.getConfig("config.yml").getString("Message.pointsSelect");
         msgAreaAddFailed = ConfigHandler.getConfig("config.yml").getString("Message.sizeChangeFailed");
         msgSizeChangeFailed = ConfigHandler.getConfig("config.yml").getString("Message.areaAddFailed");
+        msgResReturnMoney = ConfigHandler.getConfig("config.yml").getString("Message.resReturnMoney");
 
         msgVisResCreate = ConfigHandler.getConfig("config.yml").getString("Message.visitorResidenceCreate");
         msgVisResGet = ConfigHandler.getConfig("config.yml").getString("Message.visitorResidenceGet");
@@ -190,6 +194,7 @@ public class ConfigPath {
             worldPreventCreeper = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Creeper-Block-Damage");
             worldPreventExplode = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Explode-Block-Damage");
             worldPreventEnderdrangon = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Enderdragon-Block-Damage");
+            worldPreventWither = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Wither-Block-Damage");
             worldPreventFireSpread = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Fire-Spread");
         }
     }
@@ -228,16 +233,16 @@ public class ConfigPath {
         if (points) {
             pointsSelectInfo = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Select-Info");
             pointsSelectTool = Residence.getInstance().getConfigManager().getSelectionTool().getMaterial();
-            pointsIgnoreY = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Ignore-Y-Residences");
-            pointsAddArea = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Add-Area");
-            pointsAreasSize = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Multiple-Areas-Size-Change");
-            pointsMode = Residence.getInstance().getConfigManager().isSelectionIgnoreY();
+            pointsIgnoreYCalculate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Ignore-Y-Residences");
+            pointsPreventAddArea = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Add-Area");
+            pointsPreventAreasSize = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Multiple-Areas-Size-Change");
+            pointsPreventIgnoreYSize = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Ignore-Y-Size-Change");
+            pointsResIgnoreYSetting = Residence.getInstance().getConfigManager().isSelectionIgnoreY();
             ConfigurationSection resPointsGroupsConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Points.Groups");
             if (resPointsGroupsConfig != null) {
-                for (String key : resPointsGroupsConfig.getKeys(false)) {
-                    key = key.toLowerCase();
-                    pointsMap.put(key, ConfigHandler.getConfig("config.yml").getInt("Residence.Points.Groups." + key + ".Limit"));
-                    pointsDisplayMap.put(key, ConfigHandler.getConfig("config.yml").getString("Residence.Points.Groups." + key + ".Display"));
+                for (String group : resPointsGroupsConfig.getKeys(false)) {
+                    pointsDisplayMap.put(group.toLowerCase(), ConfigHandler.getConfig("config.yml").getString("Residence.Points.Groups." + group + ".Display", group));
+                    pointsMap.put(group.toLowerCase(), ConfigHandler.getConfig("config.yml").getInt("Residence.Points.Groups." + group + ".Limit"));
                 }
                 pointsMap = CorePlusAPI.getUtilsManager().sortByValue(pointsMap);
             }
@@ -365,6 +370,10 @@ public class ConfigPath {
         return msgAreaAddFailed;
     }
 
+    public String getMsgResReturnMoney() {
+        return msgResReturnMoney;
+    }
+
     public String getMsgVisResCreate() {
         return msgVisResCreate;
     }
@@ -423,6 +432,10 @@ public class ConfigPath {
 
     public boolean isWorldPreventEnderdrangon() {
         return worldPreventEnderdrangon;
+    }
+
+    public boolean isWorldPreventWither() {
+        return worldPreventWither;
     }
 
     public boolean isWorldPreventFireSpread() {
@@ -502,20 +515,24 @@ public class ConfigPath {
         return pointsSelectTool;
     }
 
-    public boolean isPointsIgnoreY() {
-        return pointsIgnoreY;
+    public boolean isPointsIgnoreYCalculate() {
+        return pointsIgnoreYCalculate;
     }
 
-    public boolean isPointsAddArea() {
-        return pointsAddArea;
+    public boolean isPointsPreventAddArea() {
+        return pointsPreventAddArea;
     }
 
-    public boolean isPointsAreasSize() {
-        return pointsAreasSize;
+    public boolean isPointsPreventAreasSize() {
+        return pointsPreventAreasSize;
     }
 
-    public boolean isPointsMode() {
-        return pointsMode;
+    public boolean isPointsPreventIgnoreYSize() {
+        return pointsPreventIgnoreYSize;
+    }
+
+    public boolean isPointsResIgnoreYSetting() {
+        return pointsResIgnoreYSetting;
     }
 
     public Map<String, Integer> getPointsMap() {

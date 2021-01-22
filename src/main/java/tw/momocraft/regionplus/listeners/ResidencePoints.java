@@ -21,11 +21,15 @@ import tw.momocraft.regionplus.utils.RegionUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class ResidencePoints implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResPointsSelectInfo(PlayerInteractEvent e) {
+        if (!ConfigHandler.getConfigPath().isPoints()) {
+            return;
+        }
         if (!ConfigHandler.getConfigPath().isPointsSelectInfo()) {
             return;
         }
@@ -41,40 +45,45 @@ public class ResidencePoints implements Listener {
         }
         World world1 = loc1.getWorld();
         World world2 = loc2.getWorld();
-        if (world1 == null || world2 == null || !world1.equals(loc2.getWorld())) {
+        if (world1 == null || world2 == null) {
+            return;
+        }
+        if (world1 != world2) {
             return;
         }
         int size;
-        if (ConfigHandler.getConfigPath().isPointsMode()) {
+        if (ConfigHandler.getConfigPath().isPointsResIgnoreYSetting()) {
             size = (Math.abs(loc1.getBlockX() - loc2.getBlockX()) + 1) * (Math.abs(loc1.getBlockZ() - loc2.getBlockZ()) + 1);
         } else {
             size = (Math.abs(loc1.getBlockX() - loc2.getBlockX()) + 1) * (Math.abs(loc1.getBlockZ() - loc2.getBlockZ()) + 1)
                     * (Math.abs(loc1.getBlockY() - loc2.getBlockY()) + 1);
         }
         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgPointsSelect(), player,
-                RegionUtils.getPointsPlaceholders(player, size));
+                RegionUtils.getPointsPlaceholders(player, size, null));
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence", player.getName(), "Select-Tool", "return", "show",
                 new Throwable().getStackTrace()[0]);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResidenceAreaAddEvent(ResidenceAreaAddEvent e) {
-        if (!ConfigHandler.getConfigPath().isPointsAddArea()) {
-            return;
-        }
-        Player player = e.getPlayer();
-        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgAreaAddFailed(), player);
-        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence-Points", player.getName(), "Create", "cancel", "notEnoughMoney",
-                new Throwable().getStackTrace()[0]);
-        e.setCancelled(true);
-    }
-
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onResidenceCreation(ResidenceCreationEvent e) {
         if (!ConfigHandler.getConfigPath().isPoints()) {
             return;
         }
-        if (e.isCancelled()) {
+        if (!ConfigHandler.getConfigPath().isPointsPreventAddArea()) {
+            return;
+        }
+        if (e.getResidence().getAreaCount() > 1) {
+            e.setCancelled(true);
+            Player player = e.getPlayer();
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgAreaAddFailed(), player);
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence-Points", player.getName(), "Create", "cancel", "notEnoughMoney",
+                    new Throwable().getStackTrace()[0]);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onResidenceCreation(ResidenceCreationEvent e) {
+        if (!ConfigHandler.getConfigPath().isPoints()) {
             return;
         }
         Player player = e.getPlayer();
@@ -86,23 +95,23 @@ public class ResidencePoints implements Listener {
         }
         ClaimedResidence res = e.getResidence();
         CuboidArea area = res.getMainArea();
-        // Ignoring the residences witch is "IgnoreY" is false.
-        if (RegionUtils.ignoreYBypass(area)) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence-Points", playerName, "ignoreYBypass", "return",
-                    new Throwable().getStackTrace()[0]);
-            return;
-        }
         int size = RegionUtils.getAreaSize(area);
         int last = RegionUtils.getLimit(player) - RegionUtils.getUsed(playerName);
         if (size > last) {
+            e.setCancelled(true);
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[9] = "res_points"; // %pricetype%
             placeHolders[10] = String.valueOf(size); // %price%
             placeHolders[11] = String.valueOf(last); // %balance%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.notEnoughMoney", player, placeHolders);
+
+            double cost = res.getBlockSellPrice() * size;
+            placeHolders[9] = "money"; // %pricetype%
+            placeHolders[10] = String.valueOf(cost); // %price%
+            CorePlusAPI.getPlayerManager().giveTypeMoney(player.getUniqueId(), "money", cost);
+            CorePlusAPI.getLangManager().sendLangMsg("", ConfigHandler.getConfigPath().getMsgResReturnMoney(), player, placeHolders);
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence-Points", playerName, "Create", "cancel", "notEnoughMoney",
                     new Throwable().getStackTrace()[0]);
-            e.setCancelled(true);
             return;
         }
         new BukkitRunnable() {
@@ -116,9 +125,9 @@ public class ResidencePoints implements Listener {
                 new Throwable().getStackTrace()[0]);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResidenceOwnerChange(ResidenceOwnerChangeEvent e) {
-        if (!ConfigHandler.getConfigPath().isPoints() || e.isCancelled()) {
+        if (!ConfigHandler.getConfigPath().isPoints()) {
             return;
         }
         Player newOwner = Bukkit.getPlayer(e.getNewOwnerUuid());
@@ -142,6 +151,7 @@ public class ResidencePoints implements Listener {
         int size = RegionUtils.getAreaSize(area);
         int last = RegionUtils.getLimit(newOwner) - RegionUtils.getUsed(newOwnerName);
         if (last < size) {
+            e.setCancelled(true);
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[1] = newOwnerName; // %targetplayer%
             placeHolders[9] = "res_points"; // %pricetype%
@@ -156,20 +166,24 @@ public class ResidencePoints implements Listener {
             }.runTaskLater(RegionPlus.getInstance(), 10);
             //  Returning the money of trade.
             if (res.isForSell() && RegionUtils.onResidenceBuying(newOwnerName)) {
+                UUID ownerUUID = res.getOwnerUUID();
                 double price = res.getSellPrice();
                 CorePlusAPI.getPlayerManager().takeTypeMoney(e.getNewOwnerUuid(), "money", price);
-                CorePlusAPI.getPlayerManager().giveTypeMoney(res.getOwnerUUID(), "money", price);
+                CorePlusAPI.getPlayerManager().giveTypeMoney(ownerUUID, "money", price);
+                placeHolders[9] = "money"; // %pricetype%
+                placeHolders[10] = String.valueOf(price); // %price%
+                CorePlusAPI.getPlayerManager().giveTypeMoney(ownerUUID, "money", price);
+                CorePlusAPI.getLangManager().sendLangMsg("", ConfigHandler.getConfigPath().getMsgResReturnMoney(), owner, placeHolders);
             }
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence-Points", newOwnerName, "Owner Change", "cancel", "targetNotEnoughPoints, " + resName,
                     new Throwable().getStackTrace()[0]);
-            e.setCancelled(true);
             return;
         }
         new BukkitRunnable() {
             @Override
             public void run() {
-                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(),
-                        RegionUtils.translatePlaceholders(ConfigHandler.getConfigPath().getMsgPoints(), newOwner, size), newOwner);
+                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgPoints(), newOwner,
+                        RegionUtils.getPointsPlaceholders(newOwner, size, null));
 
             }
         }.runTaskLater(RegionPlus.getInstance(), 10);
@@ -177,9 +191,9 @@ public class ResidencePoints implements Listener {
                 new Throwable().getStackTrace()[0]);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResidenceSizeChange(ResidenceSizeChangeEvent e) {
-        if (!ConfigHandler.getConfigPath().isPoints() || e.isCancelled()) {
+        if (!ConfigHandler.getConfigPath().isPoints()) {
             return;
         }
         Player player = e.getPlayer();
@@ -189,20 +203,34 @@ public class ResidencePoints implements Listener {
                     new Throwable().getStackTrace()[0]);
             return;
         }
-        if (ConfigHandler.getConfigPath().isPointsAreasSize()) {
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgSizeChangeFailed(), player);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence", playerName, "Points", "fail", "Size change",
-                    new Throwable().getStackTrace()[0]);
-            e.setCancelled(true);
-            return;
-        }
         ClaimedResidence res = e.getResidence();
         String resName = res.getName();
-        // Ignoring the residences witch is "IgnoreY" is false.
-        if (RegionUtils.ignoreYBypass(res.getMainArea())) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence-Points", playerName, "ignoreYBypass", "return", resName,
-                    new Throwable().getStackTrace()[0]);
-            return;
+        // Prevent IgnoreY size change.
+        if (ConfigHandler.getConfigPath().isPointsPreventIgnoreYSize()) {
+            if (!RegionUtils.ignoreY(e.getOldArea())) {
+                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgSizeChangeFailed(), player);
+
+                String[] placeHolders = CorePlusAPI.getLangManager().newString();
+                double cost = res.getBlockSellPrice() * Math.abs(RegionUtils.getAreaSize(e.getNewArea()) - RegionUtils.getAreaSize(e.getOldArea()));
+                placeHolders[9] = "money"; // %pricetype%
+                placeHolders[10] = String.valueOf(cost); // %price%
+                CorePlusAPI.getPlayerManager().giveTypeMoney(player.getUniqueId(), "money", cost);
+                CorePlusAPI.getLangManager().sendLangMsg("", ConfigHandler.getConfigPath().getMsgResReturnMoney(), player, placeHolders);
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence", playerName, "Points", "fail", "Size change",
+                        new Throwable().getStackTrace()[0]);
+                e.setCancelled(true);
+                return;
+            }
+        }
+        // Prevent multiple areas residence size change.
+        if (ConfigHandler.getConfigPath().isPointsPreventAreasSize()) {
+            if (res.getAreaCount() > 1) {
+                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgSizeChangeFailed(), player);
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence", playerName, "Points", "fail", "Size change",
+                        new Throwable().getStackTrace()[0]);
+                e.setCancelled(true);
+                return;
+            }
         }
         int size = RegionUtils.getAreaSize(e.getNewArea()) - RegionUtils.getAreaSize(e.getOldArea());
         if (size < 0) {
@@ -212,30 +240,36 @@ public class ResidencePoints implements Listener {
         }
         int last = RegionUtils.getLimit(player) - RegionUtils.getUsed(playerName);
         if (size > last) {
+            e.setCancelled(true);
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[9] = "res_points"; // %pricetype%
             placeHolders[10] = String.valueOf(size); // %price%
             placeHolders[11] = String.valueOf(last); // %balance%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.notEnoughMoney", player, placeHolders);
+
+            double cost = res.getBlockSellPrice() * Math.abs(RegionUtils.getAreaSize(e.getNewArea()) - RegionUtils.getAreaSize(e.getOldArea()));
+            placeHolders[9] = "money"; // %pricetype%
+            placeHolders[10] = String.valueOf(cost); // %price%
+            CorePlusAPI.getPlayerManager().giveTypeMoney(player.getUniqueId(), "money", cost);
+            CorePlusAPI.getLangManager().sendLangMsg("", ConfigHandler.getConfigPath().getMsgResReturnMoney(), player, placeHolders);
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence-Points", playerName, "Size Change", "cancel", "notEnoughMoney, " + resName,
                     new Throwable().getStackTrace()[0]);
-            e.setCancelled(true);
             return;
         }
         new BukkitRunnable() {
             @Override
             public void run() {
-                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(),
-                        RegionUtils.translatePlaceholders(ConfigHandler.getConfigPath().getMsgPoints(), player, size), player);
+                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgPoints(), player,
+                        RegionUtils.getPointsPlaceholders(player, size, null));
             }
         }.runTaskLater(RegionPlus.getInstance(), 10);
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Residence-Points", playerName, "Size Change", "return", "final, " + resName,
                 new Throwable().getStackTrace()[0]);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResidenceBuyEvent(ResidenceCommandEvent e) {
-        if (e.isCancelled()) {
+        if (!ConfigHandler.getConfigPath().isPoints()) {
             return;
         }
         try {

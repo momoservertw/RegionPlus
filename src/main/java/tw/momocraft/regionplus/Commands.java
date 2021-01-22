@@ -3,6 +3,7 @@ package tw.momocraft.regionplus;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
@@ -77,8 +78,12 @@ public class Commands implements CommandExecutor {
                             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.featureDisabled", sender);
                             return true;
                         }
+                        if (sender instanceof ConsoleCommandSender) {
+                            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.onlyPlayer", sender);
+                            return true;
+                        }
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgPoints(), sender,
-                                RegionUtils.getPointsPlaceholders((Player) sender, 0));
+                                RegionUtils.getPointsPlaceholders((Player) sender, 0, null));
                     } else {
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
@@ -135,15 +140,15 @@ public class Commands implements CommandExecutor {
                             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.featureDisabled", sender);
                             return true;
                         }
+                        String[] placeHolders = CorePlusAPI.getLangManager().newString();
+                        placeHolders[1] = args[1]; // %targetplayer%
                         Player player = CorePlusAPI.getPlayerManager().getPlayerString(args[1]);
                         if (player == null) {
-                            String[] placeHolders = CorePlusAPI.getLangManager().newString();
-                            placeHolders[1] = args[1]; // %targetplayer%
                             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.targetNotFound", sender, placeHolders);
                             return true;
                         }
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgTargetPoints(), sender,
-                                RegionUtils.getPointsPlaceholders(player, 0));
+                                RegionUtils.getPointsPlaceholders(player, 0, placeHolders));
                     } else {
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
