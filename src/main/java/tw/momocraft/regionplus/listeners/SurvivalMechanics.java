@@ -8,7 +8,7 @@ import tw.momocraft.regionplus.handlers.ConfigHandler;
 
 public class SurvivalMechanics implements Listener {
 
-    public void PlayerToggleClimb(PlayerToggleClimbEvent e) {
+    public void climb(PlayerToggleClimbEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }
@@ -38,7 +38,7 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    public void onPlayerToggleMobkick(PlayerToggleMobkickEvent e) {
+    public void mobkick(PlayerToggleMobkickEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }
@@ -53,7 +53,7 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    public void onPlayerToggleRoofhang(PlayerToggleRoofhangEvent e) {
+    public void roofhang(PlayerToggleRoofhangEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }
@@ -68,7 +68,7 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    public void onPlayerToggleSlide(PlayerToggleSlideEvent e) {
+    public void slide(PlayerToggleSlideEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }
@@ -83,7 +83,7 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    public void onPlayerToggleSwim(PlayerToggleSwimEvent e) {
+    public void swim(PlayerToggleSwimEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
 
             return;
@@ -99,7 +99,7 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    public void onPlayerToggleWallkick(PlayerToggleWallkickEvent e) {
+    public void walkkick(PlayerToggleWallkickEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }

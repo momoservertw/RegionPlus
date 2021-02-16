@@ -14,25 +14,31 @@ public class RegisterHandler {
         RegionPlus.getInstance().getCommand("regionplus").setTabCompleter(new TabComplete());
 
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new WorldControl(), RegionPlus.getInstance());
-        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Register-Event", "World", "WorldControl", "continue",
+        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                "Register-Event", "World", "WorldControl", "continue",
                 new Throwable().getStackTrace()[0]);
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new Visitor(), RegionPlus.getInstance());
-        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Register-Event", "Visitor", "Visitor", "continue",
+        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                "Register-Event", "Visitor", "Visitor", "continue",
                 new Throwable().getStackTrace()[0]);
 
         if (ConfigHandler.getDepends().ResidenceEnabled()) {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new VisitorResidence(), RegionPlus.getInstance());
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Register-Event", "Visitor", "VisitorResidence", "continue",
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                    "Register-Event", "Visitor", "Residence", "continue",
                     new Throwable().getStackTrace()[0]);
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceImprove(), RegionPlus.getInstance());
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Register-Event", "Residence-Improve", "ResidenceImprove", "continue",
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                    "Register-Event", "Residence", "RImprove", "continue",
                     new Throwable().getStackTrace()[0]);
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidencePoints(), RegionPlus.getInstance());
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Register-Event", "Residence-Points", "ResidencePoints", "continue",
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                    "Register-Event", "Residence", "Points", "continue",
                     new Throwable().getStackTrace()[0]);
             if (ConfigHandler.getDepends().SurvivalMechanicsEnabled()) {
                 RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new SurvivalMechanics(), RegionPlus.getInstance());
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Register-Event", "Residence", "SurvivalMechanics", "continue",
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                        "Register-Event", "Residence", "SurvivalMechanics", "continue",
                         new Throwable().getStackTrace()[0]);
                 FlagPermissions.addFlag("climb");
                 FlagPermissions.addFlag("crawl");
@@ -48,6 +54,5 @@ public class RegisterHandler {
                         new Throwable().getStackTrace()[0]);
             }
         }
-
     }
 }

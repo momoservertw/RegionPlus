@@ -10,6 +10,7 @@ public class Dependence {
     private boolean MultiverseCore = false;
     private boolean SurvivalMechanics = false;
     private boolean Vehicles = false;
+    private boolean PvPManager = false;
 
     public Dependence() {
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Residence")) {
@@ -20,6 +21,9 @@ public class Dependence {
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.SurvivalMechanics")) {
             SurvivalMechanics = Bukkit.getServer().getPluginManager().getPlugin("SurvivalMechanics") != null;
+        }
+        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.PvPManager")) {
+            PvPManager = Bukkit.getServer().getPluginManager().getPlugin("PvPManager") != null;
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Vehicles")) {
             Vehicles = Bukkit.getServer().getPluginManager().getPlugin("Vehicles") != null;
@@ -32,7 +36,7 @@ public class Dependence {
                 + (ResidenceEnabled() ? "Residence, " : "")
                 + (MultiverseCoreEnabled() ? "MultiverseCore, " : "")
                 + (SurvivalMechanicsEnabled() ? "SurvivalMechanics, " : "")
-                + (CorePlusAPI.getDependManager().PvPManagerEnabled() ? "PvPManager, " : "")
+                + (PvPManagerEnabled() ? "PvPManager, " : "")
                 + (VehiclesEnabled() ? "Vehicles, " : "");
         try {
             CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + "]");
@@ -70,5 +74,9 @@ public class Dependence {
 
     public boolean VehiclesEnabled() {
         return this.Vehicles;
+    }
+
+    public boolean PvPManagerEnabled() {
+        return this.PvPManager;
     }
 }

@@ -50,14 +50,11 @@ public class ConfigPath {
     //  ============================================== //
     //         World-Control Variables                 //
     //  ============================================== //
+    private boolean worldControl;
+    private boolean worldPreventExplode;
+    private List<String> worldPreventExplodeIgnore;
     private boolean worldPreventBlockDamage;
     private boolean worldPreventDroppedItem;
-
-    //  ============================================== //
-    //         Player Variables                        //
-    //  ============================================== //
-    private boolean playerPreventFly;
-    private String playerPreventFlyPerm;
 
     //  ============================================== //
     //         Residence Variables                     //
@@ -78,11 +75,10 @@ public class ConfigPath {
     private boolean points;
     private boolean pointsSelectInfo;
     private Material pointsSelectTool;
-    private boolean pointsIgnoreYCalculate;
-    private boolean pointsPreventAddArea;
-    private boolean pointsPreventAreasSize;
-    private boolean pointsPreventIgnoreYSize;
-    private boolean pointsResIgnoreYSetting;
+    private boolean pointsLimitedYCalculate;
+    private boolean pointsPreventAreasSizeChange;
+    private boolean pointsPreventLimitedYSizeChange;
+    private boolean resIgnoreY;
     private Map<String, Integer> pointsMap = new HashMap<>();
     private final Map<String, String> pointsDisplayMap = new HashMap<>();
 
@@ -143,8 +139,7 @@ public class ConfigPath {
     //  ============================================== //
     private void setUp() {
         setupMsg();
-        setWorldControl();
-        setPlayer();
+        setWorld();
         setResidence();
         setVisitor();
     }
@@ -187,18 +182,10 @@ public class ConfigPath {
         if (!ConfigHandler.getConfig("config.yml").getBoolean("World-Control.Enable")) {
             return;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("World-Control.Prevent.Enable")) {
-            worldPreventBlockDamage = ConfigHandler.getConfig("config.yml").getBoolean("World-Control.Prevent.Block-Damage");
-            worldPreventDroppedItem = ConfigHandler.getConfig("config.yml").getBoolean("World-Control.Prevent.Explosion-Dropped-Item-Damage");
+        if (ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Enable")) {
+            worldPreventExplode = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Block-Damage");
+            worldPreventExplodeIgnore = ConfigHandler.getConfig("config.yml").getStringList("World.Prevent.Block-Damage.Ignore-List");
         }
-    }
-
-    //  ============================================== //
-    //         Player Setter                           //
-    //  ============================================== //
-    private void setPlayer() {
-        playerPreventFly = ConfigHandler.getConfig("config.yml").getBoolean("Player.Prevent.Fly-Disable.Enable");
-        playerPreventFlyPerm = ConfigHandler.getConfig("config.yml").getString("Player.Prevent.Fly-Disable.Permission");
     }
 
     //  ============================================== //
@@ -209,6 +196,8 @@ public class ConfigPath {
                 !ConfigHandler.getDepends().ResidenceEnabled()) {
             return;
         }
+
+        resIgnoreY = Residence.getInstance().getConfigManager().isSelectionIgnoreY();
         resSurvivalMechanics = ConfigHandler.getConfig("config.yml").getBoolean("Residence.SurvivalMechanics.Enable");
         resVehicles = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Vehicles.Enable");
 
@@ -226,13 +215,11 @@ public class ConfigPath {
 
         points = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Enable");
         if (points) {
-            pointsSelectInfo = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Select-Info");
+            pointsSelectInfo = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Select-Info");
             pointsSelectTool = Residence.getInstance().getConfigManager().getSelectionTool().getMaterial();
-            pointsIgnoreYCalculate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Ignore-Y-Residences");
-            pointsPreventAddArea = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Add-Area");
-            pointsPreventAreasSize = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Multiple-Areas-Size-Change");
-            pointsPreventIgnoreYSize = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Ignore-Y-Size-Change");
-            pointsResIgnoreYSetting = Residence.getInstance().getConfigManager().isSelectionIgnoreY();
+            pointsLimitedYCalculate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Limited-Y-Calculate");
+            pointsPreventAreasSizeChange = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Multiple-Areas-Size-Change");
+            pointsPreventLimitedYSizeChange = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Limited-Y-Size-Change");
             ConfigurationSection resPointsGroupsConfig = ConfigHandler.getConfig("config.yml").getConfigurationSection("Residence.Points.Groups");
             if (resPointsGroupsConfig != null) {
                 for (String group : resPointsGroupsConfig.getKeys(false)) {
@@ -417,23 +404,16 @@ public class ConfigPath {
     //  ============================================== //
     //         World Getter                            //
     //  ============================================== //
-    public boolean isWorldPreventBlockDamage() {
-        return worldPreventBlockDamage;
+    public boolean isWorldControl() {
+        return worldControl;
     }
 
     public boolean isWorldPreventDroppedItem() {
         return worldPreventDroppedItem;
     }
 
-    //  ============================================== //
-    //         Player Getter                           //
-    //  ============================================== //
-    public boolean isPlayerPreventFly() {
-        return playerPreventFly;
-    }
-
-    public String getPlayerPreventFlyPerm() {
-        return playerPreventFlyPerm;
+    public List<String> getWorldPreventExplodeIgnore() {
+        return worldPreventExplodeIgnore;
     }
 
     //  ============================================== //
@@ -498,24 +478,20 @@ public class ConfigPath {
         return pointsSelectTool;
     }
 
-    public boolean isPointsIgnoreYCalculate() {
-        return pointsIgnoreYCalculate;
+    public boolean isPointsLimitedYCalculate() {
+        return pointsLimitedYCalculate;
     }
 
-    public boolean isPointsPreventAddArea() {
-        return pointsPreventAddArea;
+    public boolean isPointsPreventAreasSizeChange() {
+        return pointsPreventAreasSizeChange;
     }
 
-    public boolean isPointsPreventAreasSize() {
-        return pointsPreventAreasSize;
+    public boolean isPointsPreventLimitedYSizeChange() {
+        return pointsPreventLimitedYSizeChange;
     }
 
-    public boolean isPointsPreventIgnoreYSize() {
-        return pointsPreventIgnoreYSize;
-    }
-
-    public boolean isPointsResIgnoreYSetting() {
-        return pointsResIgnoreYSetting;
+    public boolean isResIgnoreY() {
+        return resIgnoreY;
     }
 
     public Map<String, Integer> getPointsMap() {

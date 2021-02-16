@@ -316,7 +316,7 @@ public class Visitor implements Listener {
             }
             // Allow-Use
             if (ConfigHandler.getConfigPath().isVisInterBlockUse()) {
-                if (RegionUtils.isCanUse(blockType)) {
+                if (CorePlusAPI.getUtilsManager().isCanUse(blockType)) {
                     CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Interact-Block: Use", "return",
                             new Throwable().getStackTrace()[0]);
                     return;
@@ -361,7 +361,7 @@ public class Visitor implements Listener {
             String blockType = block.getType().name();
             // Allow-Use
             if (ConfigHandler.getConfigPath().isVisInterBlockUse()) {
-                if (RegionUtils.isCanUse(blockType)) {
+                if (CorePlusAPI.getUtilsManager().isCanUse(blockType)) {
                     CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Interact-Block: Use", "return",
                             new Throwable().getStackTrace()[0]);
                     return;
@@ -369,7 +369,7 @@ public class Visitor implements Listener {
             }
             // Allow-Container
             if (ConfigHandler.getConfigPath().isVisInterBlockCont()) {
-                if (RegionUtils.isContainer(blockType)) {
+                if (CorePlusAPI.getUtilsManager().isContainer(blockType)) {
                     CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Interact-Block: Container", "return",
                             new Throwable().getStackTrace()[0]);
                     return;

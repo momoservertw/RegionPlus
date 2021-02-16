@@ -1,18 +1,26 @@
 package tw.momocraft.regionplus;
 
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
+import com.sun.javafx.collections.MappingChange;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.utils.RegionUtils;
+import tw.momocraft.regionplus.utils.ResidenceReset;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Commands implements CommandExecutor {
 
     public boolean onCommand(final CommandSender sender, Command c, String l, String[] args) {
-
         switch (args.length) {
             case 0:
                 if (CorePlusAPI.getPlayerManager().hasPerm(ConfigHandler.getPluginName(), sender, "regionplus.use")) {
@@ -82,8 +90,7 @@ public class Commands implements CommandExecutor {
                             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.onlyPlayer", sender);
                             return true;
                         }
-                        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgPoints(), sender,
-                                RegionUtils.getPointsPlaceholders((Player) sender, 0, null));
+                        RegionUtils.sendPointsMsg((Player) sender);
                     } else {
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }
@@ -104,7 +111,7 @@ public class Commands implements CommandExecutor {
                             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.featureDisabled", sender);
                             return true;
                         }
-                        RegionUtils.resetAll(sender);
+                        ResidenceReset.resetAll(sender);
                         return true;
                     } else {
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
@@ -116,7 +123,7 @@ public class Commands implements CommandExecutor {
                             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.featureDisabled", sender);
                             return true;
                         }
-                        RegionUtils.resetFlags(sender);
+                        ResidenceReset.resetFlags(sender);
                         return true;
                     } else {
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
@@ -128,7 +135,7 @@ public class Commands implements CommandExecutor {
                             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.featureDisabled", sender);
                             return true;
                         }
-                        RegionUtils.resetMessage(sender);
+                        ResidenceReset.resetMessage(sender);
                         return true;
                     } else {
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
@@ -147,8 +154,7 @@ public class Commands implements CommandExecutor {
                             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.targetNotFound", sender, placeHolders);
                             return true;
                         }
-                        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgTargetPoints(), sender,
-                                RegionUtils.getPointsPlaceholders(player, 0, placeHolders));
+                        RegionUtils.sendTargetPointsMsg(sender, player);
                     } else {
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                     }

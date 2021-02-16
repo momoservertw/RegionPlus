@@ -14,6 +14,8 @@ import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 import tw.momocraft.regionplus.utils.RegionUtils;
 
+import java.util.UUID;
+
 public class VisitorResidence implements Listener {
 
     // Residence: Get
@@ -22,44 +24,52 @@ public class VisitorResidence implements Listener {
         if (!ConfigHandler.getConfigPath().isVisResGet()) {
             return;
         }
-        Player player = Bukkit.getPlayer(e.getNewOwner());
-        String playerName = player.getName();
-        Player newOwner = Bukkit.getPlayer(e.getNewOwnerUuid());
         String newOwnerName = e.getNewOwner();
+        UUID newOwnerUUID = e.getNewOwnerUuid();
+        Player newOwner = Bukkit.getPlayer(newOwnerUUID);
         ClaimedResidence res = e.getResidence();
         String resName = res.getName();
+        UUID ownerUUID = res.getOwnerUUID();
+        String ownerName = res.getOwner();
         Player owner = Bukkit.getPlayer(res.getOwner());
         if (newOwner == null) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[1] = newOwnerName; // %targetplayer%
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.targetNotFound", owner, placeHolders);
             e.setCancelled(true);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "cancel", "newOwner=null, " + resName,
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", newOwnerName, "Residence: Get", "cancel", "newOwner=null, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(player.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "return", "Location, " + resName,
+        if (!CorePlusAPI.getConditionManager().checkLocation(newOwner.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", newOwnerName, "Residence: Get", "return", "Location, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Bypass Permission
-        if (CorePlusAPI.getPlayerManager().hasPerm(ConfigHandler.getPluginName(), player, "regionplus.bypass.visitor")) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "bypass", "Permission, " + resName,
+        if (CorePlusAPI.getPlayerManager().hasPerm(ConfigHandler.getPluginName(), newOwner, "regionplus.bypass.visitor")) {
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", newOwnerName, "Residence: Get", "bypass", "Permission, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Cancel
         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResGet(), owner);
-        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResGetTarget(), player);
+        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResGetTarget(), newOwner);
+
         //  Returning the money of trade.
-        if (res.isForSell() && RegionUtils.onResidenceBuying(newOwnerName)) {
+        if (res.isForSell()) {
+            String[] placeHolders = CorePlusAPI.getLangManager().newString();
+            placeHolders[1] = newOwnerName; // %targetplayer%
             double price = res.getSellPrice();
-            CorePlusAPI.getPlayerManager().takeTypeMoney(e.getNewOwnerUuid(), "money", price);
-            CorePlusAPI.getPlayerManager().giveTypeMoney(res.getOwnerUUID(), "money", price);
+            CorePlusAPI.getPlayerManager().takeTypeMoney(newOwnerUUID, "money", price);
+            CorePlusAPI.getPlayerManager().giveTypeMoney(ownerUUID, "money", price);
+            placeHolders[9] = "money"; // %pricetype%
+            placeHolders[10] = String.valueOf(price); // %price%
+            CorePlusAPI.getPlayerManager().giveTypeMoney(ownerUUID, "money", price);
+            CorePlusAPI.getLangManager().sendLangMsg("", ConfigHandler.getConfigPath().getMsgResReturnMoney(), owner, placeHolders);
         }
-        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", playerName, "Residence: Get", "cancel", "Final, " + resName,
+        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(), "Visitor", newOwnerName, "Residence: Get", "cancel", "Final, " + resName,
                 new Throwable().getStackTrace()[0]);
         e.setCancelled(true);
     }
