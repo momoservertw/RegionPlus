@@ -48,13 +48,10 @@ public class ConfigPath {
     //  ============================================== //
 
     //  ============================================== //
-    //         World Variables                         //
+    //         World-Control Variables                 //
     //  ============================================== //
-    private boolean worldPreventCreeper;
-    private boolean worldPreventExplode;
-    private boolean worldPreventEnderdrangon;
-    private boolean worldPreventWither;
-    private boolean worldPreventFireSpread;
+    private boolean worldPreventBlockDamage;
+    private boolean worldPreventDroppedItem;
 
     //  ============================================== //
     //         Player Variables                        //
@@ -146,7 +143,7 @@ public class ConfigPath {
     //  ============================================== //
     private void setUp() {
         setupMsg();
-        setWorld();
+        setWorldControl();
         setPlayer();
         setResidence();
         setVisitor();
@@ -186,16 +183,13 @@ public class ConfigPath {
     //  ============================================== //
     //         World Setter                            //
     //  ============================================== //
-    private void setWorld() {
-        if (!ConfigHandler.getConfig("config.yml").getBoolean("World.Enable")) {
+    private void setWorldControl() {
+        if (!ConfigHandler.getConfig("config.yml").getBoolean("World-Control.Enable")) {
             return;
         }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Enable")) {
-            worldPreventCreeper = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Creeper-Block-Damage");
-            worldPreventExplode = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Explode-Block-Damage");
-            worldPreventEnderdrangon = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Enderdragon-Block-Damage");
-            worldPreventWither = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Wither-Block-Damage");
-            worldPreventFireSpread = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Fire-Spread");
+        if (ConfigHandler.getConfig("config.yml").getBoolean("World-Control.Prevent.Enable")) {
+            worldPreventBlockDamage = ConfigHandler.getConfig("config.yml").getBoolean("World-Control.Prevent.Block-Damage");
+            worldPreventDroppedItem = ConfigHandler.getConfig("config.yml").getBoolean("World-Control.Prevent.Explosion-Dropped-Item-Damage");
         }
     }
 
@@ -229,6 +223,7 @@ public class ConfigPath {
             resPreventArmorStand = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Armor-Stand-Destroy");
             resPreventEnderCrystal = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Ender-Crystal-Destroy");
         }
+
         points = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Enable");
         if (points) {
             pointsSelectInfo = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Select-Info");
@@ -422,24 +417,12 @@ public class ConfigPath {
     //  ============================================== //
     //         World Getter                            //
     //  ============================================== //
-    public boolean isWorldPreventCreeper() {
-        return worldPreventCreeper;
+    public boolean isWorldPreventBlockDamage() {
+        return worldPreventBlockDamage;
     }
 
-    public boolean isWorldPreventExplode() {
-        return worldPreventExplode;
-    }
-
-    public boolean isWorldPreventEnderdrangon() {
-        return worldPreventEnderdrangon;
-    }
-
-    public boolean isWorldPreventWither() {
-        return worldPreventWither;
-    }
-
-    public boolean isWorldPreventFireSpread() {
-        return worldPreventFireSpread;
+    public boolean isWorldPreventDroppedItem() {
+        return worldPreventDroppedItem;
     }
 
     //  ============================================== //

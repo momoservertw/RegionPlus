@@ -16,16 +16,13 @@ General:
         Vehicles: true
 
 # Some normal features to improve CMI and Residence.
-# More information: https://github.com/momoservertw/RegionPlus/wiki/World
-World:
+# More information: https://github.com/momoservertw/RegionPlus/wiki/World-Control
+World-Control:
   Enable: false
   Prevent:
     Enable: true
-    Creeper-Block-Damage: true
-    Enderdragon-Block-Damage: true
-    Wither-Block-Damage: true
-    Explode-Block-Damage: false
-    Fire-Spread: true
+    Block-Damage: true
+    Explosion-Dropped-Item-Damage: false
 
 # Adding more features for Residence.
 # More information: https://github.com/momoservertw/RegionPlus/wiki/Residence
