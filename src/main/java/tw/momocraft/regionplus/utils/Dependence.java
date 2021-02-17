@@ -6,40 +6,27 @@ import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 
 public class Dependence {
-    private boolean Residence = false;
-    private boolean MultiverseCore = false;
-    private boolean SurvivalMechanics = false;
-    private boolean Vehicles = false;
-    private boolean PvPManager = false;
+    private boolean Residence;
+    private boolean SurvivalMechanics;
+    private boolean Vehicles;
+    private boolean MultiverseCore;
 
     public Dependence() {
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Residence")) {
-            Residence = Bukkit.getServer().getPluginManager().getPlugin("Residence") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.MultiverseCore")) {
-            MultiverseCore = Bukkit.getServer().getPluginManager().getPlugin("MultiverseCore") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.SurvivalMechanics")) {
-            SurvivalMechanics = Bukkit.getServer().getPluginManager().getPlugin("SurvivalMechanics") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.PvPManager")) {
-            PvPManager = Bukkit.getServer().getPluginManager().getPlugin("PvPManager") != null;
-        }
-        if (ConfigHandler.getConfig("config.yml").getBoolean("General.Settings.Features.Hook.Vehicles")) {
-            Vehicles = Bukkit.getServer().getPluginManager().getPlugin("Vehicles") != null;
-        }
+        Residence = Bukkit.getServer().getPluginManager().getPlugin("Residence") != null;
+        SurvivalMechanics = Bukkit.getServer().getPluginManager().getPlugin("SurvivalMechanics") != null;
+        Vehicles = Bukkit.getServer().getPluginManager().getPlugin("Vehicles") != null;
+        MultiverseCore = Bukkit.getServer().getPluginManager().getPlugin("MultiverseCore") != null;
         sendUtilityDepends();
     }
 
     private void sendUtilityDepends() {
         String hookMsg = "&fHooked: ["
                 + (ResidenceEnabled() ? "Residence, " : "")
-                + (MultiverseCoreEnabled() ? "MultiverseCore, " : "")
                 + (SurvivalMechanicsEnabled() ? "SurvivalMechanics, " : "")
-                + (PvPManagerEnabled() ? "PvPManager, " : "")
-                + (VehiclesEnabled() ? "Vehicles, " : "");
+                + (VehiclesEnabled() ? "Vehicles, " : "")
+                + (MultiverseCoreEnabled() ? "MultiverseCore, " : "");
         try {
-            CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + "]");
+            CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPluginPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + "]");
         } catch (Exception ignored) {
         }
 
@@ -54,7 +41,7 @@ public class Dependence {
                     + (FlagPermissions.getPosibleAreaFlags().contains("wallkick") ? "wallkick, " : "")
             ;
             try {
-                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + "]");
+                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPluginPrefix(), hookMsg.substring(0, hookMsg.lastIndexOf(", ")) + "]");
             } catch (Exception ignored) {
             }
         }
@@ -62,10 +49,6 @@ public class Dependence {
 
     public boolean ResidenceEnabled() {
         return this.Residence;
-    }
-
-    public boolean MultiverseCoreEnabled() {
-        return this.MultiverseCore;
     }
 
     public boolean SurvivalMechanicsEnabled() {
@@ -76,7 +59,7 @@ public class Dependence {
         return this.Vehicles;
     }
 
-    public boolean PvPManagerEnabled() {
-        return this.PvPManager;
+    public boolean MultiverseCoreEnabled() {
+        return this.MultiverseCore;
     }
 }

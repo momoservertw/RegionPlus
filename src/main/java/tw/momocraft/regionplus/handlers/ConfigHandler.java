@@ -25,10 +25,15 @@ public class ConfigHandler {
         setRegionConfig(new ConfigPath());
 
         if (CorePlusAPI.getDependManager().LuckPermsEnabled()) {
-            if (getConfigPath().isResResetFlagsRemove()) {
-                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6Flags-Edit need to check the permissions of offline players.");
-                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
+            if (getConfigPath().isresUpdateFlagsRemove()) {
+                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&6Flags-Edit need to check the permissions of offline players.");
+                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
             }
+        }
+        if (!reload) {
+            CorePlusAPI.getUpdateManager().check(getPluginPrefix(), Bukkit.getConsoleSender(),
+                    RegionPlus.getInstance().getDescription().getName(),
+                    RegionPlus.getInstance().getDescription().getVersion(), true);
         }
     }
 
@@ -96,7 +101,7 @@ public class ConfigHandler {
                     File configFile = new File(filePath, fileName);
                     configFile.delete();
                     getConfigData(filePath, fileName);
-                    CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPlugin(), "&4The file \"" + fileName + "\" is out of date, generating a new one!");
+                    CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&4The file \"" + fileName + "\" is out of date, generating a new one!");
                 }
             }
         }
@@ -119,16 +124,16 @@ public class ConfigHandler {
         region = regionConfig;
     }
 
-    public static String getPlugin() {
+    public static String getPluginName() {
+        return CorePlus.getInstance().getDescription().getName();
+    }
+
+    public static String getPluginPrefix() {
         return "[" + RegionPlus.getInstance().getDescription().getName() + "] ";
     }
 
     public static String getPrefix() {
         return getConfig("config.yml").getString("Message.prefix");
-    }
-
-    public static String getPluginName() {
-        return CorePlus.getInstance().getDescription().getName();
     }
 
     public static boolean isDebugging() {

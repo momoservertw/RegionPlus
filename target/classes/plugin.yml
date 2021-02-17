@@ -36,7 +36,8 @@ permissions:
     children:
       regionplus.command.reload: true
       regionplus.command.version: true
-      regionplus.command.residence.reset: true
+      regionplus.command.residence.updatemessages: true
+      regionplus.command.residence.updateflags: true
       regionplus.command.residence.returnignorey: true
       regionplus.command.points: true
       regionplus.command.points.other: true
@@ -47,8 +48,11 @@ permissions:
   regionplus.command.version:
     description: Allows use of command /regionplus version.
     default: op
-  regionplus.command.residence.reset:
-    description: Allows use of command /regionplus residence <resetall/resetflags/ressetmessage>.
+  regionplus.command.residence.updateflags:
+    description: Allows use of command /regionplus residence updateflags.
+    default: op
+  regionplus.command.residence.updatemessages:
+    description: Allows use of command /regionplus residence updatemessages.
     default: op
   regionplus.command.residence.returnignorey:
     description: Allows use of command /regionplus residence returnignorey.

@@ -1,13 +1,16 @@
 package tw.momocraft.regionplus.listeners;
 
 import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.event.*;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.CuboidArea;
 import com.bekvon.bukkit.residence.selection.SelectionManager;
+import javafx.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,8 +22,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
-import tw.momocraft.regionplus.utils.RegionUtils;
 
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class ResidencePoints implements Listener {
@@ -33,7 +38,7 @@ public class ResidencePoints implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                RegionUtils.refreshPointsMap(e.getPlayer());
+                refreshPointsMap(e.getPlayer());
             }
         }.runTaskLater(RegionPlus.getInstance(), 20);
     }
@@ -46,7 +51,7 @@ public class ResidencePoints implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                RegionUtils.refreshPointsMap(e.getPlayer());
+                refreshPointsMap(e.getPlayer());
             }
         }.runTaskLater(RegionPlus.getInstance(), 10);
     }
@@ -59,7 +64,7 @@ public class ResidencePoints implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                RegionUtils.removePointsMap(e.getPlayer().getName());
+                removePointsMap(e.getPlayer().getName());
             }
         }.runTaskLater(RegionPlus.getInstance(), 20);
     }
@@ -96,8 +101,8 @@ public class ResidencePoints implements Listener {
         }
         Residence.getInstance().getConfigManager().useActionBarOnSelection();
         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgPointsSelect(), player,
-                RegionUtils.getPointsPlaceholders(player, size));
-        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                getPointsPlaceholders(player, size));
+        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                 "Residence-Points", player.getName(), "selectInform", "return", "show",
                 new Throwable().getStackTrace()[0]);
     }
@@ -109,22 +114,22 @@ public class ResidencePoints implements Listener {
         }
         Player player = e.getPlayer();
         String playerName = player.getName();
-        if (CorePlusAPI.getPlayerManager().hasPerm(ConfigHandler.getPluginName(), player, "regionplus.bypass.points.limit")) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+        if (CorePlusAPI.getPlayerManager().hasPerm(player, "regionplus.bypass.points.limit")) {
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                     "Residence-Points", playerName, "Create", "return", "bypass permission",
                     new Throwable().getStackTrace()[0]);
             return;
         }
         ClaimedResidence res = e.getResidence();
         CuboidArea area = res.getMainArea();
-        RegionUtils.refreshPointsMap(e.getPlayer());
-        double size = RegionUtils.getAreaSize(area);
-        double last = RegionUtils.getPointsLastMap().get(playerName);
+        refreshPointsMap(e.getPlayer());
+        double size = getResidenceSize(area);
+        double last = getPointsLastMap().get(playerName);
         if (size > last) {
             e.setCancelled(true);
             // Sending "not enough points "message.
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.notEnoughMoney",
-                    player, RegionUtils.getPointsPlaceholders(player, size));
+                    player, getPointsPlaceholders(player, size));
             // Sending "return money" message.
             double cost = res.getBlockSellPrice() * size;
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
@@ -132,8 +137,8 @@ public class ResidencePoints implements Listener {
             placeHolders[10] = String.valueOf(cost); // %price%
             CorePlusAPI.getPlayerManager().giveTypeMoney(player.getUniqueId(), "money", cost);
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(),
-                    ConfigHandler.getConfigPath().getMsgResReturnMoney(), player, placeHolders);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                    ConfigHandler.getConfigPath().getMsgCmdResReturnIgnoreY(), player, placeHolders);
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                     "Residence-Points", playerName, "Create Residence", "cancel", "notEnoughPoints",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -142,9 +147,9 @@ public class ResidencePoints implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                RegionUtils.refreshPointsMap(player);
-                RegionUtils.sendPointsMsg(player);
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                refreshPointsMap(player);
+                sendPointsMsg(player);
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                         "Residence-Points", playerName, "Create Residence", "success", "final",
                         new Throwable().getStackTrace()[0]);
             }
@@ -181,15 +186,15 @@ public class ResidencePoints implements Listener {
             }
             return;
         }
-        if (CorePlusAPI.getPlayerManager().hasPerm(ConfigHandler.getPluginName(), newOwner, "regionplus.bypass.points.limit")) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+        if (CorePlusAPI.getPlayerManager().hasPerm(newOwner, "regionplus.bypass.points.limit")) {
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                     "Residence", newOwnerName, "Points", "return", "bypass permission, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
         }
-        RegionUtils.refreshPointsMap(newOwner);
-        int size = RegionUtils.getAreaSize(res.getMainArea());
-        double last = RegionUtils.getPointsLastMap().get(newOwnerName);
+        refreshPointsMap(newOwner);
+        int size = getResidenceSize(res.getMainArea());
+        double last = getPointsLastMap().get(newOwnerName);
         if (last < size) {
             e.setCancelled(true);
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
@@ -208,7 +213,7 @@ public class ResidencePoints implements Listener {
                 CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(),
                         ConfigHandler.getConfigPath().getMsgResReturnMoney(), owner, placeHolders);
             }
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                     "Residence-Points", newOwnerName, "Owner Change", "cancel", "targetNotEnoughPoints, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
@@ -217,13 +222,13 @@ public class ResidencePoints implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                RegionUtils.refreshPointsMap(newOwner);
-                RegionUtils.sendPointsMsg(newOwner);
+                refreshPointsMap(newOwner);
+                sendPointsMsg(newOwner);
                 if (owner != null) {
-                    RegionUtils.refreshPointsMap(owner);
-                    RegionUtils.sendPointsMsg(owner);
+                    refreshPointsMap(owner);
+                    sendPointsMsg(owner);
                 }
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                         "Residence-Points", newOwnerName, "Owner Change", "success", "final",
                         new Throwable().getStackTrace()[0]);
             }
@@ -237,8 +242,8 @@ public class ResidencePoints implements Listener {
         }
         Player player = e.getPlayer();
         String playerName = player.getName();
-        if (CorePlusAPI.getPlayerManager().hasPerm(ConfigHandler.getPluginName(), player, "regionplus.bypass.points.limit")) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+        if (CorePlusAPI.getPlayerManager().hasPerm(player, "regionplus.bypass.points.limit")) {
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                     "Residence-Points", playerName, "Size Change", "return", "bypass permission",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -247,22 +252,26 @@ public class ResidencePoints implements Listener {
         String resName = res.getName();
         CuboidArea area = e.getOldArea();
         CuboidArea newArea = e.getNewArea();
-        int size = RegionUtils.getAreaSize(newArea) - RegionUtils.getAreaSize(area);
+        int size = getResidenceSize(newArea) - getResidenceSize(area);
         double cost = res.getBlockSellPrice() * (size);
         // Prevent Limit Y size change.
-        if (!RegionUtils.ignoreY(area)) {
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgSizeChangeFailed(), player);
-            if (cost >= 0) {
-                CorePlusAPI.getPlayerManager().giveTypeMoney(player.getUniqueId(), "money", cost);
-            } else {
-                CorePlusAPI.getPlayerManager().takeTypeMoney(player.getUniqueId(), "money", -cost);
+        if (ConfigHandler.getConfigPath().isPointsPreventLimitedYSizeChange()) {
+            if (!isResidenceIgnoreY(area)) {
+                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(),
+                        ConfigHandler.getConfigPath().getMsgSizeChangeFailed(), player);
+                if (cost >= 0) {
+                    CorePlusAPI.getPlayerManager().giveTypeMoney(player.getUniqueId(), "money", cost);
+                } else {
+                    CorePlusAPI.getPlayerManager().takeTypeMoney(player.getUniqueId(), "money", -cost);
+                }
+                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(),
+                        ConfigHandler.getConfigPath().getMsgResReturnMoney(), player);
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+                        "Residence-Points", playerName, "Size Change", "fail", "Limit Y size change",
+                        new Throwable().getStackTrace()[0]);
+                e.setCancelled(true);
+                return;
             }
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgResReturnMoney(), player);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
-                    "Residence-Points", playerName, "Size Change", "fail", "Limit Y size change",
-                    new Throwable().getStackTrace()[0]);
-            e.setCancelled(true);
-            return;
         }
         // Prevent multiple areas residence size change.
         if (ConfigHandler.getConfigPath().isPointsPreventAreasSizeChange()) {
@@ -273,8 +282,9 @@ public class ResidencePoints implements Listener {
                 } else {
                     CorePlusAPI.getPlayerManager().takeTypeMoney(player.getUniqueId(), "money", -cost);
                 }
-                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgResReturnMoney(), player);
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(),
+                        ConfigHandler.getConfigPath().getMsgResReturnMoney(), player);
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                         "Residence-Points", playerName, "Size Change", "fail", "Multiple areas size change",
                         new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
@@ -285,16 +295,16 @@ public class ResidencePoints implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    RegionUtils.refreshPointsMap(e.getPlayer());
-                    CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                    refreshPointsMap(e.getPlayer());
+                    CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                             "Residence-Points", playerName, "Size Change", "return", "Contract, " + resName,
                             new Throwable().getStackTrace()[0]);
                 }
             }.runTaskLater(RegionPlus.getInstance(), 20);
             return;
         }
-        RegionUtils.refreshPointsMap(e.getPlayer());
-        double last = RegionUtils.getPointsLastMap().get(playerName);
+        refreshPointsMap(e.getPlayer());
+        double last = getPointsLastMap().get(playerName);
         if (size > last) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[9] = "res_points"; // %pricetype%
@@ -303,7 +313,7 @@ public class ResidencePoints implements Listener {
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.notEnoughMoney", player, placeHolders);
             CorePlusAPI.getPlayerManager().giveTypeMoney(player.getUniqueId(), "money", cost);
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgResReturnMoney(), player, placeHolders);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                     "Residence-Points", playerName, "Size Change", "cancel", "notEnoughPoints, " + resName,
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -313,12 +323,180 @@ public class ResidencePoints implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                RegionUtils.refreshPointsMap(player);
-                RegionUtils.sendPointsMsg(player);
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPlugin(),
+                refreshPointsMap(player);
+                sendPointsMsg(player);
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
                         "Residence-Points", playerName, "Size Change", "success", "final",
                         new Throwable().getStackTrace()[0]);
             }
         }.runTaskLater(RegionPlus.getInstance(), 10);
+    }
+
+
+    // Load the points status when player "join", "quit", "create residence", "expend/contract residence".
+    private static final Map<String, Double> pointsLimitMap = new HashMap<>();
+    private static final Map<String, Double> pointsUseMap = new HashMap<>();
+    private static final Map<String, Double> pointsLastMap = new HashMap<>();
+
+    public static void sendPointsMsg(Player player) {
+        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(),
+                ConfigHandler.getConfigPath().getMsgPoints(), player, getPointsPlaceholders(player, 0));
+    }
+
+    public static void sendTargetPointsMsg(CommandSender sender, Player player) {
+        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(),
+                ConfigHandler.getConfigPath().getMsgTargetPoints(), sender, getPointsPlaceholders(player, 0));
+    }
+
+    public static void refreshPointsMap(Player player) {
+        String playerName = player.getName();
+        double limit = getPointsLimit(player);
+        pointsLimitMap.put(playerName, limit);
+        double used = getPointsUsed(playerName);
+        pointsUseMap.put(playerName, used);
+        double last = limit - used;
+        pointsLastMap.put(playerName, last);
+        for (String key : pointsLimitMap.keySet()) {
+            System.out.println(key + ": " + pointsLimitMap.get(key));
+        }
+        for (String key : pointsUseMap.keySet()) {
+            System.out.println(key + ": " + pointsUseMap.get(key));
+        }
+    }
+
+    public static void removePointsMap(String playerName) {
+        pointsLimitMap.remove(playerName);
+        pointsUseMap.remove(playerName);
+        pointsLastMap.remove(playerName);
+        for (String key : pointsLimitMap.keySet()) {
+            System.out.println(key + ": " + pointsLimitMap.get(key));
+        }
+        for (String key : pointsUseMap.keySet()) {
+            System.out.println(key + ": " + pointsUseMap.get(key));
+        }
+    }
+
+    public static Map<String, Double> getPointsLimitMap() {
+        return pointsLimitMap;
+    }
+
+    public static Map<String, Double> getPointsUseMap() {
+        return pointsUseMap;
+    }
+
+    public static Map<String, Double> getPointsLastMap() {
+        return pointsLastMap;
+    }
+
+    public static int getPointsUsed(String playerName) {
+        int used = 0;
+        CuboidArea area;
+        for (ClaimedResidence res : ResidenceApi.getPlayerManager().getResidencePlayer(playerName).getResList()) {
+            area = res.getMainArea();
+            if (Residence.getInstance().getConfigManager().isSelectionIgnoreY() &&
+                    !ConfigHandler.getConfigPath().isPointsLimitedYCalculate()) {
+                if (isResidenceIgnoreY(area)) {
+                    continue;
+                }
+            }
+            used += getResidenceSize(area);
+        }
+        return used;
+    }
+
+    public static double getPointsLimit(Player player) {
+        double group = getPointsGroup(player).getValue();
+        double level = getPointsLevel(player);
+        return group + level;
+    }
+
+    private static double getPointsLevel(Player player) {
+        return CorePlusAPI.getPlayerManager().getMaxPerm(player, "regionplus.points.level.", 0);
+    }
+
+    private static Pair<String, Integer> getPointsGroup(Player player) {
+        Map<String, Integer> groupMap = ConfigHandler.getConfigPath().getPointsMap();
+        if (player.isOp() || CorePlusAPI.getPlayerManager().hasPerm(player, "regionplus.points.group.*")) {
+            String highestGroup = groupMap.keySet().iterator().next();
+            return new Pair<>(highestGroup, groupMap.get(highestGroup));
+        }
+        for (String group : groupMap.keySet()) {
+            if (CorePlusAPI.getPlayerManager().hasPerm(player, "regionplus.points.group." + group)) {
+                return new Pair<>(group, groupMap.get(group));
+            }
+        }
+        return new Pair<>("default", groupMap.get("default"));
+    }
+
+    public static int getResidenceSize(CuboidArea area) {
+        int size = 0;
+        if (ConfigHandler.getConfigPath().isResIgnoreY()) {
+            size += area.getXSize() * area.getZSize();
+        } else {
+            size += area.getXSize() * area.getZSize() * area.getYSize();
+        }
+        return size;
+    }
+
+    public static boolean isResidenceIgnoreY(CuboidArea area) {
+        if (area.getWorld().getEnvironment().name().equals("NETHER")) {
+            return area.getYSize() < 129;
+        }
+        return area.getYSize() >= 256;
+    }
+
+    public static String[] getPointsPlaceholders(Player player, double size) {
+        String[] placeHolders = CorePlusAPI.getLangManager().newString();
+        String playerName = player.getName();
+        double limit = pointsLimitMap.get(playerName);
+        double used = pointsUseMap.get(playerName);
+        double last = pointsLastMap.get(playerName);
+        // %group%
+        //placeHolders[5] = ConfigHandler.getConfigPath().getPointsDisplayMap().get();
+        // %size%
+        placeHolders[15] = new DecimalFormat("0").format(size);
+        // %pricetype%
+        placeHolders[9] = "res_points";
+        // %price%
+        placeHolders[10] = new DecimalFormat("0").format(
+                Residence.getInstance().getPlayerManager().getGroup(player.getName()).getCostPerBlock() * size);
+        // %amount%
+        placeHolders[6] = new DecimalFormat("0").format(used);
+        // %limit%
+        placeHolders[23] = new DecimalFormat("0").format(limit);
+        // %balance%
+        placeHolders[11] = new DecimalFormat("0").format(last);
+        return placeHolders;
+    }
+
+    // Return the money difference if you changed the option "IgnoreY" in Residence config.
+    public static void returnIgnoreY(CommandSender sender) {
+        CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPluginPrefix(), sender, "&6Starting to return money...");
+        ClaimedResidence res;
+        double price;
+        CuboidArea area;
+        Map<String, ClaimedResidence> resMap = Residence.getInstance().getResidenceManager().getResidences();
+        for (String resName : resMap.keySet()) {
+            res = resMap.get(resName);
+            area = res.getMainArea();
+            if (Residence.getInstance().getConfigManager().isSelectionIgnoreY() &&
+                    !ConfigHandler.getConfigPath().isPointsLimitedYCalculate()) {
+                if (isResidenceIgnoreY(area)) {
+                    continue;
+                }
+            }
+            if (res.getBlockSellPrice() == 0) {
+                continue;
+            }
+            price = area.getXSize() * area.getZSize() * (area.getYSize() - 1) * res.getBlockSellPrice();
+            CorePlusAPI.getPlayerManager().giveTypeMoney(res.getOwnerUUID(), "money", price);
+            CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(), "Return - &6" + resName + ": &e" + price + ", &a" + res.getOwner());
+        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender, "&6Succeed to return money to all residences!");
+            }
+        }.runTaskLater(RegionPlus.getInstance(), 40);
     }
 }

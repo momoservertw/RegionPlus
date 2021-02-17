@@ -5,17 +5,6 @@
 Config-Version: 4
 Debugging: false
 
-General:
-  Settings:
-    Features:
-      # Changed these options need to restart the server.
-      Hook:
-        Residence: true
-        MultiverseCore: true
-        SurvivalMechanics: true
-        Vehicles: true
-        PvPManager: true
-
 # Adding some features to improve CMI and Residence.
 # More information: https://github.com/momoservertw/RegionPlus/wiki/World-Control
 World-Contorl:
@@ -26,8 +15,8 @@ World-Contorl:
       Enable: true
       Ignore-List:
         - TNT
-    Block-Damage: true
-    Explosion-Dropped-Item-Damage: false
+    Dropped-Item-Damage:
+      Explosion: true
 
 # Adding more features for Residence.
 # More information: https://github.com/momoservertw/RegionPlus/wiki/Residence
@@ -43,6 +32,7 @@ Residence:
     Item-Frame-Destroy: true
     Armor-Stand-Destroy: true
     Ender-Crystal-Destroy: true
+    Block-Damage: true
   # To limit the total size of player's residences.
   # This feature will only calculate the main area size.
   # Please set the "MaxAreasPerResidence" to "1" in Residence group.yml to prevent they have multiple areas.
@@ -78,22 +68,9 @@ Residence:
     Level:
       Increase: 1000
       Display: "+%level%"
-  # Reset all residences.
-  # Bypass permission: regionplus.bypass.residence.reset
-  # Command: /rgp residence resetall
-  Reset-All:
-    Settings:
-      Bypass:
-        Residence-List:
-          - lobby
-          - spawn
-          - server
-        Residence-Owners:
-          - Momocraft
-  # Changing all old residences' flags to new one.
-  # Bypass permission: regionplus.bypass.residence.reset
-  # Command: /rgp residence resetflags
-  Reset-Flags:
+  # Updating all old residences' flags to new one.
+  # Command: /rgp residence updateflags
+  Update-Flags:
     Settings:
       Bypass:
         # Bypass to remove the missing custom flags from other plugins.
@@ -118,18 +95,22 @@ Residence:
       Remove:
         Enable: true
         Ignore-List: []
-  # Resetting all residences' enter/leave messages to default if the owners can not change it.
-  # Bypass permission: regionplus.bypass.residence.reset
-  # Command: /rgp residence resetmessages
-  Reset-Messages:
-    Settings:
-      Bypass:
-        Residence-List:
-          - lobby
-          - spawn
-          - server
-        Residence-Owners:
-          - Momocraft
+  # Updating all residences' enter/leave messages to default if the owner has no permission to change it.
+  # Command: /rgp residence updatemessages
+  Update-Messages:
+    Bypass:
+      Residence-List:
+        - lobby
+        - spawn
+        - server
+      Residence-Owners:
+        - Momocraft
+    Old-Message:
+      Enter-List:
+        - "Welcome %player to %residence, owned by %owner."
+      Leave-List:
+        - "Now leaving %residence."
+
   # Toggle the feature of SurvivalMechanics in residences.
   # Custom flags: climb, crawl, mobkick, roofhang, slide, swim, wallkick
   # More information: https://github.com/momoservertw/RegionPlus/wiki/SurvivalMechanics
@@ -142,7 +123,8 @@ Residence:
   Vehicles:
     Enable: true
 
-# Prevent players activating outside a border like visitors.
+# Prevent players activating in location like visitors.
+# Useful if you want to limit the world border to new players.
 # More information: https://github.com/momoservertw/RegionPlus/wiki/Visitor
 Visitor:
   Enable: false
@@ -198,15 +180,16 @@ Message:
   prefix: "&7[&dRegionPlus&7]&r"
   Commands:
     title: "&8▩▩▩▩▩▩▩▩▩▩▩▩▩ &d&lRegionPlus &8▩▩▩▩▩▩▩▩▩▩▩▩▩"
-    help: "&f/rp help &8- &7This help menu."
-    reload: "&f/rp reload &8- &7Reload config file."
-    version: "&f/rp version &8- &7Checks the plugin version and updates."
-    resetFlags: "&f/rp resetflags &8- &7Changing player's residence flag to current group settings."
-    resetMessages: "&f/rp resetmessages &8- &7Changing player's residence message to current group settings."
-    points: "&f/rp points &8- &7Check your points limit."
-    pointsOther: "&f/rp points limit <player> &8- &7Check the player's points limit."
-    pointsLevelPromote: "&f/rp points promote [level] &8- &7Increasing the player's residence level."
-    pointsLevelDemote: "&f/rp points demote [level] &8- &7Deceasing the player's residence level."
+    help: "&f/rgp help &8- &7This help menu."
+    reload: "&f/rgp reload &8- &7Reload config file."
+    version: "&f/rgp version &8- &7Checks the plugin version and updates."
+    resReturnIgnoreY: "&f/rgp residence returnignorey &8- &7Return the money difference if you changed the option \"IgnoreY\" in Residence config."
+    resUpdateFlags: "&f/rgp residence updateflags &8- &7Updating all old residences' flags to new one."
+    resUpdateMessages: "&f/rgp residence updatemessage &8- &7Updating all residences' enter/leave messages to default if the owner has no permission to change it."
+    points: "&f/rgp points &8- &7Check your points limit."
+    pointsOther: "&f/rgp points limit <player> &8- &7Check the player's points limit."
+    pointsLevelPromote: "&f/rgp points promote <player> [level] &8- &7Increasing the player's residence level."
+    pointsLevelDemote: "&f/rgp points demote <player> [level] &8- &7Deceasing the player's residence level."
   points: "%prefix%  &cPoints: &f%balance%/%limit% (%group%%level%)"
   targetPoints: "%prefix%  &c%targetplayer%'s Points: &f%balance%/%limit% (%group%%level%)"
   pointsSelect: "%prefix% &7Select size: %size%, Points: %balance%/%limit%"

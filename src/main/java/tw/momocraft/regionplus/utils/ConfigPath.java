@@ -21,15 +21,17 @@ public class ConfigPath {
     private String msgHelp;
     private String msgReload;
     private String msgVersion;
-    private String msgFlagseditCmd;
-    private String msgPointsCmd;
-    private String msgPointsOtherCmd;
+    private String msgCmdPoints;
+    private String msgCmdPointsOther;
+    private String msgCmdPointslevel;
+    private String msgCmdResUpdateFlags;
+    private String msgCmdResUpdateMessages;
+    private String msgCmdResReturnIgnoreY;
 
     private String msgPoints;
     private String msgTargetPoints;
     private String msgPointsSelect;
     private String msgSizeChangeFailed;
-    private String msgAreaAddFailed;
     private String msgResReturnMoney;
 
     private String msgVisResCreate;
@@ -50,11 +52,10 @@ public class ConfigPath {
     //  ============================================== //
     //         World-Control Variables                 //
     //  ============================================== //
-    private boolean worldControl;
     private boolean worldPreventExplode;
     private List<String> worldPreventExplodeIgnore;
-    private boolean worldPreventBlockDamage;
-    private boolean worldPreventDroppedItem;
+    private boolean worldPreventDroppedItemExplosion;
+
 
     //  ============================================== //
     //         Residence Variables                     //
@@ -82,24 +83,18 @@ public class ConfigPath {
     private Map<String, Integer> pointsMap = new HashMap<>();
     private final Map<String, String> pointsDisplayMap = new HashMap<>();
 
-    private boolean resResetAll;
-    private List<String> resResetAllBypassRes;
-    private List<String> resResetAllBypassResOwners;
+    private boolean resUpdateFlagsBypassCustom;
+    private List<String> resUpdateFlagsByPassRes;
+    private List<String> resUpdateFlagsByPassResOwners;
+    private boolean resUpdateFlagsRemove;
+    private List<String> resUpdateFlagsRemoveIgnore;
+    private boolean resUpdateFlagsUpdate;
+    private List<String> resUpdateFlagsUpdateIgnore;
+    private boolean resUpdateFlagsPlayerRemove;
+    private List<String> resUpdateFlagsPlayerRemoveIgnore;
 
-    private boolean resResetFlags;
-    private boolean resResetFlagsBypassCustom;
-    private List<String> resResetFlagsByPassRes;
-    private List<String> resResetFlagsByPassResOwners;
-    private boolean resResetFlagsRemove;
-    private List<String> resResetFlagsRemoveIgnore;
-    private boolean resResetFlagsUpdate;
-    private List<String> resResetFlagsUpdateIgnore;
-    private boolean resResetFlagsPlayerRemove;
-    private List<String> resResetFlagsPlayerRemoveIgnore;
-
-    private boolean resResetMsg;
-    private List<String> resResetMsgBypassRes;
-    private List<String> resResetMsgBypassResOwners;
+    private List<String> resUpdateMsgBypassRes;
+    private List<String> resUpdateMsgBypassResOwners;
 
     //  ============================================== //
     //         Visitor Variables                       //
@@ -139,7 +134,7 @@ public class ConfigPath {
     //  ============================================== //
     private void setUp() {
         setupMsg();
-        setWorld();
+        setWorldControl();
         setResidence();
         setVisitor();
     }
@@ -152,15 +147,17 @@ public class ConfigPath {
         msgHelp = ConfigHandler.getConfig("config.yml").getString("Message.Commands.help");
         msgReload = ConfigHandler.getConfig("config.yml").getString("Message.Commands.reload");
         msgVersion = ConfigHandler.getConfig("config.yml").getString("Message.Commands.version");
-        msgFlagseditCmd = ConfigHandler.getConfig("config.yml").getString("Message.Commands.flagsedit");
-        msgPointsCmd = ConfigHandler.getConfig("config.yml").getString("Message.Commands.points");
-        msgPointsOtherCmd = ConfigHandler.getConfig("config.yml").getString("Message.Commands.pointsOther");
+        msgCmdPoints = ConfigHandler.getConfig("config.yml").getString("Message.Commands.points");
+        msgCmdPointsOther = ConfigHandler.getConfig("config.yml").getString("Message.Commands.pointsOther");
+        msgCmdPointslevel = ConfigHandler.getConfig("config.yml").getString("Message.Commands.pointslevel");
+        msgCmdResUpdateFlags = ConfigHandler.getConfig("config.yml").getString("Message.Commands.updateFlags");
+        msgCmdResUpdateMessages = ConfigHandler.getConfig("config.yml").getString("Message.Commands.updateMessages");
+        msgCmdResReturnIgnoreY = ConfigHandler.getConfig("config.yml").getString("Message.Commands.resReturnIgnoreY");
 
         msgPoints = ConfigHandler.getConfig("config.yml").getString("Message.points");
         msgTargetPoints = ConfigHandler.getConfig("config.yml").getString("Message.targetPoints");
         msgPointsSelect = ConfigHandler.getConfig("config.yml").getString("Message.pointsSelect");
-        msgAreaAddFailed = ConfigHandler.getConfig("config.yml").getString("Message.sizeChangeFailed");
-        msgSizeChangeFailed = ConfigHandler.getConfig("config.yml").getString("Message.areaAddFailed");
+        msgSizeChangeFailed = ConfigHandler.getConfig("config.yml").getString("Message.sizeChangeFailed");
         msgResReturnMoney = ConfigHandler.getConfig("config.yml").getString("Message.resReturnMoney");
 
         msgVisResCreate = ConfigHandler.getConfig("config.yml").getString("Message.visitorResidenceCreate");
@@ -185,6 +182,7 @@ public class ConfigPath {
         if (ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Enable")) {
             worldPreventExplode = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Block-Damage");
             worldPreventExplodeIgnore = ConfigHandler.getConfig("config.yml").getStringList("World.Prevent.Block-Damage.Ignore-List");
+            worldPreventDroppedItemExplosion = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Dropped-Item-Damage.Explosion");
         }
     }
 
@@ -206,11 +204,11 @@ public class ConfigPath {
             resPreventPotion = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Potion-Damage");
             resPreventZombieDoor = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent. Zombie-Door-Destruction");
             resPreventEndermanPick = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Enderman-Pickup-Block");
-            resPreventBlockDamage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Block-Damage");
             resPreventPainting = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Painting-Destroy");
             resPreventItemFrame = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Item-Frame-Destroy");
             resPreventArmorStand = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Armor-Stand-Destroy");
             resPreventEnderCrystal = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Ender-Crystal-Destroy");
+            resPreventBlockDamage = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Prevent.Block-Damage");
         }
 
         points = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Enable");
@@ -229,30 +227,20 @@ public class ConfigPath {
                 pointsMap = CorePlusAPI.getUtilsManager().sortByValue(pointsMap);
             }
         }
-
-        resResetAll = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Message.Enable");
-        if (resResetAll) {
-            resResetAllBypassRes = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Message.Settings.Bypass.Residence-List");
-            resResetAllBypassResOwners = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Message.Settings.Bypass.Residence-Owners");
+        if (ConfigHandler.getConfig("config.yml").getBoolean("Residence.Update-Flags.Enable")) {
+            resUpdateFlagsBypassCustom = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Update-Flags.Settings.Bypass.Missing-Custom-Flags");
+            resUpdateFlagsByPassRes = ConfigHandler.getConfig("config.yml").getStringList("Residence.Update-Flags.Settings.Bypass.Residence-List");
+            resUpdateFlagsByPassResOwners = ConfigHandler.getConfig("config.yml").getStringList("Residence.Update-Flags.Settings.Bypass.Residence-Owners");
+            resUpdateFlagsRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Update-Flags.Environment.Remove.Enable");
+            resUpdateFlagsRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Update-Flags.Environment.Remove.Ignore-List");
+            resUpdateFlagsUpdate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Update-Flags.Environment.Update.Enable");
+            resUpdateFlagsUpdateIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Update-Flags.Environment.Update.Ignore-List");
+            resUpdateFlagsPlayerRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Update-Flags.Player.Remove.Enable");
+            resUpdateFlagsPlayerRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Update-Flags.Player.Remove.Ignore-List");
         }
-
-        resResetFlags = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Flags.Enable");
-        if (resResetFlags) {
-            resResetFlagsBypassCustom = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Flags.Settings.Bypass.Missing-Custom-Flags");
-            resResetFlagsByPassRes = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Flags.Settings.Bypass.Residence-List");
-            resResetFlagsByPassResOwners = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Flags.Settings.Bypass.Residence-Owners");
-            resResetFlagsRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Flags.Environment.Remove.Enable");
-            resResetFlagsRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Flags.Environment.Remove.Ignore-List");
-            resResetFlagsUpdate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Flags.Environment.Update.Enable");
-            resResetFlagsUpdateIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Flags.Environment.Update.Ignore-List");
-            resResetFlagsPlayerRemove = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Flags.Player.Remove.Enable");
-            resResetFlagsPlayerRemoveIgnore = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Flags.Player.Remove.Ignore-List");
-        }
-
-        resResetMsg = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Reset-Messages.Enable");
-        if (resResetMsg) {
-            resResetMsgBypassRes = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Messages.Settings.Bypass.Residence-List");
-            resResetMsgBypassResOwners = ConfigHandler.getConfig("config.yml").getStringList("Residence.Reset-Messages.Settings.Bypass.Residence-Owners");
+        if (ConfigHandler.getConfig("config.yml").getBoolean("Residence.Update-Messages.Enable")) {
+            resUpdateMsgBypassRes = ConfigHandler.getConfig("config.yml").getStringList("Residence.Update-Messages.Settings.Bypass.Residence-List");
+            resUpdateMsgBypassResOwners = ConfigHandler.getConfig("config.yml").getStringList("Residence.Update-Messages.Settings.Bypass.Residence-Owners");
         }
     }
 
@@ -319,18 +307,30 @@ public class ConfigPath {
         return msgVersion;
     }
 
-
-    public String getMsgFlagseditCmd() {
-        return msgFlagseditCmd;
+    public String getMsgCmdPoints() {
+        return msgCmdPoints;
     }
 
-    public String getMsgPointsCmd() {
-        return msgPointsCmd;
+    public String getMsgCmdPointsOther() {
+        return msgCmdPointsOther;
     }
 
-    public String getMsgPointsOtherCmd() {
-        return msgPointsOtherCmd;
+    public String getMsgCmdPointslevel() {
+        return msgCmdPointslevel;
     }
+
+    public String getMsgCmdResUpdateFlags() {
+        return msgCmdResUpdateFlags;
+    }
+
+    public String getMsgCmdResUpdateMessages() {
+        return msgCmdResUpdateMessages;
+    }
+
+    public String getMsgCmdResReturnIgnoreY() {
+        return msgCmdResReturnIgnoreY;
+    }
+
 
     public String getMsgPoints() {
         return msgPoints;
@@ -346,10 +346,6 @@ public class ConfigPath {
 
     public String getMsgSizeChangeFailed() {
         return msgSizeChangeFailed;
-    }
-
-    public String getMsgAreaAddFailed() {
-        return msgAreaAddFailed;
     }
 
     public String getMsgResReturnMoney() {
@@ -404,16 +400,16 @@ public class ConfigPath {
     //  ============================================== //
     //         World Getter                            //
     //  ============================================== //
-    public boolean isWorldControl() {
-        return worldControl;
-    }
-
-    public boolean isWorldPreventDroppedItem() {
-        return worldPreventDroppedItem;
+    public boolean isWorldPreventExplode() {
+        return worldPreventExplode;
     }
 
     public List<String> getWorldPreventExplodeIgnore() {
         return worldPreventExplodeIgnore;
+    }
+
+    public boolean isWorldPreventDroppedItemExplosion() {
+        return worldPreventDroppedItemExplosion;
     }
 
     //  ============================================== //
@@ -503,69 +499,48 @@ public class ConfigPath {
     }
 
 
-    public boolean isResResetAll() {
-        return resResetAll;
+    public boolean isresUpdateFlagsBypassCustom() {
+        return resUpdateFlagsBypassCustom;
     }
 
-    public List<String> getResResetAllBypassRes() {
-        return resResetAllBypassRes;
+    public List<String> getresUpdateFlagsByPassRes() {
+        return resUpdateFlagsByPassRes;
     }
 
-    public List<String> getResResetAllBypassResOwners() {
-        return resResetAllBypassResOwners;
+    public List<String> getresUpdateFlagsByPassResOwners() {
+        return resUpdateFlagsByPassResOwners;
     }
 
-    public boolean isResResetFlags() {
-        return resResetFlags;
+    public boolean isresUpdateFlagsUpdate() {
+        return resUpdateFlagsUpdate;
     }
 
-    public boolean isResResetFlagsBypassCustom() {
-        return resResetFlagsBypassCustom;
+    public List<String> getresUpdateFlagsUpdateIgnore() {
+        return resUpdateFlagsUpdateIgnore;
     }
 
-    public List<String> getResResetFlagsByPassRes() {
-        return resResetFlagsByPassRes;
+    public boolean isresUpdateFlagsRemove() {
+        return resUpdateFlagsRemove;
     }
 
-    public List<String> getResResetFlagsByPassResOwners() {
-        return resResetFlagsByPassResOwners;
+    public List<String> getresUpdateFlagsRemoveIgnore() {
+        return resUpdateFlagsRemoveIgnore;
     }
 
-    public boolean isResResetFlagsUpdate() {
-        return resResetFlagsUpdate;
+    public List<String> getresUpdateFlagsPlayerRemoveIgnore() {
+        return resUpdateFlagsPlayerRemoveIgnore;
     }
 
-    public List<String> getResResetFlagsUpdateIgnore() {
-        return resResetFlagsUpdateIgnore;
+    public boolean isresUpdateFlagsPlayerRemove() {
+        return resUpdateFlagsPlayerRemove;
     }
 
-    public boolean isResResetFlagsRemove() {
-        return resResetFlagsRemove;
+    public List<String> getResUpdateMsgBypassRes() {
+        return resUpdateMsgBypassRes;
     }
 
-    public List<String> getResResetFlagsRemoveIgnore() {
-        return resResetFlagsRemoveIgnore;
-    }
-
-    public List<String> getResResetFlagsPlayerRemoveIgnore() {
-        return resResetFlagsPlayerRemoveIgnore;
-    }
-
-    public boolean isResResetFlagsPlayerRemove() {
-        return resResetFlagsPlayerRemove;
-    }
-
-
-    public boolean isResResetMsg() {
-        return resResetMsg;
-    }
-
-    public List<String> getResResetMsgBypassRes() {
-        return resResetMsgBypassRes;
-    }
-
-    public List<String> getResResetMsgBypassResOwners() {
-        return resResetMsgBypassResOwners;
+    public List<String> getResUpdateMsgBypassResOwners() {
+        return resUpdateMsgBypassResOwners;
     }
 
 
