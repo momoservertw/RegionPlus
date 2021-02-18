@@ -34,7 +34,7 @@ public class Visitor implements Listener {
         }
         Location loc = player.getLocation();
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
+        if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Use-Item: Consume", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -64,7 +64,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisUseItemMsg()) {
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
         }
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Use-Item: Consume", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
@@ -87,7 +87,7 @@ public class Visitor implements Listener {
         }
         Location loc = player.getLocation();
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
+        if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Use-Item: Bucket", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -117,7 +117,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisUseItemMsg()) {
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
         }
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Use-Item: Bucket", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
@@ -140,7 +140,7 @@ public class Visitor implements Listener {
         }
         Location loc = player.getLocation();
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
+        if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Use-Item: Fishing", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -170,7 +170,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisUseItemMsg()) {
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
         }
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Use-Item: Fishing", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
@@ -196,7 +196,7 @@ public class Visitor implements Listener {
         }
         Location loc = player.getLocation();
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
+        if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Use-Item: Projectile", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -226,7 +226,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisUseItemMsg()) {
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
         }
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Use-Item: Projectile", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
@@ -244,7 +244,7 @@ public class Visitor implements Listener {
         Entity entity = e.getRightClicked();
         Location loc = entity.getLocation();
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
+        if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Interact-Entity", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -274,7 +274,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisInterEntMsg()) {
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisInteractEntity(), player);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisInteractEntity(), player);
         }
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Pickup-Item", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
@@ -294,7 +294,7 @@ public class Visitor implements Listener {
             // Location
             String blockType = e.getMaterial().name();
             Location loc = e.getPlayer().getLocation();
-            if (!CorePlusAPI.getConditionManager().checkLocation(player.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
+            if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), player.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
                 CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Interact-Block", "return", "Location",
                         new Throwable().getStackTrace()[0]);
                 return;
@@ -323,7 +323,7 @@ public class Visitor implements Listener {
             }
             // Cancel
             if (ConfigHandler.getConfigPath().isVisInterBlockMsg()) {
-                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisInteractBlock(), player);
+                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisInteractBlock(), player);
             }
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Interact-Block", "cancel", blockType,
                     new Throwable().getStackTrace()[0]);
@@ -337,7 +337,7 @@ public class Visitor implements Listener {
             }
             Location loc = block.getLocation();
             // Location
-            if (!CorePlusAPI.getConditionManager().checkLocation(player.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
+            if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), player.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
                 CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Interact-Block", "return", "Location",
                         new Throwable().getStackTrace()[0]);
                 return;
@@ -376,7 +376,7 @@ public class Visitor implements Listener {
             }
             // Cancel
             if (ConfigHandler.getConfigPath().isVisInterBlockMsg()) {
-                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisInteractBlock(), player);
+                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisInteractBlock(), player);
             }
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Interact-Block", "cancel", blockType,
                     new Throwable().getStackTrace()[0]);
@@ -394,7 +394,7 @@ public class Visitor implements Listener {
         String playerName = player.getName();
         Location loc = player.getLocation();
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
+        if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Drop-Item", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -416,7 +416,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisDropItemMsg()) {
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisDropItem(), player);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisDropItem(), player);
         }
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Drop-Item", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
@@ -439,7 +439,7 @@ public class Visitor implements Listener {
         String playerName = player.getName();
         Location loc = player.getLocation();
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
+        if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Pickup-Item", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -484,7 +484,7 @@ public class Visitor implements Listener {
         Entity entity = e.getEntity();
         Location loc = entity.getLocation();
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(player.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
+        if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), player.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Damage-Entity", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -514,7 +514,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisDamageEntMsg()) {
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisDamageEntity(), player);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisDamageEntity(), player);
         }
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Damage-Entity", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
@@ -533,7 +533,7 @@ public class Visitor implements Listener {
         String playerName = player.getName();
         Location loc = player.getLocation();
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(player.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
+        if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), player.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Death-Drop", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -554,7 +554,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisDeathDropMsg()) {
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisDeathDrop(), player);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisDeathDrop(), player);
         }
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Death-Drop", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);

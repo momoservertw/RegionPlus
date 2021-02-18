@@ -16,7 +16,7 @@ public class SurvivalMechanics implements Listener {
         if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "climb", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "climb"; // %flag%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Residence", "Residence", player.getName(), "isResSMClimb", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -31,7 +31,7 @@ public class SurvivalMechanics implements Listener {
         if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "crawl", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "crawl"; // %flag%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Residence", "Residence", player.getName(), "isResSMCrawl", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -46,7 +46,7 @@ public class SurvivalMechanics implements Listener {
         if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "mobkick", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "mobkick"; // %flag%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Residence", player.getName(), "isResSMMobkick", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -61,7 +61,7 @@ public class SurvivalMechanics implements Listener {
         if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "roofhang", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "roofhang"; // %flag%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Residence", "Residence", player.getName(), "isResSMRoofhang", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -76,7 +76,7 @@ public class SurvivalMechanics implements Listener {
         if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "slide", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "slide"; // %flag%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Residence", "Residence", player.getName(), "isResSMClimb", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -92,7 +92,7 @@ public class SurvivalMechanics implements Listener {
         if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "swim", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "swim"; // %flag%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Residence", "Residence", player.getName(), "isResSMSwim", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -107,7 +107,7 @@ public class SurvivalMechanics implements Listener {
         if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "wallkick", true)) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[13] = "wallkick"; // %flag%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Residence", "Residence", player.getName(), "isResSMWallkick", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);

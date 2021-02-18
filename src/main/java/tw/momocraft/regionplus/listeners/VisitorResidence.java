@@ -33,14 +33,15 @@ public class VisitorResidence implements Listener {
         if (newOwner == null) {
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[1] = newOwnerName; // %targetplayer%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), "Message.targetNotFound", owner, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.targetNotFound", owner, placeHolders);
             e.setCancelled(true);
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", newOwnerName, "Residence: Get", "cancel", "newOwner=null, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(newOwner.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
+        if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(),
+                newOwner.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", newOwnerName, "Residence: Get", "return", "Location, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
@@ -52,8 +53,8 @@ public class VisitorResidence implements Listener {
             return;
         }
         // Cancel
-        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResGet(), owner);
-        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResGetTarget(), newOwner);
+        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResGet(), owner);
+        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResGetTarget(), newOwner);
 
         //  Returning the money of trade.
         if (res.isForSell()) {
@@ -65,7 +66,8 @@ public class VisitorResidence implements Listener {
             placeHolders[9] = "money"; // %pricetype%
             placeHolders[10] = String.valueOf(price); // %price%
             CorePlusAPI.getPlayerManager().giveTypeMoney(ownerUUID, "money", price);
-            CorePlusAPI.getLangManager().sendLangMsg("", ConfigHandler.getConfigPath().getMsgCmdResReturnIgnoreY(), owner, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), "",
+                    ConfigHandler.getConfigPath().getMsgCmdResReturnIgnoreY(), owner, placeHolders);
         }
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", newOwnerName, "Residence: Get", "cancel", "Final, " + resName,
                 new Throwable().getStackTrace()[0]);
@@ -82,7 +84,7 @@ public class VisitorResidence implements Listener {
         String playerName = player.getName();
         Location loc = player.getLocation();
         // Location
-        if (!CorePlusAPI.getConditionManager().checkLocation(loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
+        if (!CorePlusAPI.getConditionManager().checkLocation(ConfigHandler.getPluginName(), loc, ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Residence: Create", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -96,7 +98,7 @@ public class VisitorResidence implements Listener {
         // Cancel
         String ownerName = e.getResidence().getOwner();
         Player owner = Bukkit.getPlayer(ownerName);
-        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResCreate(), owner);
+        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgVisResCreate(), owner);
         CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Visitor", playerName, "Residence: Create", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
         e.setCancelled(true);

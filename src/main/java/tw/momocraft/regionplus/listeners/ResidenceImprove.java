@@ -38,14 +38,14 @@ public class ResidenceImprove implements Listener {
                         new Throwable().getStackTrace()[0]);
                 return;
             }
-        // Checking the Residence permission.
+            // Checking the Residence permission.
         } else if (entity instanceof Animals) {
             if (CorePlusAPI.getConditionManager().checkFlag(loc, "animalkilling", false)) {
                 CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), "Residence-Prevent", entityType, "Potion-Damage", "return", "animalkilling=true",
                         new Throwable().getStackTrace()[0]);
                 return;
             }
-        // Checking the PvPManager status.
+            // Checking the PvPManager status.
         } else if (entity instanceof Player) {
             Player player = (Player) entity;
             if (CorePlusAPI.getPlayerManager().isPvPEnabled(player, true)) {
