@@ -7,7 +7,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ConfigPath {
     public ConfigPath() {
@@ -191,7 +193,7 @@ public class ConfigPath {
     //  ============================================== //
     private void setResidence() {
         if (!ConfigHandler.getConfig("config.yml").getBoolean("Residence.Enable") ||
-                !ConfigHandler.getDepends().ResidenceEnabled()) {
+                !CorePlusAPI.getDependManager().ResidenceEnabled()) {
             return;
         }
 

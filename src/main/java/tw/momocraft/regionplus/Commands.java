@@ -19,8 +19,9 @@ public class Commands implements CommandExecutor {
                 CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender, "");
                 CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                         ConfigHandler.getConfigPath().getMsgTitle(), sender);
-                CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + RegionPlus.getInstance().getDescription().getName()
-                        + " &ev" + RegionPlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
+                CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender,
+                        "&f " + RegionPlus.getInstance().getDescription().getName()
+                                + " &ev" + RegionPlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
                 CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                         ConfigHandler.getConfigPath().getMsgHelp(), sender);
                 CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender, "");
@@ -36,8 +37,9 @@ public class Commands implements CommandExecutor {
                     CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender, "");
                     CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                             ConfigHandler.getConfigPath().getMsgTitle(), sender);
-                    CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + RegionPlus.getInstance().getDescription().getName()
-                            + " &ev" + RegionPlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
+                    CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender,
+                            "&f " + RegionPlus.getInstance().getDescription().getName()
+                                    + " &ev" + RegionPlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
                     CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                             ConfigHandler.getConfigPath().getMsgHelp(), sender);
                     if (CorePlusAPI.getPlayerManager().hasPerm(sender, "regionplus.command.reload")) {
@@ -90,9 +92,10 @@ public class Commands implements CommandExecutor {
                 return true;
             case "version":
                 if (CorePlusAPI.getPlayerManager().hasPerm(sender, "regionplus.command.version")) {
-                    CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender, "&f " + RegionPlus.getInstance().getDescription().getName()
-                            + " &ev" + RegionPlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                    CorePlusAPI.getUpdateManager().check(ConfigHandler.getPrefix(), sender,
+                    CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender,
+                            "&f " + RegionPlus.getInstance().getDescription().getName()
+                                    + " &ev" + RegionPlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
+                    CorePlusAPI.getUpdateManager().check(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), sender,
                             RegionPlus.getInstance().getName(), RegionPlus.getInstance().getDescription().getVersion(), true);
                 } else {
                     CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),

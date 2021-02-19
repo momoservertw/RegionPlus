@@ -17,7 +17,7 @@ public class ConfigHandler {
 
     private static YamlConfiguration configYAML;
     private static Dependence depends;
-    private static ConfigPath region;
+    private static ConfigPath configPath;
 
 
     public static void generateData(boolean reload) {
@@ -32,7 +32,7 @@ public class ConfigHandler {
             }
         }
         if (!reload) {
-            CorePlusAPI.getUpdateManager().check(getPluginPrefix(), Bukkit.getConsoleSender(),
+            CorePlusAPI.getUpdateManager().check(getPluginName(), getPluginPrefix(), Bukkit.getConsoleSender(),
                     RegionPlus.getInstance().getDescription().getName(),
                     RegionPlus.getInstance().getDescription().getVersion(), true);
         }
@@ -118,11 +118,11 @@ public class ConfigHandler {
     }
 
     public static ConfigPath getConfigPath() {
-        return region;
+        return configPath;
     }
 
     public static void setRegionConfig(ConfigPath regionConfig) {
-        region = regionConfig;
+        configPath = regionConfig;
     }
 
     public static String getPluginName() {

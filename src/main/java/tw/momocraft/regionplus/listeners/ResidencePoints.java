@@ -2,7 +2,10 @@ package tw.momocraft.regionplus.listeners;
 
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.api.ResidenceApi;
-import com.bekvon.bukkit.residence.event.*;
+import com.bekvon.bukkit.residence.event.ResidenceCreationEvent;
+import com.bekvon.bukkit.residence.event.ResidenceDeleteEvent;
+import com.bekvon.bukkit.residence.event.ResidenceOwnerChangeEvent;
+import com.bekvon.bukkit.residence.event.ResidenceSizeChangeEvent;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.CuboidArea;
 import com.bekvon.bukkit.residence.selection.SelectionManager;
@@ -100,9 +103,10 @@ public class ResidencePoints implements Listener {
                     * Math.abs(loc1.getBlockY() - loc2.getBlockY());
         }
         Residence.getInstance().getConfigManager().useActionBarOnSelection();
-        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgPointsSelect(), player,
+        CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                ConfigHandler.getConfigPath().getMsgPointsSelect(), player,
                 getPointsPlaceholders(player, size));
-        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                 "Residence-Points", player.getName(), "selectInform", "return", "show",
                 new Throwable().getStackTrace()[0]);
     }
@@ -115,7 +119,7 @@ public class ResidencePoints implements Listener {
         Player player = e.getPlayer();
         String playerName = player.getName();
         if (CorePlusAPI.getPlayerManager().hasPerm(player, "regionplus.bypass.points.limit")) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence-Points", playerName, "Create", "return", "bypass permission",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -128,17 +132,18 @@ public class ResidencePoints implements Listener {
         if (size > last) {
             e.setCancelled(true);
             // Sending "not enough points "message.
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.notEnoughMoney",
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    "Message.notEnoughMoney",
                     player, getPointsPlaceholders(player, size));
             // Sending "return money" message.
             double cost = res.getBlockSellPrice() * size;
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[9] = "money"; // %pricetype%
             placeHolders[10] = String.valueOf(cost); // %price%
-            CorePlusAPI.getPlayerManager().giveTypeMoney(player.getUniqueId(), "money", cost);
+            CorePlusAPI.getPlayerManager().giveCurrency(player.getUniqueId(), "money", cost);
             CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                     ConfigHandler.getConfigPath().getMsgCmdResReturnIgnoreY(), player, placeHolders);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence-Points", playerName, "Create Residence", "cancel", "notEnoughPoints",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -149,7 +154,7 @@ public class ResidencePoints implements Listener {
             public void run() {
                 refreshPointsMap(player);
                 sendPointsMsg(player);
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Residence-Points", playerName, "Create Residence", "success", "final",
                         new Throwable().getStackTrace()[0]);
             }
@@ -173,12 +178,13 @@ public class ResidencePoints implements Listener {
             e.setCancelled(true);
             String[] placeHolders = CorePlusAPI.getLangManager().newString();
             placeHolders[1] = newOwnerName; // %targetplayer%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.targetNotFound", owner, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    "Message.targetNotFound", owner, placeHolders);
             //  Returning the money of trade.
             if (res.isForSell()) {
                 double price = res.getSellPrice();
-                CorePlusAPI.getPlayerManager().takeTypeMoney(newOwnerUUID, "money", price);
-                CorePlusAPI.getPlayerManager().giveTypeMoney(ownerUUID, "money", price);
+                CorePlusAPI.getPlayerManager().takeCurrency(newOwnerUUID, "money", price);
+                CorePlusAPI.getPlayerManager().giveCurrency(ownerUUID, "money", price);
                 placeHolders[9] = "money"; // %pricetype%
                 placeHolders[10] = String.valueOf(price); // %price%
                 CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
@@ -187,7 +193,7 @@ public class ResidencePoints implements Listener {
             return;
         }
         if (CorePlusAPI.getPlayerManager().hasPerm(newOwner, "regionplus.bypass.points.limit")) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence", newOwnerName, "Points", "return", "bypass permission, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
@@ -201,19 +207,21 @@ public class ResidencePoints implements Listener {
             placeHolders[1] = newOwnerName; // %targetplayer%
             placeHolders[9] = "res_points"; // %pricetype%
             placeHolders[10] = String.valueOf(size); // %price%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.notEnoughMoney", newOwner, placeHolders);
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.notEnoughMoneyTarget", owner, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    "Message.notEnoughMoney", newOwner, placeHolders);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    "Message.notEnoughMoneyTarget", owner, placeHolders);
             //  Returning the money of trade.
             if (res.isForSell()) {
                 double price = res.getSellPrice();
-                CorePlusAPI.getPlayerManager().takeTypeMoney(newOwnerUUID, "money", price);
-                CorePlusAPI.getPlayerManager().giveTypeMoney(ownerUUID, "money", price);
+                CorePlusAPI.getPlayerManager().takeCurrency(newOwnerUUID, "money", price);
+                CorePlusAPI.getPlayerManager().giveCurrency(ownerUUID, "money", price);
                 placeHolders[9] = "money"; // %pricetype%
                 placeHolders[10] = String.valueOf(price); // %price%
                 CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                         ConfigHandler.getConfigPath().getMsgResReturnMoney(), owner, placeHolders);
             }
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence-Points", newOwnerName, "Owner Change", "cancel", "targetNotEnoughPoints, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
@@ -228,7 +236,7 @@ public class ResidencePoints implements Listener {
                     refreshPointsMap(owner);
                     sendPointsMsg(owner);
                 }
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Residence-Points", newOwnerName, "Owner Change", "success", "final",
                         new Throwable().getStackTrace()[0]);
             }
@@ -243,7 +251,7 @@ public class ResidencePoints implements Listener {
         Player player = e.getPlayer();
         String playerName = player.getName();
         if (CorePlusAPI.getPlayerManager().hasPerm(player, "regionplus.bypass.points.limit")) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence-Points", playerName, "Size Change", "return", "bypass permission",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -260,13 +268,13 @@ public class ResidencePoints implements Listener {
                 CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                         ConfigHandler.getConfigPath().getMsgSizeChangeFailed(), player);
                 if (cost >= 0) {
-                    CorePlusAPI.getPlayerManager().giveTypeMoney(player.getUniqueId(), "money", cost);
+                    CorePlusAPI.getPlayerManager().giveCurrency(player.getUniqueId(), "money", cost);
                 } else {
-                    CorePlusAPI.getPlayerManager().takeTypeMoney(player.getUniqueId(), "money", -cost);
+                    CorePlusAPI.getPlayerManager().takeCurrency(player.getUniqueId(), "money", -cost);
                 }
                 CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                         ConfigHandler.getConfigPath().getMsgResReturnMoney(), player);
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Residence-Points", playerName, "Size Change", "fail", "Limit Y size change",
                         new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
@@ -276,15 +284,16 @@ public class ResidencePoints implements Listener {
         // Prevent multiple areas residence size change.
         if (ConfigHandler.getConfigPath().isPointsPreventAreasSizeChange()) {
             if (res.getAreaCount() > 1) {
-                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgSizeChangeFailed(), player);
+                CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                        ConfigHandler.getConfigPath().getMsgSizeChangeFailed(), player);
                 if (cost >= 0) {
-                    CorePlusAPI.getPlayerManager().giveTypeMoney(player.getUniqueId(), "money", cost);
+                    CorePlusAPI.getPlayerManager().giveCurrency(player.getUniqueId(), "money", cost);
                 } else {
-                    CorePlusAPI.getPlayerManager().takeTypeMoney(player.getUniqueId(), "money", -cost);
+                    CorePlusAPI.getPlayerManager().takeCurrency(player.getUniqueId(), "money", -cost);
                 }
                 CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                         ConfigHandler.getConfigPath().getMsgResReturnMoney(), player);
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Residence-Points", playerName, "Size Change", "fail", "Multiple areas size change",
                         new Throwable().getStackTrace()[0]);
                 e.setCancelled(true);
@@ -296,7 +305,7 @@ public class ResidencePoints implements Listener {
                 @Override
                 public void run() {
                     refreshPointsMap(e.getPlayer());
-                    CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+                    CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                             "Residence-Points", playerName, "Size Change", "return", "Contract, " + resName,
                             new Throwable().getStackTrace()[0]);
                 }
@@ -310,10 +319,12 @@ public class ResidencePoints implements Listener {
             placeHolders[9] = "res_points"; // %pricetype%
             placeHolders[10] = String.valueOf(size); // %price%
             placeHolders[11] = String.valueOf(last); // %balance%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), "Message.notEnoughMoney", player, placeHolders);
-            CorePlusAPI.getPlayerManager().giveTypeMoney(player.getUniqueId(), "money", cost);
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(), ConfigHandler.getConfigPath().getMsgResReturnMoney(), player, placeHolders);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    "Message.notEnoughMoney", player, placeHolders);
+            CorePlusAPI.getPlayerManager().giveCurrency(player.getUniqueId(), "money", cost);
+            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+                    ConfigHandler.getConfigPath().getMsgResReturnMoney(), player, placeHolders);
+            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence-Points", playerName, "Size Change", "cancel", "notEnoughPoints, " + resName,
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -325,7 +336,7 @@ public class ResidencePoints implements Listener {
             public void run() {
                 refreshPointsMap(player);
                 sendPointsMsg(player);
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(),
+                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Residence-Points", playerName, "Size Change", "success", "final",
                         new Throwable().getStackTrace()[0]);
             }
@@ -489,13 +500,15 @@ public class ResidencePoints implements Listener {
                 continue;
             }
             price = area.getXSize() * area.getZSize() * (area.getYSize() - 1) * res.getBlockSellPrice();
-            CorePlusAPI.getPlayerManager().giveTypeMoney(res.getOwnerUUID(), "money", price);
-            CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(), "Return - &6" + resName + ": &e" + price + ", &a" + res.getOwner());
+            CorePlusAPI.getPlayerManager().giveCurrency(res.getOwnerUUID(), "money", price);
+            CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(),
+                    "Return - &6" + resName + ": &e" + price + ", &a" + res.getOwner());
         }
         new BukkitRunnable() {
             @Override
             public void run() {
-                CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender, "&6Succeed to return money to all residences!");
+                CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender,
+                        "&6Succeed to return money to all residences!");
             }
         }.runTaskLater(RegionPlus.getInstance(), 40);
     }

@@ -96,7 +96,7 @@ public class TabComplete implements TabCompleter {
                             }
                         }
                     } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(tw.momocraft.coreplus.handlers.ConfigHandler.isDebugging(), tw.momocraft.coreplus.handlers.ConfigHandler.getPluginPrefix(), e);
+                        UtilsHandler.getLang().sendDebugTrace(tw.momocraft.coreplus.handlers.ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
                     }
                 }
                 break;
@@ -117,7 +117,7 @@ public class TabComplete implements TabCompleter {
                             }
                         }
                     } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(tw.momocraft.coreplus.handlers.ConfigHandler.isDebugging(), tw.momocraft.coreplus.handlers.ConfigHandler.getPluginPrefix(), e);
+                        UtilsHandler.getLang().sendDebugTrace(tw.momocraft.coreplus.handlers.ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
                     }
                 }
                 break;
@@ -138,7 +138,7 @@ public class TabComplete implements TabCompleter {
                             }
                         }
                     } catch (Exception e) {
-                        UtilsHandler.getLang().sendDebugTrace(tw.momocraft.coreplus.handlers.ConfigHandler.isDebugging(), tw.momocraft.coreplus.handlers.ConfigHandler.getPluginPrefix(), e);
+                        UtilsHandler.getLang().sendDebugTrace(tw.momocraft.coreplus.handlers.ConfigHandler.isDebugging(), ConfigHandler.getPluginPrefix(), e);
                     }
                 }
                 break;
