@@ -12,7 +12,7 @@ import tw.momocraft.regionplus.handlers.ConfigHandler;
 
 public class Vehicles implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVehiclePickupEvent(VehiclePickupEvent e) {
         if (!ConfigHandler.getConfigPath().isResVehicles()) {
             return;
@@ -33,7 +33,7 @@ public class Vehicles implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVehiclePlaceEvent(VehiclePlaceEvent e) {
         if (!ConfigHandler.getConfigPath().isResVehicles()) {
             return;
@@ -52,7 +52,7 @@ public class Vehicles implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVehicleEnterEvent(VehicleEnterEvent e) {
         if (!ConfigHandler.getConfigPath().isResVehicles()) {
             return;

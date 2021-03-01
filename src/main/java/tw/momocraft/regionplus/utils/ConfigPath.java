@@ -5,11 +5,11 @@ import com.bekvon.bukkit.residence.Residence;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import tw.momocraft.coreplus.api.CorePlusAPI;
+import tw.momocraft.coreplus.handlers.UtilsHandler;
+import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ConfigPath {
     public ConfigPath() {
@@ -25,7 +25,7 @@ public class ConfigPath {
     private String msgVersion;
     private String msgCmdPoints;
     private String msgCmdPointsOther;
-    private String msgCmdPointslevel;
+    private String msgCmdPointsLevel;
     private String msgCmdResUpdateFlags;
     private String msgCmdResUpdateMessages;
     private String msgCmdResReturnIgnoreY;
@@ -135,23 +135,43 @@ public class ConfigPath {
     //         Setup all configuration                 //
     //  ============================================== //
     private void setUp() {
-        setupMsg();
+        setMsg();
         setWorldControl();
         setResidence();
         setVisitor();
+
+        sendSetupMsg();
+    }
+
+    private void sendSetupMsg() {
+        List<String> list = new ArrayList<>(RegionPlus.getInstance().getDescription().getDepend());
+        list.addAll(RegionPlus.getInstance().getDescription().getSoftDepend());
+        UtilsHandler.getLang().sendHookMsg(ConfigHandler.getPluginPrefix(), "plugins", list);
+
+        String string =
+                "climb" + " "
+                        + "crawl" + " "
+                        + "mobkick" + " "
+                        + "roofhang" + " "
+                        + "slide" + " "
+                        + "swim" + " "
+                        + "crawl" + " "
+                        + "wallkick";
+        CorePlusAPI.getLangManager().sendHookMsg(ConfigHandler.getPluginPrefix(), "Residence flags", Arrays.asList(string.split("\\s*")));
+
     }
 
     //  ============================================== //
     //         Message Setter                          //
     //  ============================================== //
-    private void setupMsg() {
+    private void setMsg() {
         msgTitle = ConfigHandler.getConfig("config.yml").getString("Message.Commands.title");
         msgHelp = ConfigHandler.getConfig("config.yml").getString("Message.Commands.help");
         msgReload = ConfigHandler.getConfig("config.yml").getString("Message.Commands.reload");
         msgVersion = ConfigHandler.getConfig("config.yml").getString("Message.Commands.version");
         msgCmdPoints = ConfigHandler.getConfig("config.yml").getString("Message.Commands.points");
         msgCmdPointsOther = ConfigHandler.getConfig("config.yml").getString("Message.Commands.pointsOther");
-        msgCmdPointslevel = ConfigHandler.getConfig("config.yml").getString("Message.Commands.pointslevel");
+        msgCmdPointsLevel = ConfigHandler.getConfig("config.yml").getString("Message.Commands.pointsLevel");
         msgCmdResUpdateFlags = ConfigHandler.getConfig("config.yml").getString("Message.Commands.updateFlags");
         msgCmdResUpdateMessages = ConfigHandler.getConfig("config.yml").getString("Message.Commands.updateMessages");
         msgCmdResReturnIgnoreY = ConfigHandler.getConfig("config.yml").getString("Message.Commands.resReturnIgnoreY");
@@ -192,6 +212,9 @@ public class ConfigPath {
     //         Residence Setter                        //
     //  ============================================== //
     private void setResidence() {
+        if (!CorePlusAPI.getDependManager().ResidenceEnabled()) {
+            return;
+        }
         if (!ConfigHandler.getConfig("config.yml").getBoolean("Residence.Enable") ||
                 !CorePlusAPI.getDependManager().ResidenceEnabled()) {
             return;
@@ -317,8 +340,8 @@ public class ConfigPath {
         return msgCmdPointsOther;
     }
 
-    public String getMsgCmdPointslevel() {
-        return msgCmdPointslevel;
+    public String getMsgCmdPointsLevel() {
+        return msgCmdPointsLevel;
     }
 
     public String getMsgCmdResUpdateFlags() {

@@ -3,11 +3,9 @@ package tw.momocraft.regionplus.handlers;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import tw.momocraft.coreplus.CorePlus;
 import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.regionplus.RegionPlus;
 import tw.momocraft.regionplus.utils.ConfigPath;
-import tw.momocraft.regionplus.utils.Dependence;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -16,14 +14,13 @@ import java.time.format.DateTimeFormatter;
 public class ConfigHandler {
 
     private static YamlConfiguration configYAML;
-    private static Dependence depends;
     private static ConfigPath configPath;
 
 
     public static void generateData(boolean reload) {
         genConfigFile("config.yml");
-        setDepends(new Dependence());
-        setRegionConfig(new ConfigPath());
+        UtilsHandler.setup();
+        setConfigPath(new ConfigPath());
 
         if (CorePlusAPI.getDependManager().LuckPermsEnabled()) {
             if (getConfigPath().isresUpdateFlagsRemove()) {
@@ -61,7 +58,7 @@ public class ConfigHandler {
             try {
                 RegionPlus.getInstance().saveResource(fileName, false);
             } catch (Exception e) {
-                CorePlusAPI.getLangManager().sendErrorMsg(ConfigHandler.getPluginName(), "&cCannot save " + fileName + " to disk!");
+                CorePlusAPI.getLangManager().sendErrorMsg(ConfigHandler.getPluginName(), "Cannot save " + fileName + " to disk!");
                 return null;
             }
         }
@@ -109,24 +106,16 @@ public class ConfigHandler {
         getConfig(fileName).options().copyDefaults(false);
     }
 
-    public static Dependence getDepends() {
-        return depends;
-    }
-
-    private static void setDepends(Dependence depend) {
-        depends = depend;
-    }
-
     public static ConfigPath getConfigPath() {
         return configPath;
     }
 
-    public static void setRegionConfig(ConfigPath regionConfig) {
-        configPath = regionConfig;
+    public static void setConfigPath(ConfigPath configPaths) {
+        configPath = configPaths;
     }
 
     public static String getPluginName() {
-        return CorePlus.getInstance().getDescription().getName();
+        return RegionPlus.getInstance().getDescription().getName();
     }
 
     public static String getPluginPrefix() {

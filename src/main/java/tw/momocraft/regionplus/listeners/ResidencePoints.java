@@ -33,7 +33,7 @@ import java.util.UUID;
 
 public class ResidencePoints implements Listener {
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
         if (!ConfigHandler.getConfigPath().isPoints()) {
             return;
@@ -46,7 +46,7 @@ public class ResidencePoints implements Listener {
         }.runTaskLater(RegionPlus.getInstance(), 20);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResidenceDeleteEvent(ResidenceDeleteEvent e) {
         if (!ConfigHandler.getConfigPath().isPoints()) {
             return;
@@ -59,7 +59,7 @@ public class ResidencePoints implements Listener {
         }.runTaskLater(RegionPlus.getInstance(), 10);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerQuitEvent(PlayerQuitEvent e) {
         if (!ConfigHandler.getConfigPath().isPoints()) {
             return;

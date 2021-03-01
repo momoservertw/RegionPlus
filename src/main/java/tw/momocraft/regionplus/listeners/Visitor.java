@@ -19,7 +19,7 @@ import tw.momocraft.regionplus.handlers.ConfigHandler;
 public class Visitor implements Listener {
 
     // Use-Item: Allow-Consume
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVisitorItemsConsume(PlayerItemConsumeEvent e) {
         if (!ConfigHandler.getConfigPath().isVisUseItem()) {
             return;
@@ -60,7 +60,7 @@ public class Visitor implements Listener {
         }
         // Allow-ItemJoin
         if (ConfigHandler.getConfigPath().isVisItemJoin()) {
-            if (CorePlusAPI.getUtilsManager().isCustomItem(player.getInventory().getItemInMainHand())) {
+            if (CorePlusAPI.getConditionManager().isCustomItem(player.getInventory().getItemInMainHand())) {
                 CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Visitor", playerName, "Use-Item: Consume", "bypass", "ItemJoin",
                         new Throwable().getStackTrace()[0]);
@@ -79,7 +79,7 @@ public class Visitor implements Listener {
     }
 
     // Use-Item: Allow-Bucket
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVisitorItemsBucket(PlayerBucketFillEvent e) {
         if (!ConfigHandler.getConfigPath().isVisUseItem()) {
             return;
@@ -121,7 +121,7 @@ public class Visitor implements Listener {
         }
         // Allow-ItemJoin
         if (ConfigHandler.getConfigPath().isVisItemJoin()) {
-            if (CorePlusAPI.getUtilsManager().isCustomItem(player.getInventory().getItemInMainHand())) {
+            if (CorePlusAPI.getConditionManager().isCustomItem(player.getInventory().getItemInMainHand())) {
                 CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Visitor", playerName, "Use-Item: Bucket", "bypass", "ItemJoin",
                         new Throwable().getStackTrace()[0]);
@@ -140,7 +140,7 @@ public class Visitor implements Listener {
     }
 
     // Use-Item: Fishing
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVisitorItemsFishing(PlayerFishEvent e) {
         if (!ConfigHandler.getConfigPath().isVisUseItem()) {
             return;
@@ -182,7 +182,7 @@ public class Visitor implements Listener {
         }
         // Allow-ItemJoin
         if (ConfigHandler.getConfigPath().isVisItemJoin()) {
-            if (CorePlusAPI.getUtilsManager().isCustomItem(player.getInventory().getItemInMainHand())) {
+            if (CorePlusAPI.getConditionManager().isCustomItem(player.getInventory().getItemInMainHand())) {
                 CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Visitor", playerName, "Use-Item: Fishing", "bypass", "ItemJoin",
                         new Throwable().getStackTrace()[0]);
@@ -201,7 +201,7 @@ public class Visitor implements Listener {
     }
 
     // Use-Item: Allow-Projectile
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVisitorItemsProjectile(ProjectileLaunchEvent e) {
         if (!ConfigHandler.getConfigPath().isVisUseItem()) {
             return;
@@ -246,7 +246,7 @@ public class Visitor implements Listener {
         }
         // Allow-ItemJoin
         if (ConfigHandler.getConfigPath().isVisItemJoin()) {
-            if (CorePlusAPI.getUtilsManager().isCustomItem(player.getInventory().getItemInMainHand())) {
+            if (CorePlusAPI.getConditionManager().isCustomItem(player.getInventory().getItemInMainHand())) {
                 CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Visitor", playerName, "Use-Item: Projectile", "bypass", "ItemJoin",
                         new Throwable().getStackTrace()[0]);
@@ -265,7 +265,7 @@ public class Visitor implements Listener {
     }
 
     // Interact-Entity
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVisitorInteractEntities(PlayerInteractEntityEvent e) {
         if (!ConfigHandler.getConfigPath().isVisInterEnt()) {
             return;
@@ -320,7 +320,7 @@ public class Visitor implements Listener {
     }
 
     // Interact-Block
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent e) {
         if (!ConfigHandler.getConfigPath().isVisInterBlock()) {
             return;
@@ -357,7 +357,7 @@ public class Visitor implements Listener {
             }
             // Allow-Use
             if (ConfigHandler.getConfigPath().isVisInterBlockUse()) {
-                if (CorePlusAPI.getUtilsManager().isCanUse(blockType)) {
+                if (CorePlusAPI.getConditionManager().isCanUse(blockType)) {
                     CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                             "Visitor", playerName, "Interact-Block: Use", "return",
                             new Throwable().getStackTrace()[0]);
@@ -409,7 +409,7 @@ public class Visitor implements Listener {
             String blockType = block.getType().name();
             // Allow-Use
             if (ConfigHandler.getConfigPath().isVisInterBlockUse()) {
-                if (CorePlusAPI.getUtilsManager().isCanUse(blockType)) {
+                if (CorePlusAPI.getConditionManager().isCanUse(blockType)) {
                     CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                             "Visitor", playerName, "Interact-Block: Use", "return",
                             new Throwable().getStackTrace()[0]);
@@ -418,7 +418,7 @@ public class Visitor implements Listener {
             }
             // Allow-Container
             if (ConfigHandler.getConfigPath().isVisInterBlockCont()) {
-                if (CorePlusAPI.getUtilsManager().isContainer(blockType)) {
+                if (CorePlusAPI.getConditionManager().isContainer(blockType)) {
                     CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                             "Visitor", playerName, "Interact-Block: Container", "return",
                             new Throwable().getStackTrace()[0]);
@@ -438,7 +438,7 @@ public class Visitor implements Listener {
     }
 
     // Drop-Item
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVisitorDropItems(PlayerDropItemEvent e) {
         if (!ConfigHandler.getConfigPath().isVisDropItem()) {
             return;
@@ -483,7 +483,7 @@ public class Visitor implements Listener {
     }
 
     // Pickup-Item
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVisitorPickupItems(EntityPickupItemEvent e) {
         if (!ConfigHandler.getConfigPath().isVisitor()) {
             return;
@@ -533,7 +533,7 @@ public class Visitor implements Listener {
         e.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVisitorDamageEntities(EntityDamageByEntityEvent e) {
         if (!ConfigHandler.getConfigPath().isVisitor()) {
             return;
@@ -593,7 +593,7 @@ public class Visitor implements Listener {
         e.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerDeathEvent(PlayerDeathEvent e) {
         if (!ConfigHandler.getConfigPath().isVisitor()) {
             return;

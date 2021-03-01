@@ -17,7 +17,7 @@ import java.util.UUID;
 public class VisitorResidence implements Listener {
 
     // Residence: Get
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResidenceOwnerChangeEvent(ResidenceOwnerChangeEvent e) {
         if (!ConfigHandler.getConfigPath().isVisResGet()) {
             return;
@@ -81,7 +81,7 @@ public class VisitorResidence implements Listener {
     }
 
     // Residence: Create
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVisitorResCreate(ResidenceCreationEvent e) {
         if (!ConfigHandler.getConfigPath().isVisResCreate()) {
             return;

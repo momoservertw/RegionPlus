@@ -2,12 +2,15 @@ package tw.momocraft.regionplus.listeners;
 
 import me.DeeCaaD.SurvivalMechanics.Events.*;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import tw.momocraft.coreplus.api.CorePlusAPI;
 import tw.momocraft.regionplus.handlers.ConfigHandler;
 
 public class SurvivalMechanics implements Listener {
 
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void climb(PlayerToggleClimbEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
@@ -26,6 +29,7 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerToggleCrawl(PlayerToggleCrawlEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
@@ -43,6 +47,7 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void mobkick(PlayerToggleMobkickEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
@@ -60,6 +65,7 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void roofhang(PlayerToggleRoofhangEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
@@ -77,6 +83,7 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void slide(PlayerToggleSlideEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
@@ -94,6 +101,7 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void swim(PlayerToggleSwimEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
 
@@ -112,7 +120,8 @@ public class SurvivalMechanics implements Listener {
         }
     }
 
-    public void walkkick(PlayerToggleWallkickEvent e) {
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void wallkick(PlayerToggleWallkickEvent e) {
         if (!ConfigHandler.getConfigPath().isResSurvivalMechanics()) {
             return;
         }

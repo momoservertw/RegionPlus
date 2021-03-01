@@ -10,7 +10,7 @@ import tw.momocraft.regionplus.handlers.ConfigHandler;
 
 public class WorldControl implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityExplodeEvent(EntityExplodeEvent e) {
         if (!ConfigHandler.getConfigPath().isWorldPreventExplode()) {
             return;
@@ -20,7 +20,7 @@ public class WorldControl implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockExplodeEvent(BlockExplodeEvent e) {
         if (!ConfigHandler.getConfigPath().isWorldPreventExplode()) {
             return;

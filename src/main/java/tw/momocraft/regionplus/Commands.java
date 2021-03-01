@@ -64,7 +64,7 @@ public class Commands implements CommandExecutor {
                     }
                     if (CorePlusAPI.getPlayerManager().hasPerm(sender, "regionplus.command.pointslevel")) {
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
-                                ConfigHandler.getConfigPath().getMsgCmdPointslevel(), sender);
+                                ConfigHandler.getConfigPath().getMsgCmdPointsLevel(), sender);
                     }
                     if (CorePlusAPI.getPlayerManager().hasPerm(sender, "regionplus.command.points")) {
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
@@ -140,8 +140,6 @@ public class Commands implements CommandExecutor {
                         CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                                 ConfigHandler.getConfigPath().getMsgCmdPointsOther(), sender);
                     }
-
-
                 } else {
                     CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                             "Message.noPermission", sender);
@@ -179,6 +177,7 @@ public class Commands implements CommandExecutor {
             case "pointslevel":
                 if (CorePlusAPI.getPlayerManager().hasPerm(sender, "regionplus.command.pointslevel")) {
                     if (args[1].equalsIgnoreCase("promote")) {
+                        // rgp pointslevel promote <player>
                         if (length == 3) {
                             String[] placeHolders = CorePlusAPI.getLangManager().newString();
                             placeHolders[1] = args[2]; // %targetplayer%
@@ -191,6 +190,7 @@ public class Commands implements CommandExecutor {
                             CorePlusAPI.getPlayerManager().changePermLevel(player.getUniqueId(),
                                     "regionplus.points.level.", 1, 0);
                             return true;
+                            // rgp pointslevel promote <player> <level>
                         } else if (length == 4) {
                             String[] placeHolders = CorePlusAPI.getLangManager().newString();
                             placeHolders[1] = args[2]; // %targetplayer%
@@ -205,7 +205,7 @@ public class Commands implements CommandExecutor {
                                         "regionplus.points.level.", Integer.parseInt(args[3]), 0);
                             } catch (Exception ex) {
                                 CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
-                                        ConfigHandler.getConfigPath().getMsgCmdPointslevel(), sender);
+                                        ConfigHandler.getConfigPath().getMsgCmdPointsLevel(), sender);
                             }
                             return true;
                         }
@@ -236,13 +236,13 @@ public class Commands implements CommandExecutor {
                                         "regionplus.points.level.", Integer.parseInt(args[3]), 0);
                             } catch (Exception ex) {
                                 CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
-                                        ConfigHandler.getConfigPath().getMsgCmdPointslevel(), sender);
+                                        ConfigHandler.getConfigPath().getMsgCmdPointsLevel(), sender);
                             }
                             return true;
                         }
                     }
                     CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
-                            ConfigHandler.getConfigPath().getMsgCmdPointslevel(), sender);
+                            ConfigHandler.getConfigPath().getMsgCmdPointsLevel(), sender);
                 } else {
                     CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                             "Message.noPermission", sender);

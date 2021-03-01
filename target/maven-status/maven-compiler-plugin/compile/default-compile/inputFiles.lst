@@ -1,6 +1,4 @@
-C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\utils\Dependence.java
 C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\listeners\SurvivalMechanics.java
-C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\utils\TabComplete.java
 C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\listeners\VisitorResidence.java
 C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\listeners\ResidencePoints.java
 C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\listeners\ResidenceImprove.java
@@ -9,7 +7,9 @@ C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\ha
 C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\listeners\WorldControl.java
 C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\listeners\Vehicles.java
 C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\RegionPlus.java
+C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\TabComplete.java
 C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\utils\ResidenceEdit.java
 C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\listeners\Visitor.java
-C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\handlers\RegisterHandler.java
+C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\handlers\UtilsHandler.java
+C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\handlers\DependHandler.java
 C:\Users\Sayuri\IdeaProjects\RegionPlus\src\main\java\tw\momocraft\regionplus\utils\ConfigPath.java

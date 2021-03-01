@@ -16,7 +16,7 @@ import tw.momocraft.regionplus.handlers.ConfigHandler;
 public class ResidenceImprove implements Listener {
 
     // Potion-Damage
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResPotionDamage(EntityDamageEvent e) {
         if (!ConfigHandler.getConfigPath().isResPreventPotion()) {
             return;
@@ -76,7 +76,7 @@ public class ResidenceImprove implements Listener {
     }
 
     // Enderman-Pickup-Block: destroy
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResEndermanPickup(EntityChangeBlockEvent e) {
         if (!ConfigHandler.getConfigPath().isResPreventEndermanPick()) {
             return;
@@ -101,7 +101,7 @@ public class ResidenceImprove implements Listener {
     // Item-Frame-Destroy: destroy
     // Armor-Stand-Destroy: destroy
     // Ender-Crystal-Destroy: destroy
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResEntityDamageEvent(EntityDamageEvent e) {
         if (!ConfigHandler.getConfigPath().isResPrevent()) {
             return;
@@ -141,7 +141,7 @@ public class ResidenceImprove implements Listener {
     }
 
     // Zombie-Door-Destruction: destroy
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResZombieDoor(EntityBreakDoorEvent e) {
         if (!ConfigHandler.getConfigPath().isResPreventZombieDoor()) {
             return;
@@ -163,7 +163,7 @@ public class ResidenceImprove implements Listener {
     }
 
     // Block-Damage: destroy
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockDamageEvent(BlockDamageEvent e) {
         if (!ConfigHandler.getConfigPath().isResPreventBlockDamage()) {
             return;
