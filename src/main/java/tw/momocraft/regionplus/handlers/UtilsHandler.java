@@ -1,16 +1,15 @@
-package tw.momocraft.entityplus.handlers;
+package tw.momocraft.regionplus.handlers;
 
-import tw.momocraft.coreplus.utils.Dependence;
 
 public class UtilsHandler {
 
-    private static Dependence dependence;
+    private static DependHandler dependence;
 
     public static void setup() {
-        dependence = new Dependence();
+        dependence = new DependHandler();
     }
 
-    public static Dependence getDepend() {
+    public static DependHandler getDepend() {
         return dependence;
     }
 
