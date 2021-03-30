@@ -19,17 +19,17 @@ public class ConfigHandler {
 
     public static void generateData(boolean reload) {
         genConfigFile("config.yml");
-        UtilsHandler.setup();
+        UtilsHandler.setupFirst(reload);
         setConfigPath(new ConfigPath());
 
-        if (CorePlusAPI.getDependManager().LuckPermsEnabled()) {
+        if (CorePlusAPI.getDepend().LuckPermsEnabled()) {
             if (getConfigPath().isresUpdateFlagsRemove()) {
-                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&6Flags-Edit need to check the permissions of offline players.");
-                CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
+                CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&6Flags-Edit need to check the permissions of offline players.");
+                CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
             }
         }
         if (!reload) {
-            CorePlusAPI.getUpdateManager().check(getPluginName(), getPluginPrefix(), Bukkit.getConsoleSender(),
+            CorePlusAPI.getUpdate().check(getPluginName(), getPluginPrefix(), Bukkit.getConsoleSender(),
                     RegionPlus.getInstance().getDescription().getName(),
                     RegionPlus.getInstance().getDescription().getVersion(), true);
         }
@@ -58,7 +58,7 @@ public class ConfigHandler {
             try {
                 RegionPlus.getInstance().saveResource(fileName, false);
             } catch (Exception e) {
-                CorePlusAPI.getLangManager().sendErrorMsg(ConfigHandler.getPluginName(), "Cannot save " + fileName + " to disk!");
+                CorePlusAPI.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Cannot save " + fileName + " to disk!");
                 return null;
             }
         }
@@ -99,7 +99,7 @@ public class ConfigHandler {
                     File configFile = new File(filePath, fileName);
                     configFile.delete();
                     getConfigData(filePath, fileName);
-                    CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&4The file \"" + fileName + "\" is out of date, generating a new one!");
+                    CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&4The file \"" + fileName + "\" is out of date, generating a new one!");
                 }
             }
         }

@@ -14,18 +14,17 @@ public class Vehicles implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVehiclePickupEvent(VehiclePickupEvent e) {
-        if (!ConfigHandler.getConfigPath().isResVehicles()) {
+        if (!ConfigHandler.getConfigPath().isResVehicles())
             return;
-        }
         Player player = e.getPlayer();
-        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(),
+        if (!CorePlusAPI.getCond().checkFlag(player, player.getLocation(),
                 "destroy", false) &&
                 !e.getOwner().equals(player.getName())) {
-            String[] placeHolders = CorePlusAPI.getLangManager().newString();
+            String[] placeHolders = CorePlusAPI.getLang().newString();
             placeHolders[13] = "destroy"; // %flag%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(),
+            CorePlusAPI.getLang().sendLangMsg(ConfigHandler.getPluginName(),
                     ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence", player.getName(),
                     "VehiclePickupEvent", "bypass",
                     new Throwable().getStackTrace()[0]);
@@ -35,17 +34,16 @@ public class Vehicles implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVehiclePlaceEvent(VehiclePlaceEvent e) {
-        if (!ConfigHandler.getConfigPath().isResVehicles()) {
+        if (!ConfigHandler.getConfigPath().isResVehicles())
             return;
-        }
         Player player = e.getOwner();
-        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(),
+        if (!CorePlusAPI.getCond().checkFlag(player, player.getLocation(),
                 "place", false)) {
-            String[] placeHolders = CorePlusAPI.getLangManager().newString();
+            String[] placeHolders = CorePlusAPI.getLang().newString();
             placeHolders[13] = "place"; // %flag%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                     "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence", player.getName(), "VehiclePlaceEvent", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -54,16 +52,15 @@ public class Vehicles implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onVehicleEnterEvent(VehicleEnterEvent e) {
-        if (!ConfigHandler.getConfigPath().isResVehicles()) {
+        if (!ConfigHandler.getConfigPath().isResVehicles())
             return;
-        }
         Player player = e.getPlayer();
-        if (!CorePlusAPI.getConditionManager().checkFlag(player, player.getLocation(), "use", false)) {
-            String[] placeHolders = CorePlusAPI.getLangManager().newString();
+        if (!CorePlusAPI.getCond().checkFlag(player, player.getLocation(), "use", false)) {
+            String[] placeHolders = CorePlusAPI.getLang().newString();
             placeHolders[13] = "use"; // %flag%
-            CorePlusAPI.getLangManager().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
                     "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence", player.getName(), "VehicleEnterEvent", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);

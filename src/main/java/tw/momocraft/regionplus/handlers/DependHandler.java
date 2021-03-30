@@ -19,21 +19,21 @@ public class DependHandler {
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new WorldControl(), RegionPlus.getInstance());
         RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new Visitor(), RegionPlus.getInstance());
 
-        if (CorePlusAPI.getDependManager().ResidenceEnabled()) {
+        if (CorePlusAPI.getDepend().ResidenceEnabled()) {
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new VisitorResidence(), RegionPlus.getInstance());
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidenceImprove(), RegionPlus.getInstance());
             RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new ResidencePoints(), RegionPlus.getInstance());
-            if (CorePlusAPI.getDependManager().SurvivalMechanicsEnabled()) {
+            if (CorePlusAPI.getDepend().SurvivalMechanicsEnabled()) {
                 RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new SurvivalMechanics(), RegionPlus.getInstance());
-                CorePlusAPI.getConditionManager().registerFlag("climb");
-                CorePlusAPI.getConditionManager().registerFlag("crawl");
-                CorePlusAPI.getConditionManager().registerFlag("mobkick");
-                CorePlusAPI.getConditionManager().registerFlag("roofhang");
-                CorePlusAPI.getConditionManager().registerFlag("slide");
-                CorePlusAPI.getConditionManager().registerFlag("swim");
-                CorePlusAPI.getConditionManager().registerFlag("wallkick");
+                CorePlusAPI.getCond().registerFlag("climb");
+                CorePlusAPI.getCond().registerFlag("crawl");
+                CorePlusAPI.getCond().registerFlag("mobkick");
+                CorePlusAPI.getCond().registerFlag("roofhang");
+                CorePlusAPI.getCond().registerFlag("slide");
+                CorePlusAPI.getCond().registerFlag("swim");
+                CorePlusAPI.getCond().registerFlag("wallkick");
             }
-            if (CorePlusAPI.getDependManager().VehiclesEnabled()) {
+            if (CorePlusAPI.getDepend().VehiclesEnabled()) {
                 RegionPlus.getInstance().getServer().getPluginManager().registerEvents(new Vehicles(), RegionPlus.getInstance());
             }
         }

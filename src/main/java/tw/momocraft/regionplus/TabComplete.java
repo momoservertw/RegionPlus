@@ -19,34 +19,26 @@ public class TabComplete implements TabCompleter {
         final List<String> commands = new ArrayList<>();
         int length = args.length;
         if (length == 0) {
-            if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.use")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.use"))
                 commands.add("help");
-            }
-            if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.reload")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.reload"))
                 commands.add("reload");
-            }
-            if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.version")) {
+            if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.version"))
                 commands.add("version");
-            }
-            if (CorePlusAPI.getPlayerManager().hasPerm(sender, "regionplus.command.points")) {
+            if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.points"))
                 commands.add("points");
-            }
-            if (CorePlusAPI.getPlayerManager().hasPerm(sender, "regionplus.command.residence")) {
+            if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.residence"))
                 commands.add("residence");
-            }
-            if (CorePlusAPI.getPlayerManager().hasPerm(sender, "regionplus.command.pointslevel")) {
+            if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.pointslevel"))
                 commands.add("pointslevel");
-            }
-            if (CorePlusAPI.getPlayerManager().hasPerm(sender, "regionplus.command.points")) {
+            if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.points"))
                 commands.add("points");
-            }
         }
         switch (args[0]) {
             case "points":
                 if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.points.other")) {
-                    if (length == 2) {
+                    if (length == 2)
                         commands.addAll(UtilsHandler.getPlayer().getOnlinePlayerNames());
-                    }
                 }
                 break;
             case "pointslevel":
@@ -55,7 +47,7 @@ public class TabComplete implements TabCompleter {
                         commands.add("promote");
                         commands.add("demote");
                     } else if (length == 2) {
-                        commands.addAll(CorePlusAPI.getPlayerManager().getOnlinePlayerNames());
+                        commands.addAll(CorePlusAPI.getPlayer().getOnlinePlayerNames());
                     } else if (length == 3) {
                         commands.add("1");
                         commands.add("2");

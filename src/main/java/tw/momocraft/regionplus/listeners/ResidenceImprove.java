@@ -18,31 +18,28 @@ public class ResidenceImprove implements Listener {
     // Potion-Damage
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResPotionDamage(EntityDamageEvent e) {
-        if (!ConfigHandler.getConfigPath().isResPreventPotion()) {
+        if (!ConfigHandler.getConfigPath().isResPreventPotion())
             return;
-        }
         Entity entity = e.getEntity();
         String entityType = entity.getType().name();
         String damageCause = e.getCause().name();
-        if (!damageCause.equals("POISON") && !damageCause.equals("MAGIC")) {
+        if (!damageCause.equals("POISON") && !damageCause.equals("MAGIC"))
             return;
-        }
         Location loc = entity.getLocation();
-        if (!CorePlusAPI.getConditionManager().isInResidence(loc)) {
+        if (!CorePlusAPI.getCond().isInResidence(loc))
             return;
-        }
         // Checking the Residence permission.
         if (entity instanceof Monster) {
-            if (CorePlusAPI.getConditionManager().checkFlag(loc, "mobkilling", false)) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            if (CorePlusAPI.getCond().checkFlag(loc, "mobkilling", false)) {
+                CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Residence-Prevent", entityType, "Potion-Damage", "return", "mobkilling=true",
                         new Throwable().getStackTrace()[0]);
                 return;
             }
             // Checking the Residence permission.
         } else if (entity instanceof Animals) {
-            if (CorePlusAPI.getConditionManager().checkFlag(loc, "animalkilling", false)) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            if (CorePlusAPI.getCond().checkFlag(loc, "animalkilling", false)) {
+                CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Residence-Prevent", entityType, "Potion-Damage", "return", "animalkilling=true",
                         new Throwable().getStackTrace()[0]);
                 return;
@@ -50,26 +47,26 @@ public class ResidenceImprove implements Listener {
             // Checking the PvPManager status.
         } else if (entity instanceof Player) {
             Player player = (Player) entity;
-            if (CorePlusAPI.getPlayerManager().isPvPEnabled(player)) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            if (CorePlusAPI.getPlayer().isPvPEnabled(player)) {
+                CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Residence-Prevent", entityType, "Potion-Damage", "return", "PvPManager=true",
                         new Throwable().getStackTrace()[0]);
                 return;
             } else {
-                if (CorePlusAPI.getConditionManager().checkFlag(loc, "pvp", false)) {
-                    CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+                if (CorePlusAPI.getCond().checkFlag(loc, "pvp", false)) {
+                    CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                             "Residence-Prevent", entityType, "Potion-Damage", "return", "pvp=true",
                             new Throwable().getStackTrace()[0]);
                     return;
                 }
             }
         } else {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence-Prevent", entityType, "Potion-Damage", "return", "not contains",
                     new Throwable().getStackTrace()[0]);
             return;
         }
-        CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+        CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                 "Residence-Prevent", entityType, "Potion-Damage", "cancel", "final",
                 new Throwable().getStackTrace()[0]);
         e.setCancelled(true);
@@ -78,19 +75,16 @@ public class ResidenceImprove implements Listener {
     // Enderman-Pickup-Block: destroy
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResEndermanPickup(EntityChangeBlockEvent e) {
-        if (!ConfigHandler.getConfigPath().isResPreventEndermanPick()) {
+        if (!ConfigHandler.getConfigPath().isResPreventEndermanPick())
             return;
-        }
         Entity entity = e.getEntity();
-        if (!(entity instanceof Enderman)) {
+        if (!(entity instanceof Enderman))
             return;
-        }
         Location loc = entity.getLocation();
-        if (!CorePlusAPI.getConditionManager().isInResidence(loc)) {
+        if (!CorePlusAPI.getCond().isInResidence(loc))
             return;
-        }
-        if (!CorePlusAPI.getConditionManager().checkFlag(entity.getLocation(), "destroy", false)) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+        if (!CorePlusAPI.getCond().checkFlag(entity.getLocation(), "destroy", false)) {
+            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence-Prevent", "ENDERMAN", "Enderman-Pickup-Block", "cancel", "destroy=false",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -103,14 +97,12 @@ public class ResidenceImprove implements Listener {
     // Ender-Crystal-Destroy: destroy
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResEntityDamageEvent(EntityDamageEvent e) {
-        if (!ConfigHandler.getConfigPath().isResPrevent()) {
+        if (!ConfigHandler.getConfigPath().isResPrevent())
             return;
-        }
         Entity entity = e.getEntity();
         Location loc = entity.getLocation();
-        if (!CorePlusAPI.getConditionManager().isInResidence(loc)) {
+        if (!CorePlusAPI.getCond().isInResidence(loc))
             return;
-        }
         String entityType = entity.getType().name();
         switch (entityType) {
             case "PAINTING":
@@ -132,8 +124,8 @@ public class ResidenceImprove implements Listener {
             default:
                 return;
         }
-        if (CorePlusAPI.getConditionManager().checkFlag(entity.getLocation(), "destroy", false)) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+        if (CorePlusAPI.getCond().checkFlag(entity.getLocation(), "destroy", false)) {
+            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence-Prevent", entityType, "EntityDamageEvent", "cancel", "destroy=false",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -143,19 +135,16 @@ public class ResidenceImprove implements Listener {
     // Zombie-Door-Destruction: destroy
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onResZombieDoor(EntityBreakDoorEvent e) {
-        if (!ConfigHandler.getConfigPath().isResPreventZombieDoor()) {
+        if (!ConfigHandler.getConfigPath().isResPreventZombieDoor())
             return;
-        }
         Entity entity = e.getEntity();
-        if (!(entity instanceof Zombie)) {
+        if (!(entity instanceof Zombie))
             return;
-        }
         Location loc = entity.getLocation();
-        if (!CorePlusAPI.getConditionManager().isInResidence(loc)) {
+        if (!CorePlusAPI.getCond().isInResidence(loc))
             return;
-        }
-        if (CorePlusAPI.getConditionManager().checkFlag(loc, "destroy", false)) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+        if (CorePlusAPI.getCond().checkFlag(loc, "destroy", false)) {
+            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence-Prevent", "Zombie", "Zombie-Door-Destruction", "cancel", "destroy=false",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -165,17 +154,15 @@ public class ResidenceImprove implements Listener {
     // Block-Damage: destroy
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockDamageEvent(BlockDamageEvent e) {
-        if (!ConfigHandler.getConfigPath().isResPreventBlockDamage()) {
+        if (!ConfigHandler.getConfigPath().isResPreventBlockDamage())
             return;
-        }
         e.setCancelled(false);
         Block block = e.getBlock();
         Location loc = block.getLocation();
-        if (!CorePlusAPI.getConditionManager().isInResidence(loc)) {
+        if (!CorePlusAPI.getCond().isInResidence(loc))
             return;
-        }
-        if (CorePlusAPI.getConditionManager().checkFlag(loc, "destroy", false)) {
-            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+        if (CorePlusAPI.getCond().checkFlag(loc, "destroy", false)) {
+            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                     "Residence-Prevent", block.getType().name(), "Block-Damage", "cancel", "destroy=false",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);

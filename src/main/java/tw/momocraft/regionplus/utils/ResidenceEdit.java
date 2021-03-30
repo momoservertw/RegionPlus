@@ -17,9 +17,9 @@ import java.util.*;
 public class ResidenceEdit {
 
     public static void updateFlags(CommandSender sender) {
-        CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPluginPrefix(), sender,
+        CorePlusAPI.getLang().sendMsg(ConfigHandler.getPluginPrefix(), sender,
                 "&6Starting to check residence flags...");
-        CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPluginPrefix(), sender,
+        CorePlusAPI.getLang().sendMsg(ConfigHandler.getPluginPrefix(), sender,
                 "&7The detail information is print on console.");
         boolean bypassCustom = ConfigHandler.getConfigPath().isresUpdateFlagsBypassCustom();
         List<String> bypassOwners = ConfigHandler.getConfigPath().getresUpdateFlagsByPassResOwners();
@@ -43,25 +43,25 @@ public class ResidenceEdit {
         for (String resName : resMap.keySet()) {
             res = resMap.get(resName);
             playerName = res.getOwner();
-            CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(),
+            CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),
                     "&eResidence: " + resName + " (owner: " + playerName + ")");
             // Bypass Owners.
             if (bypassOwners.contains(playerName)) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+                CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Reset-Flags", "Owner", playerName, "bypass", resName,
                         new Throwable().getStackTrace()[0]);
                 continue;
             }
             // Bypass Residences.
             if (bypassRes.contains(resName)) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+                CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Reset-Flags", "Residence", playerName, "bypass", resName,
                         new Throwable().getStackTrace()[0]);
                 continue;
             }
             // Checking the bypass permission.
-            if (CorePlusAPI.getPlayerManager().hasPerm(res.getOwnerUUID(), "regionplus.bypass.residence.reset")) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            if (CorePlusAPI.getPlayer().hasPerm(res.getOwnerUUID(), "regionplus.bypass.residence.reset")) {
+                CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Reset-Flags", "Permission", playerName, "bypass", resName,
                         new Throwable().getStackTrace()[0]);
                 break;
@@ -79,7 +79,7 @@ public class ResidenceEdit {
                         Flags.valueOf(flag);
                     } catch (Exception ex) {
                         if (!bypassCustom) {
-                            CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+                            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                                     "Reset-Flags", "Environment", playerName, "bypass", resName + ", Custom: " + flag,
                                     new Throwable().getStackTrace()[0]);
                             continue;
@@ -87,14 +87,13 @@ public class ResidenceEdit {
                         removeFlags.add(flag);
                         continue;
                     }
-                    if (group.hasFlagAccess(Flags.valueOf(flag)) || envRemoveIgnore.contains(flag)) {
+                    if (group.hasFlagAccess(Flags.valueOf(flag)) || envRemoveIgnore.contains(flag))
                         break;
-                    }
                     removeFlags.add(flag);
                 }
                 for (String removeFlag : removeFlags) {
                     resPerm.setFlag(removeFlag, FlagPermissions.FlagState.NEITHER);
-                    CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(),
+                    CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),
                             "&cRemove flag - " + removeFlag + "=remove");
                 }
             }
@@ -102,16 +101,15 @@ public class ResidenceEdit {
             if (envUpdate) {
                 for (Map.Entry<String, Boolean> defaultFlag : defaultFlags) {
                     flag = defaultFlag.getKey();
-                    if (resFlagMap.containsKey(flag) || envUpdateIgnore.contains(flag)) {
+                    if (resFlagMap.containsKey(flag) || envUpdateIgnore.contains(flag))
                         continue;
-                    }
                     if (defaultFlag.getValue()) {
                         resPerm.setFlag(flag, FlagPermissions.FlagState.TRUE);
-                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(),
+                        CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),
                                 "&aAdd flag - " + flag + "=true");
                     } else {
                         resPerm.setFlag(flag, FlagPermissions.FlagState.FALSE);
-                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(),
+                        CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),
                                 "&aAdd flag - " + flag + "=false");
                     }
                 }
@@ -130,7 +128,7 @@ public class ResidenceEdit {
                             Flags.valueOf(flag);
                         } catch (Exception ex) {
                             if (!bypassCustom) {
-                                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+                                CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                                         "Reset-Flags", "Environment", playerName, "bypass", resName + ", Custom: " + flag,
                                         new Throwable().getStackTrace()[0]);
                                 continue;
@@ -138,14 +136,13 @@ public class ResidenceEdit {
                             removeFlags.add(flag);
                             continue;
                         }
-                        if (group.hasFlagAccess(Flags.valueOf(flag)) || playerRemoveIgnore.contains(flag)) {
+                        if (group.hasFlagAccess(Flags.valueOf(flag)) || playerRemoveIgnore.contains(flag))
                             break;
-                        }
                         removeFlags.add(flag);
                     }
                     for (String removeFlag : removeFlags) {
                         resPerm.setFlag(removeFlag, FlagPermissions.FlagState.NEITHER);
-                        CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(),
+                        CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPrefix(),
                                 "&cRemove flag - " + key + ": " + removeFlag + "=remove");
                     }
                 }
@@ -154,16 +151,16 @@ public class ResidenceEdit {
         new BukkitRunnable() {
             @Override
             public void run() {
-                CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender,
+                CorePlusAPI.getLang().sendMsg(ConfigHandler.getPrefix(), sender,
                         "&6Succeed to reset all residence flags!");
             }
         }.runTaskLater(RegionPlus.getInstance(), 40);
     }
 
     public static void updateMessages(CommandSender sender) {
-        CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPluginPrefix(), sender,
+        CorePlusAPI.getLang().sendMsg(ConfigHandler.getPluginPrefix(), sender,
                 "&6Starting to check residence messagess...");
-        CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPluginPrefix(), sender,
+        CorePlusAPI.getLang().sendMsg(ConfigHandler.getPluginPrefix(), sender,
                 "&7The detail information is print on console.");
         List<String> bypassOwners = ConfigHandler.getConfigPath().getResUpdateMsgBypassResOwners();
         List<String> bypassRes = ConfigHandler.getConfigPath().getResUpdateMsgBypassRes();
@@ -176,40 +173,40 @@ public class ResidenceEdit {
             playerName = res.getOwner();
             group = res.getOwnerGroup();
             if (group.canSetEnterLeaveMessages()) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+                CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Reset-Message", "Can edit", playerName, "bypass", resName,
                         new Throwable().getStackTrace()[0]);
                 continue;
             }
             // Bypass Owners.
             if (bypassOwners.contains(playerName)) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+                CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Reset-Message", "Owner", playerName, "bypass", resName,
                         new Throwable().getStackTrace()[0]);
                 continue;
             }
             // Bypass Residences.
             if (bypassRes.contains(resName)) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+                CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Reset-Message", "Residence", playerName, "bypass", resName,
                         new Throwable().getStackTrace()[0]);
                 continue;
             }
             // Checking the bypass permission.
-            if (CorePlusAPI.getPlayerManager().hasPerm(res.getOwnerUUID(), "regionplus.bypass.residence.reset")) {
-                CorePlusAPI.getLangManager().sendFeatureMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            if (CorePlusAPI.getPlayer().hasPerm(res.getOwnerUUID(), "regionplus.bypass.residence.reset")) {
+                CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
                         "Reset-Message", "Permission", playerName, "bypass", resName,
                         new Throwable().getStackTrace()[0]);
                 break;
             }
             res.setEnterMessage(group.getDefaultEnterMessage());
             res.setLeaveMessage(group.getDefaultLeaveMessage());
-            CorePlusAPI.getLangManager().sendConsoleMsg(ConfigHandler.getPrefix(), "&cReset message - " + resName);
+            CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPrefix(), "&cReset message - " + resName);
         }
         new BukkitRunnable() {
             @Override
             public void run() {
-                CorePlusAPI.getLangManager().sendMsg(ConfigHandler.getPrefix(), sender,
+                CorePlusAPI.getLang().sendMsg(ConfigHandler.getPrefix(), sender,
                         "&6Succeed to reset all residence messages!");
             }
         }.runTaskLater(RegionPlus.getInstance(), 40);
@@ -228,11 +225,10 @@ public class ResidenceEdit {
             playerPerm = playerPerm.replace(playerName + "§f[", "");
             String[] flagArray = playerPerm.split(("\\s+"));
             for (String playerFlag : flagArray) {
-                if (playerFlag.contains("§2")) {
+                if (playerFlag.contains("§2"))
                     flagMap.put(playerFlag.substring(2), true);
-                } else {
+                else
                     flagMap.put(playerFlag.substring(2), false);
-                }
             }
             playerFlagMap.put(playerName, flagMap);
         }

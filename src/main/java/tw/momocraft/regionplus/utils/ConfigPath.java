@@ -157,7 +157,7 @@ public class ConfigPath {
                         + "swim" + " "
                         + "crawl" + " "
                         + "wallkick";
-        CorePlusAPI.getLangManager().sendHookMsg(ConfigHandler.getPluginPrefix(), "Residence flags", Arrays.asList(string.split("\\s*")));
+        CorePlusAPI.getLang().sendHookMsg(ConfigHandler.getPluginPrefix(), "Residence flags", Arrays.asList(string.split("\\s*")));
 
     }
 
@@ -198,9 +198,8 @@ public class ConfigPath {
     //         World Setter                            //
     //  ============================================== //
     private void setWorldControl() {
-        if (!ConfigHandler.getConfig("config.yml").getBoolean("World-Control.Enable")) {
+        if (!ConfigHandler.getConfig("config.yml").getBoolean("World-Control.Enable"))
             return;
-        }
         if (ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Enable")) {
             worldPreventExplode = ConfigHandler.getConfig("config.yml").getBoolean("World.Prevent.Block-Damage");
             worldPreventExplodeIgnore = ConfigHandler.getConfig("config.yml").getStringList("World.Prevent.Block-Damage.Ignore-List");
@@ -212,14 +211,11 @@ public class ConfigPath {
     //         Residence Setter                        //
     //  ============================================== //
     private void setResidence() {
-        if (!CorePlusAPI.getDependManager().ResidenceEnabled()) {
+        if (!CorePlusAPI.getDepend().ResidenceEnabled())
             return;
-        }
         if (!ConfigHandler.getConfig("config.yml").getBoolean("Residence.Enable") ||
-                !CorePlusAPI.getDependManager().ResidenceEnabled()) {
+                !CorePlusAPI.getDepend().ResidenceEnabled())
             return;
-        }
-
         resIgnoreY = Residence.getInstance().getConfigManager().isSelectionIgnoreY();
         resSurvivalMechanics = ConfigHandler.getConfig("config.yml").getBoolean("Residence.SurvivalMechanics.Enable");
         resVehicles = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Vehicles.Enable");
@@ -249,7 +245,7 @@ public class ConfigPath {
                     pointsDisplayMap.put(group.toLowerCase(), ConfigHandler.getConfig("config.yml").getString("Residence.Points.Groups." + group + ".Display", group));
                     pointsMap.put(group.toLowerCase(), ConfigHandler.getConfig("config.yml").getInt("Residence.Points.Groups." + group + ".Limit"));
                 }
-                pointsMap = CorePlusAPI.getUtilsManager().sortByValue(pointsMap);
+                pointsMap = CorePlusAPI.getUtils().sortByValue(pointsMap);
             }
         }
         if (ConfigHandler.getConfig("config.yml").getBoolean("Residence.Update-Flags.Enable")) {
@@ -274,9 +270,8 @@ public class ConfigPath {
     //  ============================================== //
     private void setVisitor() {
         visitor = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Enable");
-        if (!visitor) {
+        if (!visitor)
             return;
-        }
         if (ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Residence.Enable")) {
             visResBypass = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Residence.Bypass");
             visResCreate = ConfigHandler.getConfig("config.yml").getBoolean("Visitor.Settings.Residence.Allow-Create");
