@@ -20,11 +20,11 @@ public class Vehicles implements Listener {
         if (!CorePlusAPI.getCond().checkFlag(player, player.getLocation(),
                 "destroy", false) &&
                 !e.getOwner().equals(player.getName())) {
-            String[] placeHolders = CorePlusAPI.getLang().newString();
+            String[] placeHolders = CorePlusAPI.getMsg().newString();
             placeHolders[13] = "destroy"; // %flag%
-            CorePlusAPI.getLang().sendLangMsg(ConfigHandler.getPluginName(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(),
                     ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                     "Residence", player.getName(),
                     "VehiclePickupEvent", "bypass",
                     new Throwable().getStackTrace()[0]);
@@ -39,11 +39,11 @@ public class Vehicles implements Listener {
         Player player = e.getOwner();
         if (!CorePlusAPI.getCond().checkFlag(player, player.getLocation(),
                 "place", false)) {
-            String[] placeHolders = CorePlusAPI.getLang().newString();
+            String[] placeHolders = CorePlusAPI.getMsg().newString();
             placeHolders[13] = "place"; // %flag%
-            CorePlusAPI.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
                     "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                     "Residence", player.getName(), "VehiclePlaceEvent", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -56,11 +56,11 @@ public class Vehicles implements Listener {
             return;
         Player player = e.getPlayer();
         if (!CorePlusAPI.getCond().checkFlag(player, player.getLocation(), "use", false)) {
-            String[] placeHolders = CorePlusAPI.getLang().newString();
+            String[] placeHolders = CorePlusAPI.getMsg().newString();
             placeHolders[13] = "use"; // %flag%
-            CorePlusAPI.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
                     "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                     "Residence", player.getName(), "VehicleEnterEvent", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);

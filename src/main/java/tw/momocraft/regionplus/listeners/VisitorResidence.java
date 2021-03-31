@@ -30,49 +30,49 @@ public class VisitorResidence implements Listener {
         String ownerName = res.getOwner();
         Player owner = Bukkit.getPlayer(res.getOwner());
         if (newOwner == null) {
-            String[] placeHolders = CorePlusAPI.getLang().newString();
+            String[] placeHolders = CorePlusAPI.getMsg().newString();
             placeHolders[1] = newOwnerName; // %targetplayer%
-            CorePlusAPI.getLang().sendLangMsg(ConfigHandler.getPluginName(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(),
                     ConfigHandler.getPrefix(), "Message.targetNotFound", owner, placeHolders);
             e.setCancelled(true);
-            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(),
                     ConfigHandler.getPluginPrefix(), "Visitor", newOwnerName, "Residence: Get", "cancel", "newOwner=null, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Location
-        if (!CorePlusAPI.getCond().checkLocation(ConfigHandler.getPluginName(),
+        if (!CorePlusAPI.getCond().checkLocation(ConfigHandler.getPlugin(),
                 newOwner.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
-            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(),
                     ConfigHandler.getPluginPrefix(), "Visitor", newOwnerName, "Residence: Get", "return", "Location, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Bypass Permission
         if (CorePlusAPI.getPlayer().hasPerm(newOwner, "regionplus.bypass.visitor")) {
-            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                     "Visitor", newOwnerName, "Residence: Get", "bypass", "Permission, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Cancel
-        CorePlusAPI.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
                 ConfigHandler.getConfigPath().getMsgVisResGet(), owner);
-        CorePlusAPI.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
                 ConfigHandler.getConfigPath().getMsgVisResGetTarget(), newOwner);
         //  Returning the money of trade.
         if (res.isForSell()) {
-            String[] placeHolders = CorePlusAPI.getLang().newString();
+            String[] placeHolders = CorePlusAPI.getMsg().newString();
             placeHolders[1] = newOwnerName; // %targetplayer%
             double price = res.getSellPrice();
             CorePlusAPI.getPlayer().takeCurrency(newOwnerUUID, "money", price);
             CorePlusAPI.getPlayer().giveCurrency(ownerUUID, "money", price);
             placeHolders[9] = "money"; // %pricetype%
             placeHolders[10] = String.valueOf(price); // %price%
-            CorePlusAPI.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
                     ConfigHandler.getConfigPath().getMsgCmdResReturnIgnoreY(), owner, placeHolders);
         }
-        CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+        CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                 "Visitor", newOwnerName, "Residence: Get", "cancel", "Final, " + resName,
                 new Throwable().getStackTrace()[0]);
         e.setCancelled(true);
@@ -88,16 +88,16 @@ public class VisitorResidence implements Listener {
         String playerName = player.getName();
         Location loc = player.getLocation();
         // Location
-        if (!CorePlusAPI.getCond().checkLocation(ConfigHandler.getPluginName(), loc,
+        if (!CorePlusAPI.getCond().checkLocation(ConfigHandler.getPlugin(), loc,
                 ConfigHandler.getConfigPath().getVisLocList(), false)) {
-            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                     "Visitor", playerName, "Residence: Create", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Bypass Permission
         if (CorePlusAPI.getPlayer().hasPerm(player, "regionplus.bypass.visitor")) {
-            CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                     "Visitor", playerName, "Residence: Create", "bypass", "Permission",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -105,9 +105,9 @@ public class VisitorResidence implements Listener {
         // Cancel
         String ownerName = e.getResidence().getOwner();
         Player owner = Bukkit.getPlayer(ownerName);
-        CorePlusAPI.getLang().sendLangMsg(ConfigHandler.getPluginName(), ConfigHandler.getPrefix(),
+        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
                 ConfigHandler.getConfigPath().getMsgVisResCreate(), owner);
-        CorePlusAPI.getLang().sendDetailMsg(ConfigHandler.isDebugging(), ConfigHandler.getPluginName(),
+        CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                 "Visitor", playerName, "Residence: Create", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
         e.setCancelled(true);

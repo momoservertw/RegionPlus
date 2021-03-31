@@ -24,12 +24,12 @@ public class ConfigHandler {
 
         if (CorePlusAPI.getDepend().LuckPermsEnabled()) {
             if (getConfigPath().isresUpdateFlagsRemove()) {
-                CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&6Flags-Edit need to check the permissions of offline players.");
-                CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
+                CorePlusAPI.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&6Flags-Edit need to check the permissions of offline players.");
+                CorePlusAPI.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&6You need to enable the option \"vault-unsafe-lookups\" in LuckPerms\'s config.yml.");
             }
         }
         if (!reload) {
-            CorePlusAPI.getUpdate().check(getPluginName(), getPluginPrefix(), Bukkit.getConsoleSender(),
+            CorePlusAPI.getUpdate().check(getPlugin(), getPluginPrefix(), Bukkit.getConsoleSender(),
                     RegionPlus.getInstance().getDescription().getName(),
                     RegionPlus.getInstance().getDescription().getVersion(), true);
         }
@@ -58,7 +58,7 @@ public class ConfigHandler {
             try {
                 RegionPlus.getInstance().saveResource(fileName, false);
             } catch (Exception e) {
-                CorePlusAPI.getLang().sendErrorMsg(ConfigHandler.getPluginName(), "Cannot save " + fileName + " to disk!");
+                CorePlusAPI.getMsg().sendErrorMsg(ConfigHandler.getPlugin(), "Cannot save " + fileName + " to disk!");
                 return null;
             }
         }
@@ -99,7 +99,7 @@ public class ConfigHandler {
                     File configFile = new File(filePath, fileName);
                     configFile.delete();
                     getConfigData(filePath, fileName);
-                    CorePlusAPI.getLang().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&4The file \"" + fileName + "\" is out of date, generating a new one!");
+                    CorePlusAPI.getMsg().sendConsoleMsg(ConfigHandler.getPluginPrefix(), "&4The file \"" + fileName + "\" is out of date, generating a new one!");
                 }
             }
         }
@@ -114,7 +114,7 @@ public class ConfigHandler {
         configPath = configPaths;
     }
 
-    public static String getPluginName() {
+    public static String getPlugin() {
         return RegionPlus.getInstance().getDescription().getName();
     }
 
@@ -126,7 +126,7 @@ public class ConfigHandler {
         return getConfig("config.yml").getString("Message.prefix");
     }
 
-    public static boolean isDebugging() {
+    public static boolean isDebug() {
         return ConfigHandler.getConfig("config.yml").getBoolean("Debugging");
     }
 }

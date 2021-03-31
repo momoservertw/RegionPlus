@@ -157,7 +157,7 @@ public class ConfigPath {
                         + "swim" + " "
                         + "crawl" + " "
                         + "wallkick";
-        CorePlusAPI.getLang().sendHookMsg(ConfigHandler.getPluginPrefix(), "Residence flags", Arrays.asList(string.split("\\s*")));
+        CorePlusAPI.getMsg().sendHookMsg(ConfigHandler.getPluginPrefix(), "Residence flags", Arrays.asList(string.split("\\s*")));
 
     }
 
