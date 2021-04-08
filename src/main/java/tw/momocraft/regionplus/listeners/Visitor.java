@@ -67,7 +67,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisUseItemMsg())
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
         CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                 "Visitor", playerName, "Use-Item: Consume", "cancel", "Final",
@@ -126,7 +126,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisUseItemMsg())
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
         CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                 "Visitor", playerName, "Use-Item: Bucket", "cancel", "Final",
@@ -185,7 +185,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisUseItemMsg())
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
         CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                 "Visitor", playerName, "Use-Item: Fishing", "cancel", "Final",
@@ -245,7 +245,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisUseItemMsg())
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     ConfigHandler.getConfigPath().getMsgVisItemUse(), player);
         CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                 "Visitor", playerName, "Use-Item: Projectile", "cancel", "Final",
@@ -297,7 +297,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisInterEntMsg())
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     ConfigHandler.getConfigPath().getMsgVisInteractEntity(), player);
         CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                 "Visitor", playerName, "Pickup-Item", "cancel", "Final",
@@ -351,7 +351,7 @@ public class Visitor implements Listener {
             }
             // Cancel
             if (ConfigHandler.getConfigPath().isVisInterBlockMsg())
-                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                         ConfigHandler.getConfigPath().getMsgVisInteractBlock(), player);
             CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                     "Visitor", playerName, "Interact-Block", "cancel", blockType,
@@ -409,7 +409,7 @@ public class Visitor implements Listener {
             }
             // Cancel
             if (ConfigHandler.getConfigPath().isVisInterBlockMsg())
-                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                         ConfigHandler.getConfigPath().getMsgVisInteractBlock(), player);
             CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                     "Visitor", playerName, "Interact-Block", "cancel", blockType,
@@ -452,7 +452,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisDropItemMsg())
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     ConfigHandler.getConfigPath().getMsgVisDropItem(), player);
         CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                 "Visitor", playerName, "Drop-Item", "cancel", "Final",
@@ -554,8 +554,8 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisDamageEntMsg())
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix()
-                    , ConfigHandler.getConfigPath().getMsgVisDamageEntity(), player);
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
+                    ConfigHandler.getConfigPath().getMsgVisDamageEntity(), player);
         CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                 "Visitor", playerName, "Damage-Entity", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
@@ -597,7 +597,7 @@ public class Visitor implements Listener {
         }
         // Cancel
         if (ConfigHandler.getConfigPath().isVisDeathDropMsg())
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     ConfigHandler.getConfigPath().getMsgVisDeathDrop(), player);
         CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                 "Visitor", playerName, "Death-Drop", "cancel", "Final",

@@ -22,8 +22,7 @@ public class Vehicles implements Listener {
                 !e.getOwner().equals(player.getName())) {
             String[] placeHolders = CorePlusAPI.getMsg().newString();
             placeHolders[13] = "destroy"; // %flag%
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(),
-                    ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
             CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                     "Residence", player.getName(),
                     "VehiclePickupEvent", "bypass",
@@ -41,7 +40,7 @@ public class Vehicles implements Listener {
                 "place", false)) {
             String[] placeHolders = CorePlusAPI.getMsg().newString();
             placeHolders[13] = "place"; // %flag%
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     "Message.noFlagPerm", player, placeHolders);
             CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                     "Residence", player.getName(), "VehiclePlaceEvent", "cancel",
@@ -58,7 +57,7 @@ public class Vehicles implements Listener {
         if (!CorePlusAPI.getCond().checkFlag(player, player.getLocation(), "use", false)) {
             String[] placeHolders = CorePlusAPI.getMsg().newString();
             placeHolders[13] = "use"; // %flag%
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     "Message.noFlagPerm", player, placeHolders);
             CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                     "Residence", player.getName(), "VehicleEnterEvent", "cancel",

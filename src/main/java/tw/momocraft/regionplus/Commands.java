@@ -16,17 +16,15 @@ public class Commands implements CommandExecutor {
         int length = args.length;
         if (length == 0) {
             if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.use")) {
-                CorePlusAPI.getMsg().sendMsg(ConfigHandler.getPrefix(), sender, "");
-                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                        ConfigHandler.getConfigPath().getMsgTitle(), sender);
-                CorePlusAPI.getMsg().sendMsg(ConfigHandler.getPrefix(), sender,
+                CorePlusAPI.getMsg().sendMsg("", sender, "");
+                CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgTitle(), sender);
+                CorePlusAPI.getMsg().sendMsg("", sender,
                         "&f " + RegionPlus.getInstance().getDescription().getName()
                                 + " &ev" + RegionPlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                        ConfigHandler.getConfigPath().getMsgHelp(), sender);
-                CorePlusAPI.getMsg().sendMsg(ConfigHandler.getPrefix(), sender, "");
+                CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgHelp(), sender);
+                CorePlusAPI.getMsg().sendMsg("", sender, "");
             } else {
-                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                         "Message.noPermission", sender);
             }
             return true;
@@ -34,53 +32,40 @@ public class Commands implements CommandExecutor {
         switch (args[0].toLowerCase()) {
             case "help":
                 if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.use")) {
-                    CorePlusAPI.getMsg().sendMsg(ConfigHandler.getPrefix(), sender, "");
-                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                            ConfigHandler.getConfigPath().getMsgTitle(), sender);
-                    CorePlusAPI.getMsg().sendMsg(ConfigHandler.getPrefix(), sender,
+                    CorePlusAPI.getMsg().sendMsg("", sender, "");
+                    CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgTitle(), sender);
+                    CorePlusAPI.getMsg().sendMsg("", sender,
                             "&f " + RegionPlus.getInstance().getDescription().getName()
                                     + " &ev" + RegionPlus.getInstance().getDescription().getVersion() + "  &8by Momocraft");
-                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                            ConfigHandler.getConfigPath().getMsgHelp(), sender);
+                    CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgHelp(), sender);
                     if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.reload"))
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                                ConfigHandler.getConfigPath().getMsgReload(), sender);
+                        CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgReload(), sender);
                     if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.version"))
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                                ConfigHandler.getConfigPath().getMsgVersion(), sender);
+                        CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgVersion(), sender);
                     if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.residence.updateflags"))
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                                ConfigHandler.getConfigPath().getMsgCmdResUpdateFlags(), sender);
+                        CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgCmdResUpdateFlags(), sender);
                     if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.residence.updatemessages"))
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                                ConfigHandler.getConfigPath().getMsgCmdResUpdateMessages(), sender);
+                        CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgCmdResUpdateMessages(), sender);
                     if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.residence.returnignorey"))
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                                ConfigHandler.getConfigPath().getMsgCmdResReturnIgnoreY(), sender);
+                        CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgCmdResReturnIgnoreY(), sender);
                     if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.pointslevel"))
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                                ConfigHandler.getConfigPath().getMsgCmdPointsLevel(), sender);
+                        CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgCmdPointsLevel(), sender);
                     if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.points")) {
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                                ConfigHandler.getConfigPath().getMsgCmdPoints(), sender);
+                        CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgCmdPoints(), sender);
                         if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.points.other"))
-                            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                                    ConfigHandler.getConfigPath().getMsgCmdPointsOther(), sender);
+                            CorePlusAPI.getMsg().sendLangMsg("", ConfigHandler.getConfigPath().getMsgCmdPointsOther(), sender);
                     }
-                    CorePlusAPI.getMsg().sendMsg(ConfigHandler.getPrefix(), sender, "");
+                    CorePlusAPI.getMsg().sendMsg("", sender, "");
                 } else {
-                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                            "Message.noPermission", sender);
+                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                 }
                 return true;
             case "reload":
                 if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.reload")) {
                     ConfigHandler.generateData(true);
-                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                            "Message.configReload", sender);
+                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(), "Message.configReload", sender);
                 } else {
-                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
-                            "Message.noPermission", sender);
+                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(), "Message.noPermission", sender);
                 }
                 return true;
             case "version":
@@ -91,20 +76,20 @@ public class Commands implements CommandExecutor {
                     CorePlusAPI.getUpdate().check(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(), sender,
                             RegionPlus.getInstance().getName(), RegionPlus.getInstance().getDescription().getVersion(), true);
                 } else {
-                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                             "Message.noPermission", sender);
                 }
                 return true;
             case "points":
                 if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.points")) {
                     if (!ConfigHandler.getConfigPath().isPoints()) {
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                 "Message.featureDisabled", sender);
                         return true;
                     }
                     if (length == 1) {
                         if (sender instanceof ConsoleCommandSender) {
-                            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                     "Message.onlyPlayer", sender);
                             return true;
                         }
@@ -116,24 +101,24 @@ public class Commands implements CommandExecutor {
                             if (player == null) {
                                 String[] placeHolders = CorePlusAPI.getMsg().newString();
                                 placeHolders[1] = args[1]; // %targetplayer%
-                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                         "Message.targetNotFound", sender, placeHolders);
                                 return true;
                             }
                             ResidencePoints.sendTargetPointsMsg(sender, player);
                         } else {
-                            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                     "Message.noPermission", sender);
                         }
                         return true;
                     }
-                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                             ConfigHandler.getConfigPath().getMsgCmdPoints(), sender);
                     if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.points.other"))
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                 ConfigHandler.getConfigPath().getMsgCmdPointsOther(), sender);
                 } else {
-                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                             "Message.noPermission", sender);
                 }
                 return true;
@@ -142,7 +127,7 @@ public class Commands implements CommandExecutor {
                     if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.residence.returnignorey")) {
                         ResidencePoints.returnIgnoreY(sender);
                     } else {
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                 "Message.noPermission", sender);
                     }
                     return true;
@@ -150,7 +135,7 @@ public class Commands implements CommandExecutor {
                     if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.residence.updaterflags")) {
                         ResidenceEdit.updateFlags(sender);
                     } else {
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                 "Message.noPermission", sender);
                     }
                     return true;
@@ -158,7 +143,7 @@ public class Commands implements CommandExecutor {
                     if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.residence.updatemessages")) {
                         ResidenceEdit.updateMessages(sender);
                     } else {
-                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                 "Message.noPermission", sender);
                     }
                     return true;
@@ -173,7 +158,7 @@ public class Commands implements CommandExecutor {
                             if (player == null) {
                                 String[] placeHolders = CorePlusAPI.getMsg().newString();
                                 placeHolders[1] = args[2]; // %targetplayer%
-                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                         "Message.targetNotFound", sender, placeHolders);
                                 return true;
                             }
@@ -186,7 +171,7 @@ public class Commands implements CommandExecutor {
                             if (player == null) {
                                 String[] placeHolders = CorePlusAPI.getMsg().newString();
                                 placeHolders[1] = args[2]; // %targetplayer%
-                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                         "Message.targetNotFound", sender, placeHolders);
                                 return true;
                             }
@@ -194,7 +179,7 @@ public class Commands implements CommandExecutor {
                                 CorePlusAPI.getPlayer().changePermLevel(player.getUniqueId(),
                                         "regionplus.points.level.", Integer.parseInt(args[3]), 0);
                             } catch (Exception ex) {
-                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                         ConfigHandler.getConfigPath().getMsgCmdPointsLevel(), sender);
                             }
                             return true;
@@ -205,7 +190,7 @@ public class Commands implements CommandExecutor {
                             if (player == null) {
                                 String[] placeHolders = CorePlusAPI.getMsg().newString();
                                 placeHolders[1] = args[2]; // %targetplayer%
-                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                         "Message.targetNotFound", sender, placeHolders);
                                 return true;
                             }
@@ -217,7 +202,7 @@ public class Commands implements CommandExecutor {
                             if (player == null) {
                                 String[] placeHolders = CorePlusAPI.getMsg().newString();
                                 placeHolders[1] = args[2]; // %targetplayer%
-                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                         "Message.targetNotFound", sender, placeHolders);
                                 return true;
                             }
@@ -225,21 +210,21 @@ public class Commands implements CommandExecutor {
                                 CorePlusAPI.getPlayer().changePermLevel(player.getUniqueId(),
                                         "regionplus.points.level.", Integer.parseInt(args[3]), 0);
                             } catch (Exception ex) {
-                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                                CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                                         ConfigHandler.getConfigPath().getMsgCmdPointsLevel(), sender);
                             }
                             return true;
                         }
                     }
-                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                             ConfigHandler.getConfigPath().getMsgCmdPointsLevel(), sender);
                 } else {
-                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+                    CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                             "Message.noPermission", sender);
                 }
                 return true;
         }
-        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                 "Message.unknownCommand", sender);
         return true;
     }

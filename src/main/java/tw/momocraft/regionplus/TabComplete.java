@@ -18,7 +18,7 @@ public class TabComplete implements TabCompleter {
         final List<String> completions = new ArrayList<>();
         final List<String> commands = new ArrayList<>();
         int length = args.length;
-        if (length == 0) {
+        if (length == 1) {
             if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.use"))
                 commands.add("help");
             if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.reload"))
@@ -33,44 +33,45 @@ public class TabComplete implements TabCompleter {
                 commands.add("pointslevel");
             if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.points"))
                 commands.add("points");
-        }
-        switch (args[0]) {
-            case "points":
-                if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.points.other")) {
-                    if (length == 2)
-                        commands.addAll(UtilsHandler.getPlayer().getOnlinePlayerNames());
-                }
-                break;
-            case "pointslevel":
-                if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.pointslevel")) {
-                    if (length == 1) {
-                        commands.add("promote");
-                        commands.add("demote");
-                    } else if (length == 2) {
-                        commands.addAll(CorePlusAPI.getPlayer().getOnlinePlayerNames());
-                    } else if (length == 3) {
-                        commands.add("1");
-                        commands.add("2");
-                        commands.add("3");
-                        commands.add("4");
-                        commands.add("5");
-                        commands.add("6");
-                        commands.add("7");
-                        commands.add("8");
-                        commands.add("9");
-                        commands.add("10");
+        } else {
+            switch (args[0]) {
+                case "points":
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.points.other")) {
+                        if (length == 2)
+                            commands.addAll(UtilsHandler.getPlayer().getOnlinePlayerNames());
                     }
-                }
-                break;
-            case "residence":
-                if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.residence")) {
-                    if (length == 1) {
-                        commands.add("returnignorey");
-                        commands.add("updateflags");
-                        commands.add("updatemessages");
+                    break;
+                case "pointslevel":
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.pointslevel")) {
+                        if (length == 2) {
+                            commands.add("promote");
+                            commands.add("demote");
+                        } else if (length == 3) {
+                            commands.addAll(CorePlusAPI.getPlayer().getOnlinePlayerNames());
+                        } else if (length == 4) {
+                            commands.add("1");
+                            commands.add("2");
+                            commands.add("3");
+                            commands.add("4");
+                            commands.add("5");
+                            commands.add("6");
+                            commands.add("7");
+                            commands.add("8");
+                            commands.add("9");
+                            commands.add("10");
+                        }
                     }
-                }
-                break;
+                    break;
+                case "residence":
+                    if (UtilsHandler.getPlayer().hasPerm(sender, "regionplus.command.residence")) {
+                        if (length == 2) {
+                            commands.add("returnignorey");
+                            commands.add("updateflags");
+                            commands.add("updatemessages");
+                        }
+                    }
+                    break;
+            }
         }
         StringUtil.copyPartialMatches(args[(args.length - 1)], commands, completions);
         Collections.sort(completions);

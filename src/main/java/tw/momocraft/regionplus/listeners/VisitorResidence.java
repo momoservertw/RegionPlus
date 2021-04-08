@@ -32,8 +32,7 @@ public class VisitorResidence implements Listener {
         if (newOwner == null) {
             String[] placeHolders = CorePlusAPI.getMsg().newString();
             placeHolders[1] = newOwnerName; // %targetplayer%
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(),
-                    ConfigHandler.getPrefix(), "Message.targetNotFound", owner, placeHolders);
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(), "Message.targetNotFound", owner, placeHolders);
             e.setCancelled(true);
             CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(),
                     ConfigHandler.getPluginPrefix(), "Visitor", newOwnerName, "Residence: Get", "cancel", "newOwner=null, " + resName,
@@ -56,9 +55,9 @@ public class VisitorResidence implements Listener {
             return;
         }
         // Cancel
-        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                 ConfigHandler.getConfigPath().getMsgVisResGet(), owner);
-        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                 ConfigHandler.getConfigPath().getMsgVisResGetTarget(), newOwner);
         //  Returning the money of trade.
         if (res.isForSell()) {
@@ -69,7 +68,7 @@ public class VisitorResidence implements Listener {
             CorePlusAPI.getPlayer().giveCurrency(ownerUUID, "money", price);
             placeHolders[9] = "money"; // %pricetype%
             placeHolders[10] = String.valueOf(price); // %price%
-            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+            CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     ConfigHandler.getConfigPath().getMsgCmdResReturnIgnoreY(), owner, placeHolders);
         }
         CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
@@ -105,7 +104,7 @@ public class VisitorResidence implements Listener {
         // Cancel
         String ownerName = e.getResidence().getOwner();
         Player owner = Bukkit.getPlayer(ownerName);
-        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPlugin(), ConfigHandler.getPrefix(),
+        CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                 ConfigHandler.getConfigPath().getMsgVisResCreate(), owner);
         CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
                 "Visitor", playerName, "Residence: Create", "cancel", "Final",

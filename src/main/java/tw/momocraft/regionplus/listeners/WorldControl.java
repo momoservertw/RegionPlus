@@ -26,7 +26,6 @@ public class WorldControl implements Listener {
             e.blockList().clear();
     }
 
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamageEvent(EntityDamageEvent e) {
         if (!ConfigHandler.getConfigPath().isWorldPreventDroppedItemExplosion())

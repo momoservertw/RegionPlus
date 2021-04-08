@@ -77,7 +77,7 @@ public class ConfigHandler {
     }
 
     private static void genConfigFile(String fileName) {
-        String[] fileNameSlit = fileName.split("\\.(?=[^\\.]+$)");
+        String[] fileNameSlit = fileName.split("\\.(?=[^.]+$)");
         int configVersion = 0;
         File filePath = RegionPlus.getInstance().getDataFolder();
         switch (fileName) {

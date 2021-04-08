@@ -146,7 +146,7 @@ public class ConfigPath {
     private void sendSetupMsg() {
         List<String> list = new ArrayList<>(RegionPlus.getInstance().getDescription().getDepend());
         list.addAll(RegionPlus.getInstance().getDescription().getSoftDepend());
-        UtilsHandler.getLang().sendHookMsg(ConfigHandler.getPluginPrefix(), "plugins", list);
+        CorePlusAPI.getMsg().sendHookMsg(ConfigHandler.getPluginPrefix(), "plugins", list);
 
         String string =
                 "climb" + " "
