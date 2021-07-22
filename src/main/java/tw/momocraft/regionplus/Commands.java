@@ -97,7 +97,7 @@ public class Commands implements CommandExecutor {
                         return true;
                     } else if (length == 2) {
                         if (CorePlusAPI.getPlayer().hasPerm(sender, "regionplus.command.points.other")) {
-                            Player player = CorePlusAPI.getPlayer().getPlayerString(args[1]);
+                            Player player = CorePlusAPI.getPlayer().getPlayer(args[1]);
                             if (player == null) {
                                 String[] placeHolders = CorePlusAPI.getMsg().newString();
                                 placeHolders[1] = args[1]; // %targetplayer%
@@ -154,7 +154,7 @@ public class Commands implements CommandExecutor {
                     if (args[1].equalsIgnoreCase("promote")) {
                         // rgp pointslevel promote <player>
                         if (length == 3) {
-                            Player player = CorePlusAPI.getPlayer().getPlayerString(args[2]);
+                            Player player = CorePlusAPI.getPlayer().getPlayer(args[2]);
                             if (player == null) {
                                 String[] placeHolders = CorePlusAPI.getMsg().newString();
                                 placeHolders[1] = args[2]; // %targetplayer%
@@ -167,7 +167,7 @@ public class Commands implements CommandExecutor {
                             return true;
                             // rgp pointslevel promote <player> <level>
                         } else if (length == 4) {
-                            Player player = CorePlusAPI.getPlayer().getPlayerString(args[2]);
+                            Player player = CorePlusAPI.getPlayer().getPlayer(args[2]);
                             if (player == null) {
                                 String[] placeHolders = CorePlusAPI.getMsg().newString();
                                 placeHolders[1] = args[2]; // %targetplayer%
@@ -186,7 +186,7 @@ public class Commands implements CommandExecutor {
                         }
                     } else if (args[1].equalsIgnoreCase("demote")) {
                         if (length == 3) {
-                            Player player = CorePlusAPI.getPlayer().getPlayerString(args[2]);
+                            Player player = CorePlusAPI.getPlayer().getPlayer(args[2]);
                             if (player == null) {
                                 String[] placeHolders = CorePlusAPI.getMsg().newString();
                                 placeHolders[1] = args[2]; // %targetplayer%
@@ -198,7 +198,7 @@ public class Commands implements CommandExecutor {
                                     "regionplus.points.level.", 1, 0);
                             return true;
                         } else if (length == 4) {
-                            Player player = CorePlusAPI.getPlayer().getPlayerString(args[2]);
+                            Player player = CorePlusAPI.getPlayer().getPlayer(args[2]);
                             if (player == null) {
                                 String[] placeHolders = CorePlusAPI.getMsg().newString();
                                 placeHolders[1] = args[2]; // %targetplayer%
