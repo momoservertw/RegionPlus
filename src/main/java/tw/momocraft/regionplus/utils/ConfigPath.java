@@ -235,7 +235,7 @@ public class ConfigPath {
         points = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Enable");
         if (points) {
             pointsSelectInfo = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Select-Info");
-            pointsSelectTool = Residence.getInstance().getConfigManager().getSelectionTool().getMaterial();
+            pointsSelectTool = CorePlusAPI.getPlayer().getResSelectionTool();
             pointsLimitedYCalculate = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Limited-Y-Calculate");
             pointsPreventAreasSizeChange = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Multiple-Areas-Size-Change");
             pointsPreventLimitedYSizeChange = ConfigHandler.getConfig("config.yml").getBoolean("Residence.Points.Settings.Prevent.Limited-Y-Size-Change");

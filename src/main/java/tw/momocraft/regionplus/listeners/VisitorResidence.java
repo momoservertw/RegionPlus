@@ -27,7 +27,6 @@ public class VisitorResidence implements Listener {
         ClaimedResidence res = e.getResidence();
         String resName = res.getName();
         UUID ownerUUID = res.getOwnerUUID();
-        String ownerName = res.getOwner();
         Player owner = Bukkit.getPlayer(res.getOwner());
         if (newOwner == null) {
             String[] placeHolders = CorePlusAPI.getMsg().newString();
@@ -40,7 +39,7 @@ public class VisitorResidence implements Listener {
             return;
         }
         // Location
-        if (!CorePlusAPI.getCond().checkLocation(ConfigHandler.getPlugin(),
+        if (!CorePlusAPI.getCond().checkLocation(ConfigHandler.getPluginName(),
                 newOwner.getLocation(), ConfigHandler.getConfigPath().getVisLocList(), false)) {
             CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(),
                     ConfigHandler.getPluginPrefix(), "Visitor", newOwnerName, "Residence: Get", "return", "Location, " + resName,
@@ -49,7 +48,7 @@ public class VisitorResidence implements Listener {
         }
         // Bypass Permission
         if (CorePlusAPI.getPlayer().hasPerm(newOwner, "regionplus.bypass.visitor")) {
-            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPluginName(),
                     "Visitor", newOwnerName, "Residence: Get", "bypass", "Permission, " + resName,
                     new Throwable().getStackTrace()[0]);
             return;
@@ -71,7 +70,7 @@ public class VisitorResidence implements Listener {
             CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     ConfigHandler.getConfigPath().getMsgCmdResReturnIgnoreY(), owner, placeHolders);
         }
-        CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
+        CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPluginName(),
                 "Visitor", newOwnerName, "Residence: Get", "cancel", "Final, " + resName,
                 new Throwable().getStackTrace()[0]);
         e.setCancelled(true);
@@ -87,16 +86,16 @@ public class VisitorResidence implements Listener {
         String playerName = player.getName();
         Location loc = player.getLocation();
         // Location
-        if (!CorePlusAPI.getCond().checkLocation(ConfigHandler.getPlugin(), loc,
+        if (!CorePlusAPI.getCond().checkLocation(ConfigHandler.getPluginName(), loc,
                 ConfigHandler.getConfigPath().getVisLocList(), false)) {
-            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPluginName(),
                     "Visitor", playerName, "Residence: Create", "return", "Location",
                     new Throwable().getStackTrace()[0]);
             return;
         }
         // Bypass Permission
         if (CorePlusAPI.getPlayer().hasPerm(player, "regionplus.bypass.visitor")) {
-            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPluginName(),
                     "Visitor", playerName, "Residence: Create", "bypass", "Permission",
                     new Throwable().getStackTrace()[0]);
             return;
@@ -106,7 +105,7 @@ public class VisitorResidence implements Listener {
         Player owner = Bukkit.getPlayer(ownerName);
         CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                 ConfigHandler.getConfigPath().getMsgVisResCreate(), owner);
-        CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
+        CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPluginName(),
                 "Visitor", playerName, "Residence: Create", "cancel", "Final",
                 new Throwable().getStackTrace()[0]);
         e.setCancelled(true);

@@ -5,14 +5,13 @@ public class UtilsHandler {
 
     private static DependHandler dependence;
 
-    public static void setupFirst(boolean reload) {
-        if (!reload)
-            dependence = new DependHandler();
+    public static void setup(boolean reload) {
+        dependence = new DependHandler();
+        dependence.setup(reload);
     }
 
     public static DependHandler getDepend() {
         return dependence;
     }
-
 
 }

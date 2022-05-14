@@ -5,6 +5,14 @@
 Config-Version: 4
 Debugging: false
 
+General:
+  Features:
+    # Changed these options need to restart the server.
+    Hook:
+      Residence: true
+      SurvivalMechanics: true
+      Vehicles: true
+
 # Adding some features to improve CMI and Residence.
 # More information: https://github.com/momoservertw/RegionPlus/wiki/World-Control
 World-Contorl:
@@ -175,32 +183,3 @@ Visitor:
       Enable: true
   Location:
     - VisitorWorlds
-
-Message:
-  prefix: "&7[&dRegionPlus&7]&r"
-  Commands:
-    title: "&8▩▩▩▩▩▩▩▩▩▩▩▩▩ &d&lRegionPlus &8▩▩▩▩▩▩▩▩▩▩▩▩▩"
-    help: "&f/rgp help &8- &7This help menu."
-    reload: "&f/rgp reload &8- &7Reload config file."
-    version: "&f/rgp version &8- &7Checks the plugin version and updates."
-    resReturnIgnoreY: "&f/rgp residence returnignorey &8- &7Return the money difference if you changed the option \"IgnoreY\" in Residence config."
-    resUpdateFlags: "&f/rgp residence updateflags &8- &7Updating all old residences' flags to new one."
-    resUpdateMessages: "&f/rgp residence updatemessage &8- &7Updating all residences' enter/leave messages to default if the owner has no permission to change it."
-    points: "&f/rgp points &8- &7Check your points limit."
-    pointsOther: "&f/rgp points <player> &8- &7Check the player's points limit."
-    pointsLevel: "&f/rgp pointslevel <promote/demote> <player> [level] &8- &7Changes the player's residence level."
-  points: "%prefix%  &cPoints: &f%balance%/%limit% (%group%%level%)"
-  targetPoints: "%prefix%  &c%targetplayer%'s Points: &f%balance%/%limit% (%group%%level%)"
-  pointsSelect: "%prefix% &7Select size: %size%, Points: %balance%/%limit%"
-  sizeChangeFailed: "%prefix% &cThe residence with multiple areas can not change its size."
-  resReturnMoney: "%prefix% &7(Event cancelled and the money is returned)"
-  visitorResidenceCreate: "%prefix% &cVisitor can't create residence!"
-  visitorResidenceGet: "%prefix% &cVisitor can't get a residence!"
-  visitorResidenceGetTarget: "%prefix% &cYou can't give the residence to Visitor!"
-  visitorUseItems: "%prefix% &cVisitor can't use this item!"
-  visitorInteractBlocks: "%prefix% &cVisitor can't interact blocks!"
-  visitorInteractEntities: "%prefix% &cVisitor can't interact entities!"
-  visitorDamageEntities: "%prefix% &cVisitor can't damage entities!"
-  visitorDropItems: "%prefix% &cVisitor can't drop items!"
-  visitorPickupItems: "%prefix% &cVisitor can't pickup items!"
-  visitorDeathDrop: "%prefix% &7Visitors will not drop items after death!"

@@ -23,7 +23,7 @@ public class Vehicles implements Listener {
             String[] placeHolders = CorePlusAPI.getMsg().newString();
             placeHolders[13] = "destroy"; // %flag%
             CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(), "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPluginName(),
                     "Residence", player.getName(),
                     "VehiclePickupEvent", "bypass",
                     new Throwable().getStackTrace()[0]);
@@ -42,7 +42,7 @@ public class Vehicles implements Listener {
             placeHolders[13] = "place"; // %flag%
             CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPluginName(),
                     "Residence", player.getName(), "VehiclePlaceEvent", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
@@ -59,7 +59,7 @@ public class Vehicles implements Listener {
             placeHolders[13] = "use"; // %flag%
             CorePlusAPI.getMsg().sendLangMsg(ConfigHandler.getPrefix(),
                     "Message.noFlagPerm", player, placeHolders);
-            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPlugin(),
+            CorePlusAPI.getMsg().sendDetailMsg(ConfigHandler.isDebug(), ConfigHandler.getPluginName(),
                     "Residence", player.getName(), "VehicleEnterEvent", "cancel",
                     new Throwable().getStackTrace()[0]);
             e.setCancelled(true);
