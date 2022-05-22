@@ -4,6 +4,7 @@
 # ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 Config-Version: 4
 Debugging: false
+Check-Updates: true
 
 General:
   Features:
