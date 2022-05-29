@@ -148,17 +148,18 @@ public class ConfigPath {
         list.addAll(RegionPlus.getInstance().getDescription().getSoftDepend());
         CorePlusAPI.getMsg().sendHookMsg(ConfigHandler.getPluginPrefix(), "plugins", list);
 
-        String string =
-                "climb" + " "
-                        + "crawl" + " "
-                        + "mobkick" + " "
-                        + "roofhang" + " "
-                        + "slide" + " "
-                        + "swim" + " "
-                        + "crawl" + " "
-                        + "wallkick";
-        CorePlusAPI.getMsg().sendHookMsg(ConfigHandler.getPluginPrefix(), "Residence flags", Arrays.asList(string.split("\\s*")));
-
+        if (CorePlusAPI.getDepend().ResidenceEnabled()) {
+            String string =
+                    "climb" + " "
+                            + "crawl" + " "
+                            + "mobkick" + " "
+                            + "roofhang" + " "
+                            + "slide" + " "
+                            + "swim" + " "
+                            + "crawl" + " "
+                            + "wallkick";
+            CorePlusAPI.getMsg().sendHookMsg(ConfigHandler.getPluginPrefix(), "Residence flags", Arrays.asList(string.split("\\s*")));
+        }
     }
 
     //  ============================================== //
